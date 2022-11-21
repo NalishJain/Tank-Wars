@@ -8,7 +8,7 @@ import com.mygdx.tankgame.TankGame;
 import static com.mygdx.tankgame.TankGame.SCREEN_HEIGHT;
 import static com.mygdx.tankgame.TankGame.SCREEN_WIDTH;
 
-public class LoadGameScreen implements Screen {
+public class PauseGameScreen implements Screen {
 
     private static final int BUTTON_WIDTH = 350;
     private static final int BUTTON_HEIGHT = 100;
@@ -25,11 +25,9 @@ public class LoadGameScreen implements Screen {
     Texture terrain_texture;
     Texture diagBox;
     Texture backButton;
-    Texture game1;
-    Texture game2;
-    Texture game3;
 
-    public LoadGameScreen(TankGame game){
+
+    public PauseGameScreen(TankGame game){
         this.game = game;
         chooseButtonActive = new Texture("choose4x.png");
         chooseButtonInactive = new Texture("choose4xin.png");
@@ -39,9 +37,7 @@ public class LoadGameScreen implements Screen {
         terrain_texture = new Texture("Terrain_texture.png");
         diagBox = new Texture("diagBox.png");
         backButton = new Texture("GoBack.png");
-        game1 = new Texture("Game1inactive.png");
-        game2 = new Texture("Game2inactive.png");
-        game3 = new Texture("Game3inactive.png");
+
     }
     @Override
     public void show() {
@@ -59,9 +55,7 @@ public class LoadGameScreen implements Screen {
         }
         game.batch.draw(diagBox, (SCREEN_WIDTH/2 - 1000/2), (SCREEN_HEIGHT/2 - 600/2), 1000, 600);
         game.batch.draw(backButton, 0, 500, 654*0.15f, 488*0.15f);
-        game.batch.draw(game1, 195, 228, 966*0.3f, 1284*0.3f);
-        game.batch.draw(game2, (SCREEN_WIDTH/2 - 966*0.3f/2), 228, 966*0.3f, 1284*0.3f);
-        game.batch.draw(game3, SCREEN_WIDTH-195-966*0.3f, 228, 966*0.3f, 1284*0.3f);
+
         game.batch.end();
 
     }
