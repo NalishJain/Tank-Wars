@@ -6,15 +6,19 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.mygdx.tankgame.templates.FirstMenuScreen;
 import com.mygdx.tankgame.templates.MainGameScreen;
+import com.mygdx.tankgame.templates.TankSelectScreen;
 
 public class TankGame extends Game {
+	public static final int SCREEN_WIDTH = 1280;
+	public static final int SCREEN_HEIGHT = 720;
 	public SpriteBatch batch;
 	
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
-		this.setScreen(new MainGameScreen(this));
+		this.setScreen(new TankSelectScreen(this));
 	}
 
 	@Override
