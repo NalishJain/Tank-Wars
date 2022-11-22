@@ -25,6 +25,11 @@ public class PauseGameScreen implements Screen {
     Texture terrain_texture;
     Texture diagBox;
     Texture backButton;
+    Texture resume;
+    Texture saveButton;
+    Texture quitButton;
+    Texture soundButton;
+    Texture musicButton;
 
 
     public PauseGameScreen(TankGame game){
@@ -37,6 +42,11 @@ public class PauseGameScreen implements Screen {
         terrain_texture = new Texture("Terrain_texture.png");
         diagBox = new Texture("diagBox.png");
         backButton = new Texture("GoBack.png");
+        resume = new Texture("Resume.png");
+        saveButton = new Texture("SaveButton.png");
+        quitButton = new Texture("QuitButton.png");
+        soundButton = new Texture("SoundButton.png");
+        musicButton = new Texture("MusicButton.png");
 
     }
     @Override
@@ -53,8 +63,18 @@ public class PauseGameScreen implements Screen {
         for(int i = 0; i < 1600; i += 35) {
             game.batch.draw(terrain_texture, i, 196, 967*0.05f, 262*0.05f);
         }
-        game.batch.draw(diagBox, (SCREEN_WIDTH/2 - 1000/2), (SCREEN_HEIGHT/2 - 600/2), 1000, 600);
-        game.batch.draw(backButton, 0, 500, 654*0.15f, 488*0.15f);
+        game.batch.draw(diagBox, (SCREEN_WIDTH/2 - 1000/2), (SCREEN_HEIGHT/2 - 700/2) , 1000, 700);
+        game.batch.draw(backButton, 0, 500, 654*0.2f, 488*0.2f);
+        game.batch.draw(resume,(SCREEN_WIDTH/2 - 368/2), (SCREEN_HEIGHT/2 - 100/2) + 260 -27, 368,100);
+        game.batch.draw(saveButton,(SCREEN_WIDTH/2 - 368/2), (SCREEN_HEIGHT/2 - 100/2) + 150 - 27, 368,100);
+        game.batch.draw(soundButton,(SCREEN_WIDTH/2 - 368/2), (SCREEN_HEIGHT/2 - 100/2) +  13, 368,100);
+        game.batch.draw(musicButton,(SCREEN_WIDTH/2 - 368/2) -2, (SCREEN_HEIGHT/2 - 100/2) -70 - 27, 368,100);
+        game.batch.draw(quitButton,(SCREEN_WIDTH/2 - 368/2), (SCREEN_HEIGHT/2 - 100/2) -180 -27, 368,100);
+
+
+
+
+
 
         game.batch.end();
 
