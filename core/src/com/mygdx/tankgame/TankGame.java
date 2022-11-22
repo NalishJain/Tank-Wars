@@ -6,10 +6,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.mygdx.tankgame.templates.FirstMenuScreen;
-import com.mygdx.tankgame.templates.LoadGameScreen;
-import com.mygdx.tankgame.templates.MainGameScreen;
-import com.mygdx.tankgame.templates.TankSelectScreen;
+import com.mygdx.tankgame.templates.*;
 
 public class TankGame extends Game {
 	public static final int SCREEN_WIDTH = 1280;
@@ -19,7 +16,7 @@ public class TankGame extends Game {
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
-		this.setScreen(new LoadGameScreen(this));
+		this.setScreen(new PauseGameScreen(this));
 	}
 
 	@Override
