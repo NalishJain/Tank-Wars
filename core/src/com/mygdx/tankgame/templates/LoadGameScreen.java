@@ -31,8 +31,8 @@ public class LoadGameScreen implements Screen {
 
     public LoadGameScreen(TankGame game){
         this.game = game;
-        chooseButtonActive = new Texture("choose4x.png");
-        chooseButtonInactive = new Texture("choose4xin.png");
+        chooseButtonActive = new Texture("LoadGameButton.png");
+//        chooseButtonInactive = new Texture("LoadGameButton.png");
         bg = new Texture("bg3.png");
         terrain = new Texture("terrain2.png");
 //        kPlane = new Texture("Plane.png");

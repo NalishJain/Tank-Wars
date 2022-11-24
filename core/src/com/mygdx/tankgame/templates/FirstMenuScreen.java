@@ -2,6 +2,7 @@ package com.mygdx.tankgame.templates;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.tankgame.TankGame;
 
@@ -32,23 +33,25 @@ public class FirstMenuScreen implements Screen {
     Texture kPlane;
     Texture terrain_texture;
     Texture parachute;
+    TextureRegion plane;
     Texture crate;
     Texture settings;
 
     public FirstMenuScreen(TankGame game){
         this.game = game;
         exitButtonActive = new Texture("Group 32x.png");
-        exitButtonInactive = new Texture("Group 32xin.png");
+        exitButtonInactive = new Texture("ExitButton.png");
         loadButtonActive = new Texture("Group 22x.png");
-        loadButtonInactive = new Texture("Group 22xin.png");
+        loadButtonInactive = new Texture("LoadGameButton.png");
         newButtonActive = new Texture("Group 12x.png");
-        newButtonInactive = new Texture("Group 12xin.png");
+        newButtonInactive = new Texture("nButton.png");
         logo = new Texture("Logo.png");
         tank = new Texture("Tank3.png");
         bg = new Texture("bg2.png");
         terrain = new Texture("terrain.png");
         tank2 = new Texture("Tank1.png");
         kPlane = new Texture("kamikaze_plane.png");
+        plane = new TextureRegion(kPlane);
         terrain_texture = new Texture("Terrain_texture.png");
         crate = new Texture("Crate.png");
         parachute = new Texture("Parachute.png");
@@ -79,16 +82,15 @@ public class FirstMenuScreen implements Screen {
         game.batch.draw(exitButtonInactive, BUTTON_RIGHT_LOCATION, 100, BUTTON_WIDTH, BUTTON_HEIGHT);
         game.batch.draw(loadButtonInactive, BUTTON_RIGHT_LOCATION, 200, BUTTON_WIDTH, BUTTON_HEIGHT);
         game.batch.draw(newButtonInactive, BUTTON_RIGHT_LOCATION, 300, BUTTON_WIDTH, BUTTON_HEIGHT);
-        game.batch.draw(tank, 50, 199, 423*0.5f, 229*0.5f);
-        game.batch.draw(tank2, 650, 199, -446*0.5f, 226*0.5f);
-        game.batch.draw(kPlane, 900, 530, 1091*0.2f, 694*0.2f);
+        game.batch.draw(tank, 50, 199, 423*0.7f, 229*0.7f);
+        game.batch.draw(tank2, 730, 199, -446*0.7f, 226*0.7f);
+        game.batch.draw(plane, 950, 470,0,0, 1091*0.25f, 694*0.25f,1,1,25f);
         game.batch.draw(parachute, 170, 530, 517*0.2f, 992*0.2f);
         game.batch.draw(crate, 204, 500, 192*0.2f, 164*0.2f);
         game.batch.draw(settings, 0, 50, 654*0.15f, 488*0.15f);
 
         game.batch.end();
     }
-
     @Override
     public void resize(int width, int height) {
 
