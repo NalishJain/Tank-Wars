@@ -20,24 +20,32 @@ public class MainGameScreen implements Screen {
     private static final int BUTTON_RIGHT_LOCATION =  LEFT_WIDTH + (RIGHT_WIDTH/2 - BUTTON_WIDTH/2);
 
     TankGame game;
+    Texture tank_f;
+    Texture tank_t;
+    Texture tank_b;
     Texture missile1;
     Texture missile2;
     Texture missile3;
     TextureRegion rMissile1;
     TextureRegion rMissile2;
     TextureRegion rMissile3;
-
-    Texture tank;
     Texture bg;
     Texture terrain;
-    Texture tank2;
+    Texture tank2_t;
+    Texture tank2_b;
+    Texture tank2_f;
     Texture kPlane;
     Texture aShip;
     Texture terrain_texture;
     Texture bomb;
     TextureRegion rbomb;
-    TextureRegion rtank;
-    TextureRegion rtank2;
+    TextureRegion rtank_f;
+    TextureRegion rtank_b;
+    TextureRegion rtank_t;
+
+    TextureRegion rtank2_f;
+    TextureRegion rtank2_b;
+    TextureRegion rtank2_t;
     TextureRegion rkPlane;
     Texture ePole;
     Texture ePole2;
@@ -52,6 +60,12 @@ public class MainGameScreen implements Screen {
     public MainGameScreen(TankGame game){
         this.game = game;
 
+        tank_b = new Texture("tank1back.png");
+        tank_f = new Texture("tank1front.png");
+        tank_t = new Texture("tank1turret2.png");
+        tank2_t = new Texture("Tank2Turret.png");
+        tank2_f = new Texture("Tank2Front.png");
+        tank2_b = new Texture("Tank2Back.png");
         missile1 = new Texture("Weapon1.png");
         missile2 = new Texture("Weapon2.png");
         missile3 = new Texture("Weapon3.png");
@@ -61,9 +75,6 @@ public class MainGameScreen implements Screen {
 
         hpBar = new Texture("HPBar.png");
         Shield = new Texture("Shield.png");
-
-        tank = new Texture("Tank2.png");
-        tank2 = new Texture("Tank1.png");
         bg = new Texture("bg3.png");
         terrain = new Texture("MaskedTerrain.png");
         kPlane = new Texture("Plane.png");
@@ -71,8 +82,12 @@ public class MainGameScreen implements Screen {
         terrain_texture = new Texture("Terrain_grass.png");
         bomb = new Texture("Bomb.png");
         rbomb = new TextureRegion(bomb);
-        rtank = new TextureRegion(tank);
-        rtank2 = new TextureRegion(tank2);
+        rtank_f = new TextureRegion(tank_f);
+        rtank_b = new TextureRegion(tank_b);
+        rtank_t = new TextureRegion(tank_t);
+        rtank2_b = new TextureRegion(tank2_b);
+        rtank2_f = new TextureRegion(tank2_f);
+        rtank2_t = new TextureRegion(tank2_t);
         rkPlane = new TextureRegion(kPlane);
         ePole = new Texture("electricpole.png");
         ePole2 = new Texture("electricpole2.png");
@@ -106,9 +121,13 @@ public class MainGameScreen implements Screen {
         for(int i = SCREEN_WIDTH; i > SCREEN_WIDTH/2; i -= 6) {
             game.batch.draw(rtGrass, i-5, (SCREEN_WIDTH-i)*0.167f+95, 0, 0, 64*0.1f, 64*0.1f, 1, 1, -9f);
         }
+        game.batch.draw(rtank_b, 160, 124, 0, 0, 804*0.10f, 520*0.10f, 1, 1, 9f);
+        game.batch.draw(rtank_t, 162, 153, 0, 0, 1016*0.10f, 316*0.10f, 1, 1, 30f);
+        game.batch.draw(rtank_f, 150, 123, 0, 0, 1008*0.10f, 516*0.10f, 1, 1, 9f);
+        game.batch.draw(rtank2_b, 1104, 128, 0, 0, -844*0.10f, 662*0.10f, 1, 1, -9f);
+        game.batch.draw(rtank2_t, 1085, 157, 0, 0, -858*0.10f, 166*0.10f, 1, 1, -30f);
+        game.batch.draw(rtank2_f, 1117, 127, 0, 0, -848*0.10f, 618*0.10f, 1, 1, -9f);
 
-        game.batch.draw(rtank, 150, 123, 0, 0, 375*0.25f, 207*0.25f, 1, 1, 9f);
-        game.batch.draw(rtank2, 1104, 128, 0, 0, -446*0.25f, 226*0.25f, 1, 1, -9f);
         game.batch.draw(rkPlane, 500, 400, 0, 0, -1132*0.1f, 346*0.1f, 1, 1, 35f);
         game.batch.draw(rkPlane, 550, 470, 0, 0, -1132*0.1f, 346*0.1f, 1, 1, 35f);
         game.batch.draw(rkPlane, 620, 450, 0, 0, -1132*0.1f, 346*0.1f, 1, 1, 35f);
