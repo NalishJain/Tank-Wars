@@ -28,14 +28,15 @@ public class TankSelectScreen implements Screen {
 //    Texture kPlane;
     Texture aShip;
     Texture terrain_texture;
-    Texture arrow;
+
+    Texture Shield;
     Texture banner;
     Texture bomb;
     TextureRegion rbomb;
     Texture hpBar;
     Texture CircleBg;
     Texture p2;
-
+    Texture arrow;
     public TankSelectScreen(TankGame game){
         this.game = game;
 //        chooseButtonActive = new Texture("choose4x.png");
@@ -45,6 +46,7 @@ public class TankSelectScreen implements Screen {
         terrain = new Texture("terrain2.png");
 //        kPlane = new Texture("Plane.png");
         aShip = new Texture("AirShip.png");
+        Shield = new Texture("Shield.png");
         terrain_texture = new Texture("Terrain_texture.png");
         arrow = new Texture("Arrow.png");
         banner = new Texture("Banner4.png");
@@ -84,8 +86,11 @@ public class TankSelectScreen implements Screen {
 
         game.batch.draw(arrow, 400 + 15, 280, -60, 60);
         game.batch.draw(arrow, SCREEN_WIDTH-395 - 20, 280, 60, 60);
+
         game.batch.draw(banner, (SCREEN_WIDTH/2 - 944*0.5f/2), 580, 944*0.5f, 216*0.5f);
         game.batch.draw(hpBar, (SCREEN_WIDTH/2 - 3831*0.07f/2), 460, 3831*0.07f, 1072*0.07f);
+        game.batch.draw(Shield,(SCREEN_WIDTH/2 - 3831*0.07f/2) -40,430,153*0.9f,157*0.9f);
+
         game.batch.draw(p2, 597, 457, 1128*0.4f, 262*0.4f);
 
         game.batch.end();
