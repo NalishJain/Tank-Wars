@@ -23,6 +23,12 @@ public class MainGameScreen implements Screen {
     Texture tank_f;
     Texture tank_t;
     Texture tank_b;
+    Texture missile1;
+    Texture missile2;
+    Texture missile3;
+    TextureRegion rMissile1;
+    TextureRegion rMissile2;
+    TextureRegion rMissile3;
     Texture bg;
     Texture terrain;
     Texture tank2_t;
@@ -43,6 +49,9 @@ public class MainGameScreen implements Screen {
     TextureRegion rkPlane;
     Texture ePole;
     Texture ePole2;
+    Texture Shield;
+    Texture hpBar;
+
     TextureRegion rtGrass;
     Texture tree1;
     Texture tree2;
@@ -50,12 +59,22 @@ public class MainGameScreen implements Screen {
 
     public MainGameScreen(TankGame game){
         this.game = game;
+
         tank_b = new Texture("tank1back.png");
         tank_f = new Texture("tank1front.png");
         tank_t = new Texture("tank1turret2.png");
         tank2_t = new Texture("Tank2Turret.png");
         tank2_f = new Texture("Tank2Front.png");
         tank2_b = new Texture("Tank2Back.png");
+        missile1 = new Texture("Weapon1.png");
+        missile2 = new Texture("Weapon2.png");
+        missile3 = new Texture("Weapon3.png");
+        rMissile1 = new TextureRegion(missile1);
+        rMissile2 = new TextureRegion(missile2);
+        rMissile3 = new TextureRegion(missile3);
+
+        hpBar = new Texture("HPBar.png");
+        Shield = new Texture("Shield.png");
         bg = new Texture("bg3.png");
         terrain = new Texture("MaskedTerrain.png");
         kPlane = new Texture("Plane.png");
@@ -113,6 +132,20 @@ public class MainGameScreen implements Screen {
         game.batch.draw(rkPlane, 550, 470, 0, 0, -1132*0.1f, 346*0.1f, 1, 1, 35f);
         game.batch.draw(rkPlane, 620, 450, 0, 0, -1132*0.1f, 346*0.1f, 1, 1, 35f);
         game.batch.draw(aShip, 1090, 500, -1890*0.08f, 897*0.08f);
+        game.batch.draw(rMissile1, 840 , 345, 0,0,-331*0.2f,156*0.2f,1,1,-20f);
+        game.batch.draw(rMissile1, 850 , 320, 0,0,-331*0.2f,156*0.2f,1,1,-25f);
+        game.batch.draw(rMissile1, 870 , 270, 0,0,-331*0.2f,156*0.2f,1,1,-28f);
+        game.batch.draw(rMissile1, 860 , 295, 0,0,-331*0.2f,156*0.2f,1,1,-28f);
+        game.batch.draw(rMissile2, (SCREEN_WIDTH -390*0.2f)/2, (SCREEN_HEIGHT - 237*0.2f)/2 - 50,390*0.2f,237*0.2f);
+        game.batch.draw(rMissile3, 300 , 240, 0,0,317*0.25f,152*0.25f,1,1,28f);
+
+        game.batch.draw(hpBar, 70, SCREEN_HEIGHT - 100, 3831*0.07f, 1072*0.07f);
+        game.batch.draw(Shield,45,SCREEN_HEIGHT - 135,153*0.9f,157*0.9f);
+
+        game.batch.draw(hpBar, 70 + 850, SCREEN_HEIGHT - 100, 3831*0.07f, 1072*0.07f);
+        game.batch.draw(Shield,45 + 850,SCREEN_HEIGHT - 135,153*0.9f,157*0.9f);
+
+
         game.batch.draw(rbomb,1000,460,0,0,744*0.06f,195*0.06f,1,1,-2f);
         game.batch.draw(rbomb,1000,420,0,0,744*0.06f,195*0.06f,1,1,-8f);
         game.batch.draw(rbomb,1000,380,0,0,744*0.06f,195*0.06f,1,1,-13f);
