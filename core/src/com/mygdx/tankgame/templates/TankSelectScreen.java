@@ -34,6 +34,7 @@ public class TankSelectScreen implements Screen {
     TextureRegion rbomb;
     Texture hpBar;
     Texture CircleBg;
+    Texture p2;
 
     public TankSelectScreen(TankGame game){
         this.game = game;
@@ -46,11 +47,12 @@ public class TankSelectScreen implements Screen {
         aShip = new Texture("AirShip.png");
         terrain_texture = new Texture("Terrain_texture.png");
         arrow = new Texture("Arrow.png");
-        banner = new Texture("Banner2.png");
-//        hpBar = new Texture("HPBar.png");
+        banner = new Texture("Banner4.png");
+        hpBar = new Texture("HPBar.png");
         bomb = new Texture("Bomb.png");
         rbomb = new TextureRegion(bomb);
-        CircleBg = new Texture("Circle.png");
+        CircleBg = new Texture("Circle4.png");
+        p2 = new Texture("Player2.png");
     }
     @Override
     public void show() {
@@ -62,7 +64,7 @@ public class TankSelectScreen implements Screen {
         ScreenUtils.clear(0.44f,0.31f,0.96f, 0.5f);
         game.batch.begin();
         game.batch.draw(bg, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-        game.batch.draw(CircleBg,(SCREEN_WIDTH/2 - 375/2)-7,120,400,400);
+        game.batch.draw(CircleBg,(SCREEN_WIDTH/2 - 382/2)-7,120,440,440);
         game.batch.draw(terrain, 0,-295, SCREEN_WIDTH, 500);
         for(int i = 0; i < 1600; i += 35) {
             game.batch.draw(terrain_texture, i, 196, 967*0.05f, 262*0.05f);
@@ -82,8 +84,9 @@ public class TankSelectScreen implements Screen {
 
         game.batch.draw(arrow, 400 + 15, 280, -60, 60);
         game.batch.draw(arrow, SCREEN_WIDTH-395 - 20, 280, 60, 60);
-        game.batch.draw(banner, (SCREEN_WIDTH/2 - 4444*0.1f/2), 580, 4444*0.1f, 996*0.1f);
-//        game.batch.draw(hpBar, (SCREEN_WIDTH/2 - 3831*0.07f/2), 440, 3831*0.07f, 1072*0.07f);
+        game.batch.draw(banner, (SCREEN_WIDTH/2 - 944*0.5f/2), 580, 944*0.5f, 216*0.5f);
+        game.batch.draw(hpBar, (SCREEN_WIDTH/2 - 3831*0.07f/2), 460, 3831*0.07f, 1072*0.07f);
+        game.batch.draw(p2, 597, 457, 1128*0.4f, 262*0.4f);
 
         game.batch.end();
     }
