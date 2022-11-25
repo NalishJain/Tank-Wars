@@ -28,6 +28,9 @@ public class LoadGameScreen implements Screen {
     Texture game1;
     Texture game2;
     Texture game3;
+    Texture playButton;
+    Texture game1im;
+    Texture game2im;
 
     public LoadGameScreen(TankGame game){
         this.game = game;
@@ -41,7 +44,10 @@ public class LoadGameScreen implements Screen {
         backButton = new Texture("GoBack.png");
         game1 = new Texture("Game1inactive.png");
         game2 = new Texture("Game2inactive.png");
-        game3 = new Texture("Game3inactive.png");
+        game3 = new Texture("Game3disabled.png");
+        playButton = new Texture("PlayButton.png");
+        game1im = new Texture("game1image.png");
+        game2im = new Texture("game2image.png");
     }
     @Override
     public void show() {
@@ -62,6 +68,9 @@ public class LoadGameScreen implements Screen {
         game.batch.draw(game1, 195, 228, 966*0.3f, 1284*0.3f);
         game.batch.draw(game2, (SCREEN_WIDTH/2 - 966*0.3f/2), 228, 966*0.3f, 1284*0.3f);
         game.batch.draw(game3, SCREEN_WIDTH-195-966*0.3f, 228, 966*0.3f, 1284*0.3f);
+        game.batch.draw(playButton, (SCREEN_WIDTH/2 - 361/2), 100, 361, 108);
+        game.batch.draw(game1im, 207, 381, 526*0.505f, 296*0.5f);
+        game.batch.draw(game2im, 507, 381, 526*0.5055f, 296*0.5f);
         game.batch.end();
 
     }
