@@ -116,18 +116,22 @@ class Player implements Serializable{
     public void showTimer(){}
     public Weapon selectWeapons(){
 
+        return null;
     }
     public Position launchWeapon(int power, int angle, Weapon weapon){
 
+        return null;
     }
     public Position launchSplitterWeapon(int power, int angle, Weapon weapon){
 
+        return null;
     }
     public void move(){
         //use moveTank
     }
     public int causeDamage(Position weaponPosition){
 
+        return 0;
     }
 
     @Override
@@ -171,6 +175,7 @@ class Weapon extends GameObject{
     }
 
     public Position projectilePath(){
+        return null;
     }
 
     public void shoot(int power , int angle){
@@ -326,6 +331,7 @@ class Tank extends GameObject {
 
         public int getTurretAngle(){
 
+            return 0;
         }
         public void setTurretAngle(int angle){
 
@@ -333,6 +339,7 @@ class Tank extends GameObject {
     }
     public boolean isDead(){
 
+        return false;
     }
 }
 
@@ -406,6 +413,7 @@ class Game implements Serializable {
     }
     public boolean trySupplyDrop(){
         //will use random function to drop (1/5) uses function of supplyDrop class
+        return false;
     }
 
     public void changeTurn(){
@@ -426,6 +434,7 @@ class Game implements Serializable {
 class Projectile extends GameObject{
     public Position projectilePath(Weapon weapon,  Position initPos,  int power,   int angle){
 
+        return initPos;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.mygdx.tankgame.templates;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -80,14 +81,42 @@ public class FirstMenuScreen implements Screen {
                 BUTTON_HEIGHT*3
         );
         game.batch.draw(exitButtonInactive, BUTTON_RIGHT_LOCATION, 100, BUTTON_WIDTH, BUTTON_HEIGHT);
+
+        if(Gdx.input.getX() < BUTTON_RIGHT_LOCATION + BUTTON_WIDTH && Gdx.input.getX() >BUTTON_RIGHT_LOCATION  && SCREEN_HEIGHT - Gdx.input.getY() < 100 + BUTTON_HEIGHT && SCREEN_HEIGHT - Gdx.input.getY() > 100){
+            if(Gdx.input.isTouched()){
+                this.dispose();
+                Gdx.app.exit();
+//                game.setScreen(new MainGameScreen(game));
+            }
+        }
         game.batch.draw(loadButtonInactive, BUTTON_RIGHT_LOCATION, 200, BUTTON_WIDTH, BUTTON_HEIGHT);
+        if(Gdx.input.getX() < BUTTON_RIGHT_LOCATION + BUTTON_WIDTH && Gdx.input.getX() >BUTTON_RIGHT_LOCATION  && SCREEN_HEIGHT - Gdx.input.getY() < 200 + BUTTON_HEIGHT && SCREEN_HEIGHT - Gdx.input.getY() > 200){
+            if(Gdx.input.isTouched()){
+                this.dispose();
+                game.setScreen(new LoadGameScreen(game));
+            }
+        }
         game.batch.draw(newButtonInactive, BUTTON_RIGHT_LOCATION, 300, BUTTON_WIDTH, BUTTON_HEIGHT);
+
+        if(Gdx.input.getX() < BUTTON_RIGHT_LOCATION + BUTTON_WIDTH && Gdx.input.getX() >BUTTON_RIGHT_LOCATION  && Gdx.input.getY() < 300 + BUTTON_HEIGHT && Gdx.input.getY() > 300){
+            if(Gdx.input.isTouched()){
+                this.dispose();
+                game.setScreen(new TankSelectScreen(game));
+            }
+        }
         game.batch.draw(tank, 50, 199, 423*0.7f, 229*0.7f);
         game.batch.draw(tank2, 730, 199, -446*0.7f, 226*0.7f);
         game.batch.draw(plane, 950, 470,0,0, 1091*0.25f, 694*0.25f,1,1,25f);
         game.batch.draw(parachute, 170, 530, 517*0.2f, 992*0.2f);
         game.batch.draw(crate, 204, 500, 192*0.2f, 164*0.2f);
         game.batch.draw(settings, 0, 50, 654*0.15f, 488*0.15f);
+        if(Gdx.input.getX() < 98 && Gdx.input.getX() > 0 && SCREEN_HEIGHT - Gdx.input.getY() < 50 + 73 && SCREEN_HEIGHT - Gdx.input.getY() > 50){
+            if(Gdx.input.isTouched()){
+                this.dispose();
+                game.setScreen(new SettingsMenuScreen(game));
+            }
+        }
+
 
         game.batch.end();
     }

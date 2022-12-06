@@ -1,5 +1,6 @@
 package com.mygdx.tankgame.templates;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -67,6 +68,13 @@ public class SettingsMenuScreen implements Screen {
         }
         game.batch.draw(diagBox, (SCREEN_WIDTH/2 - 800/2), (SCREEN_HEIGHT/2 - 700/2) , 800, 700);
         game.batch.draw(backButton, 0, 500, 654*0.2f, 488*0.2f);
+
+        if(Gdx.input.getX() < 654*0.2f && Gdx.input.getX() > 0 && SCREEN_HEIGHT - Gdx.input.getY() < 500 + 488*0.2f && SCREEN_HEIGHT - Gdx.input.getY() > 500){
+            if(Gdx.input.isTouched()){
+                this.dispose();
+                game.setScreen(new FirstMenuScreen(game));
+            }
+        }
         game.batch.draw(Settings,(SCREEN_WIDTH/2 - 450/2), (SCREEN_HEIGHT/2 - 120/2) + 260 -27 + 17, 450,120);
 //        game.batch.draw(saveButton,(SCREEN_WIDTH/2 - 368/2), (SCREEN_HEIGHT/2 - 100/2) + 150 - 27, 368,100);
         game.batch.draw(soundButton,(SCREEN_WIDTH/2 - 368/2), (SCREEN_HEIGHT/2 - 100/2) +  13 + 110 - 8, 368,100);
