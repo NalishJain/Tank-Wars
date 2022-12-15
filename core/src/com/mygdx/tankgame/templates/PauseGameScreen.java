@@ -1,5 +1,6 @@
 package com.mygdx.tankgame.templates;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -34,8 +35,8 @@ public class PauseGameScreen implements Screen {
 
     public PauseGameScreen(TankGame game){
         this.game = game;
-        chooseButtonActive = new Texture("choose4x.png");
-        chooseButtonInactive = new Texture("choose4xin.png");
+//        chooseButtonActive = new Texture("choose4x.png");
+//        chooseButtonInactive = new Texture("choose4xin.png");
         bg = new Texture("bg3.png");
         terrain = new Texture("terrain2.png");
 //        kPlane = new Texture("Plane.png");
@@ -65,12 +66,39 @@ public class PauseGameScreen implements Screen {
         }
         game.batch.draw(diagBox, (SCREEN_WIDTH/2 - 1000/2), (SCREEN_HEIGHT/2 - 700/2) , 1000, 700);
         game.batch.draw(backButton, 0, 500, 654*0.2f, 488*0.2f);
+
+        if(Gdx.input.getX() < 0+654*0.2f  && Gdx.input.getX() > 0 && SCREEN_HEIGHT - Gdx.input.getY() < 500 + 488*0.2f  && SCREEN_HEIGHT - Gdx.input.getY() > 500){
+            if(Gdx.input.isTouched()){
+                this.dispose();
+                game.setScreen(new MainGameScreen(game));
+            }
+        }
         game.batch.draw(resume,(SCREEN_WIDTH/2 - 368/2), (SCREEN_HEIGHT/2 - 100/2) + 260 -27, 368,100);
+
+        if(Gdx.input.getX() < (SCREEN_WIDTH/2 - 368/2) +368  && Gdx.input.getX() >(SCREEN_WIDTH/2 - 368/2) && SCREEN_HEIGHT - Gdx.input.getY() < (SCREEN_HEIGHT/2 - 100/2) + 260 -27 + 100  && SCREEN_HEIGHT - Gdx.input.getY() > (SCREEN_HEIGHT/2 - 100/2) + 260 -27){
+            if(Gdx.input.isTouched()){
+                this.dispose();
+                game.setScreen(new MainGameScreen(game));
+            }
+        }
         game.batch.draw(saveButton,(SCREEN_WIDTH/2 - 368/2), (SCREEN_HEIGHT/2 - 100/2) + 150 - 27, 368,100);
+
+        if(Gdx.input.getX() < (SCREEN_WIDTH/2 - 368/2) +368  && Gdx.input.getX() > (SCREEN_WIDTH/2 - 368/2) && SCREEN_HEIGHT - Gdx.input.getY() < (SCREEN_HEIGHT/2 - 100/2) + 150 - 27 + 100 && SCREEN_HEIGHT - Gdx.input.getY() > (SCREEN_HEIGHT/2 - 100/2) + 150 - 27){
+            if(Gdx.input.isTouched()){
+                this.dispose();
+                game.setScreen(new LoadGameScreen(game));
+            }
+        }
+
         game.batch.draw(soundButton,(SCREEN_WIDTH/2 - 368/2), (SCREEN_HEIGHT/2 - 100/2) +  13, 368,100);
         game.batch.draw(musicButton,(SCREEN_WIDTH/2 - 368/2) -2, (SCREEN_HEIGHT/2 - 100/2) -70 - 27, 368,100);
         game.batch.draw(quitButton,(SCREEN_WIDTH/2 - 368/2), (SCREEN_HEIGHT/2 - 100/2) -180 -27, 368,100);
-
+        if(Gdx.input.getX() < (SCREEN_WIDTH/2 - 368/2) +368  && Gdx.input.getX() > (SCREEN_WIDTH/2 - 368/2) && SCREEN_HEIGHT - Gdx.input.getY() < (SCREEN_HEIGHT/2 - 100/2) -180 -27 + 100 && SCREEN_HEIGHT - Gdx.input.getY() > (SCREEN_HEIGHT/2 - 100/2) -180 -27){
+            if(Gdx.input.isTouched()){
+                this.dispose();
+                game.setScreen(new FirstMenuScreen(game));
+            }
+        }
 
 
 

@@ -1,5 +1,6 @@
 package com.mygdx.tankgame.templates;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -65,6 +66,13 @@ public class LoadGameScreen implements Screen {
         }
         game.batch.draw(diagBox, (SCREEN_WIDTH/2 - 1000/2), (SCREEN_HEIGHT/2 - 600/2), 1000, 600);
         game.batch.draw(backButton, 0, 500, 654*0.15f, 488*0.15f);
+
+        if(Gdx.input.getX() < 654*0.15f && Gdx.input.getX() > 0 && SCREEN_HEIGHT - Gdx.input.getY() < 500 + 488*0.15f && SCREEN_HEIGHT - Gdx.input.getY() > 500){
+            if(Gdx.input.isTouched()){
+                this.dispose();
+                game.setScreen(new FirstMenuScreen(game));
+            }
+        }
         game.batch.draw(game1, 195, 228, 966*0.3f, 1284*0.3f);
         game.batch.draw(game2, (SCREEN_WIDTH/2 - 966*0.3f/2), 228, 966*0.3f, 1284*0.3f);
         game.batch.draw(game3, SCREEN_WIDTH-195-966*0.3f, 228, 966*0.3f, 1284*0.3f);
