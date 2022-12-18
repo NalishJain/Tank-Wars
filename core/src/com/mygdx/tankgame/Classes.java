@@ -1,5 +1,9 @@
 package com.mygdx.tankgame;
 
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+
 interface Serializable{
     public void serialise();
     public void deserialise();
@@ -8,6 +12,11 @@ interface Serializable{
 class GameObject implements Serializable{
     private Position position;
     private long serialUID;
+    public GameObject(){
+    }
+    public GameObject(Position p) {
+        position = p;
+    }
 
     public Position getPosition() {
         return position;
@@ -183,37 +192,6 @@ class Weapon extends GameObject{
     }
 }
 
-class Position implements Serializable{
-    private int posX;
-    private int posY;
-
-
-    public int getPosX() {
-        return posX;
-    }
-
-    public void setPosX(int posX) {
-        this.posX = posX;
-    }
-
-    public int getPosY() {
-        return posY;
-    }
-
-    public void setPosY(int posY) {
-        this.posY = posY;
-    }
-
-    @Override
-    public void serialise() {
-
-    }
-
-    @Override
-    public void deserialise() {
-
-    }
-}
 
 class SupplyDrop extends GameObject{
     private Position dropPosition;
@@ -431,14 +409,7 @@ class Game implements Serializable {
     }
 }
 
-class Projectile extends GameObject {
-    public Position projectilePath(Weapon weapon,  Position initPos,  int power,   int angle){
-        // decorates the path somehow and returns the FINALPOS
 
-        return initPos;
-    }
-
-}
 public class Classes {
 
 }
