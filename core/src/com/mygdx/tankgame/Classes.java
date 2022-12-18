@@ -431,8 +431,9 @@ class Game implements Serializable {
     }
 }
 
-class Projectile extends GameObject{
+class Projectile extends GameObject {
     public Position projectilePath(Weapon weapon,  Position initPos,  int power,   int angle){
+        // decorates the path somehow and returns the FINALPOS
 
         return initPos;
     }

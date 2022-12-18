@@ -16,7 +16,7 @@ public class TankGame extends Game {
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
-		this.setScreen(new FirstMenuScreen(this));
+		this.setScreen(new ActualGame(this));
 	}
 
 	@Override
@@ -27,6 +27,7 @@ public class TankGame extends Game {
 	
 	@Override
 	public void dispose() {
+		batch.dispose();
 		super.dispose();
 	}
 }

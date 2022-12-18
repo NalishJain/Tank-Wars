@@ -15,6 +15,8 @@ public class DesktopLauncher {
 		config.setWindowedMode(SCREEN_WIDTH, SCREEN_HEIGHT);
 		config.setTitle("AP-Project");
 		config.setResizable(false);
+		config.useVsync(true);
+
 		new Lwjgl3Application(new TankGame(), config);
 	}
 }
