@@ -12,14 +12,14 @@ import com.mygdx.tankgame.TankGame;
 import com.mygdx.tankgame.Projectile;
 
 
-public class ActualGameBullet implements Screen {
+public class GameBullet implements Screen {
 
     private World world;
     private Box2DDebugRenderer debugRenderer;
     private OrthographicCamera camera;
     private Body bBody;
     private TankGame game;
-    public ActualGameBullet(TankGame game) {
+    public GameBullet(TankGame game) {
         this.game = game;
     }
     @Override
@@ -156,3 +156,4 @@ public class ActualGameBullet implements Screen {
 
     }
 }
+
