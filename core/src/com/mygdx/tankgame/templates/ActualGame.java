@@ -10,21 +10,27 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.physics.box2d.joints.*;
+import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
+import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.mygdx.tankgame.Position;
 import com.mygdx.tankgame.TankGame;
+import com.mygdx.tankgame.Projectile;
+import java.lang.Math.*;
+
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
 
 
 public class ActualGame implements Screen {
 
     private World world;
     private Array<Body> bodies = new Array<Body>();
-
+    private float turret_length = 1f;
     private Body Ground;
-    float total;
-    PrismaticJointDef jointDef1b;
-    PrismaticJoint joint;
+    private Body bBody;
     private Body tank1Body;
     private Body tank1TurretBody;
     private Body tank2Body;
@@ -54,13 +60,13 @@ public class ActualGame implements Screen {
         //body definition
 
 
-        BodyDef ballDef = new BodyDef();
+        final BodyDef ballDef = new BodyDef();
 
         CircleShape shape = new CircleShape();
         shape.setRadius(0.25f);
         //fixture definition
 
-        FixtureDef fixtureDef = new FixtureDef();
+        final FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.density = 2.5f;
         fixtureDef.friction = 0.25f;
         fixtureDef.restitution = 0.75f;
@@ -89,7 +95,6 @@ public class ActualGame implements Screen {
         tank1TurretBody = world.createBody(ballDef);
 
         PolygonShape Tank1TurretShape = new PolygonShape();
-
         Tank1TurretShape.setAsBox(0.5f,0.05f);
 
         fixtureDef.shape = Tank1TurretShape;
@@ -100,12 +105,11 @@ public class ActualGame implements Screen {
         Fixture tank1Tfixture = tank1TurretBody.createFixture(fixtureDef);
         spriteTank_t = new Sprite(new Texture("tank1turret2.png"));
         spriteTank_t.setSize(1016*0.15f*pixelToMeters, 316*0.15f*pixelToMeters);
-//        spriteTank_t.setPosition(20,20);
         spriteTank_t.setOrigin(spriteTank_t.getWidth()/2, spriteTank_t.getHeight()/2);
-//        tank1Tfixture.setUserData(spriteTank_t);
+        tank1Tfixture.setUserData(spriteTank_t);
 
         ballDef.type = BodyDef.BodyType.DynamicBody;
-        ballDef.position.set(-20f, 10);
+//        ballDef.position.set(-20f, 10);
         tank1Body = world.createBody(ballDef);
 
         //Tank1 backShape
@@ -150,20 +154,17 @@ public class ActualGame implements Screen {
         jointDef.bodyB = tank1TurretBody;
         jointDef.maxMotorTorque = 0f;
         jointDef.motorSpeed = 500f;
-//        jointDef.
         jointDef.localAnchorA.set(0.5f,1f);
-//        jointDef.localAnchorB.set(-0.5f,0.9f);
         world.createJoint(jointDef);
 
-        jointDef1b = new PrismaticJointDef ();
-        jointDef1b.bodyA = Ground;
-        jointDef1b.bodyB = tank1Body;
-        jointDef1b.localAxisA.set(1,0);
-        jointDef1b.enableMotor = true;
-        jointDef1b.maxMotorForce = 0;//this is a powerful machine after all...
-        jointDef1b.motorSpeed = 5;
+//        jointDef1b = new PrismaticJointDef ();
+//        jointDef1b.bodyA = Ground;
+//        jointDef1b.bodyB = tank1Body;
+//        jointDef1b.localAxisA.set(1,0);
+//        jointDef1b.enableMotor = true;
+//        jointDef1b.maxMotorForce = 0;//this is a powerful machine after all...
+//        jointDef1b.motorSpeed = 5;
 //        joint = (PrismaticJoint) world.createJoint(jointDef1b);
-
 //        world.createJoint(jointDef1b);
 
 
@@ -176,12 +177,12 @@ public class ActualGame implements Screen {
         //Tank2 backShape
 
         PolygonShape tank2BackShape = new PolygonShape();
-        tank2BackShape.setAsBox(0.9f, 0.9f);
+        tank2BackShape.setAsBox(0.9f, 0.3f);
 
         fixtureDef.shape = tank2BackShape;
         fixtureDef.friction = 0.7f;
-        fixtureDef.restitution = .1f;
-        fixtureDef.density = 5;
+        fixtureDef.restitution = 0f;
+        fixtureDef.density = 1000;
 
         Fixture tank2Bfixture = tank2Body.createFixture(fixtureDef);
 
@@ -196,31 +197,29 @@ public class ActualGame implements Screen {
 
 
         tank2TurretBody =  world.createBody(ballDef);
-        CircleShape Tank2TurretShape = new CircleShape();
-//        Tank2TurretShape.setPosition(new Vector2(0,1.5f));
-//        Tank2TurretShape.setRadius(0.5f);
+        PolygonShape Tank2TurretShape = new PolygonShape();
+
+        Tank2TurretShape.setAsBox(0.5f,0.05f);
         fixtureDef.shape = Tank2TurretShape;
         fixtureDef.friction = 0f;
-        fixtureDef.restitution = .1f;
+        fixtureDef.restitution = 0.4f;
         fixtureDef.density = 5;
-
         Fixture tank2Tfixture =tank2TurretBody.createFixture(fixtureDef);
         spriteTank2_t = new Sprite(new Texture("Tank2Turret.png"));
         spriteTank2_t.setSize(-858*0.13f*pixelToMeters, 166*0.13f*pixelToMeters);
-        spriteTank2_t.setPosition(20,20);
         spriteTank2_t.setOrigin(spriteTank2_t.getWidth()/2, spriteTank2_t.getHeight()/2);
         tank2Tfixture.setUserData(spriteTank2_t);
 
         //Tank2 frontShape
         PolygonShape tank2FrontShape = new PolygonShape();
-        tank2FrontShape.setAsBox(1, 1);
+        tank2FrontShape.setAsBox(1, 0.4f);
 
 
 
         fixtureDef.shape = tank2FrontShape;
         fixtureDef.friction = 0.7f;
         fixtureDef.restitution = .1f;
-        fixtureDef.density = 5;
+        fixtureDef.density = 1000;
 
 
         Fixture tank2Ffixture =  tank2Body.createFixture(fixtureDef);
@@ -234,18 +233,14 @@ public class ActualGame implements Screen {
         RevoluteJointDef jointDef2 = new RevoluteJointDef();
         jointDef2.bodyA = tank2Body;
         jointDef2.bodyB = tank2TurretBody;
-        jointDef2.localAnchorA.set(0.0f,0.8f);
-//        jointDef.localAnchorB.set(-0.1f,0.8f);
+        jointDef2.maxMotorTorque = 0f;
+        jointDef2.motorSpeed = 500f;
+        jointDef2.localAnchorA.set(0.5f,1f);
         world.createJoint(jointDef2);
 
-//        Pr jointDef2b = new PrismaticJointDef ();
-//        jointDef1b.bodyA = Ground;
-//        jointDef1b.bodyB = tank1Body;
-//        jointDef1b.localAxisA.set(1,0);
-//        jointDef1b.enableMotor = true;
-//        jointDef1b.maxMotorForce = 0;//this is a powerful machine after all...
-//        jointDef1b.motorSpeed = 5;
-//        joint = (PrismaticJoint) world.createJoint(jointDef1b);
+        //Bullet
+
+
         Gdx.input.setInputProcessor(new InputProcessor() {
             @Override
             public boolean keyDown(int keycode) {
@@ -258,21 +253,57 @@ public class ActualGame implements Screen {
 
                         break;
                     case Input.Keys.LEFT:
-                        tank2Movement.x = -tankSpeed;
+                        tank2Movement.x = -tankSpeed*100;
                         break;
                     case Input.Keys.RIGHT:
-                        tank2Movement.x = tankSpeed;
+                        tank2Movement.x = tankSpeed*100;
+                        break;
+                    case Input.Keys.W:
+                        float TankTotal1 = tank1TurretBody.getAngle();
+                        if(TankTotal1 < 0.9f){
+                            TankTotal1 = TankTotal1 + 0.02f;
+                            tank1TurretBody.setTransform(-5f,0.8f,TankTotal1);
+                        }
+                        break;
+                    case Input.Keys.S:
+                        float TankTotal3 = tank1TurretBody.getAngle();
+                        if(TankTotal3 > 0f){
+                            TankTotal3 = TankTotal3 - 0.02f;
+                            tank1TurretBody.setTransform(-5f,0.8f,TankTotal3);
+                        }
                         break;
                     case Input.Keys.E:
-                        total = tank1TurretBody.getAngle();
-                        if(total < 0.9f){
-                            total = total + 0.02f;
-                            tank1TurretBody.setTransform(-5f,0.8f,total);
+                        tank2TurretBody.setTransform(-5f,0.8f,-1.58f);
+                        break;
+                    case Input.Keys.DOWN:
+                        float TankTotal2 = tank2TurretBody.getAngle();
+                        TankTotal2 = TankTotal2 + 0.02f;
+                        tank2TurretBody.setTransform(-5f,0.8f,TankTotal2);
+                        break;
+                    case Input.Keys.UP:
+                        float TankTotal4 = tank2TurretBody.getAngle();
+                        TankTotal4 = TankTotal4 - 0.02f;
+                        tank2TurretBody.setTransform(-5f,0.8f,TankTotal4);
+                        break;
 
-                        }
+                    case Input.Keys.G:
+                        Projectile bullet = new Projectile(new Position(tank1TurretBody.getPosition().x+turret_length* (float)cos(tank1TurretBody.getAngle()), tank1TurretBody.getPosition().y+turret_length* (float)sin(tank1TurretBody.getAngle())));
+                        ballDef.type = BodyDef.BodyType.DynamicBody;
+                        ballDef.position.set(bullet.getPosition().getPosX(), bullet.getPosition().getPosY());
+                        ballDef.bullet = true;
 
+
+                        fixtureDef.density = 2.5f;
+                        fixtureDef.friction = 1f;
+                        fixtureDef.restitution = 0f;
+                        fixtureDef.shape = bullet.pShape;
+
+                        bBody = world.createBody(ballDef);
+                        bBody.createFixture(fixtureDef);
+                        bBody.setGravityScale(0f);
                 }
                 return true;
+
             }
 
             @Override
@@ -288,7 +319,6 @@ public class ActualGame implements Screen {
                         tank2Movement.x = 0;
                         break;
                     case Input.Keys.E:
-
                         break;
 
                 }
@@ -353,18 +383,46 @@ public class ActualGame implements Screen {
         fixtures.add(tank2TurretBody.getFixtureList().get(0));
         fixtures.add(tank2Body.getFixtureList().get(1));
 
+        int i1 = 0;
+
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+            bBody.setGravityScale(1f);
+            float angle = tank1TurretBody.getAngle();
+            float power = 10f;
+            float vx = (float) (power * cos(angle));
+            float vy = (float) (power * sin(angle));
+
+
+            bBody.setLinearVelocity(vx, vy);
+        }
 
         for(Fixture fixture : fixtures){
+            i1++;
             if(fixture.getUserData() != null && fixture.getUserData() instanceof Sprite){
+
                 Sprite sprite = (Sprite) fixture.getUserData();
-                sprite.setPosition(fixture.getBody().getPosition().x - sprite.getWidth()/2, fixture.getBody().getPosition().y -sprite.getHeight()/2);
-                sprite.setRotation(fixture.getBody().getAngle()* MathUtils.radiansToDegrees);
-                sprite.draw(game.batch);
+                if(i1 != 2 && i1 != 5){
+                    sprite.setPosition(fixture.getBody().getPosition().x - sprite.getWidth()/2, fixture.getBody().getPosition().y -sprite.getHeight()/2);
+                    sprite.setRotation(fixture.getBody().getAngle()* MathUtils.radiansToDegrees);
+                    sprite.draw(game.batch);
+                }
+                if(i1 == 2){
+                    sprite.setPosition(fixture.getBody().getPosition().x - sprite.getWidth()/2 + 0.1f, fixture.getBody().getPosition().y -sprite.getHeight()/2 + 0.1f);
+                    sprite.draw(game.batch);
+                    sprite.setOrigin(0.77f,0.5f);
+                    sprite.setRotation(fixture.getBody().getAngle()* MathUtils.radiansToDegrees);
+                }
+                if(i1 == 5){
+                    sprite.setPosition(fixture.getBody().getPosition().x - sprite.getWidth()/2 -0.9f, fixture.getBody().getPosition().y -sprite.getHeight()/2 - 0.25f);
+                    sprite.draw(game.batch);
+                    sprite.setOrigin(-0.74f,0.095f);
+                    sprite.setRotation(fixture.getBody().getAngle()* MathUtils.radiansToDegrees);
+                }
+
             }
         }
 
-        Sprite s = (Sprite) tank2TurretBody.getFixtureList().get(0).getUserData();
-        s.setRotation(30f);
+
 
 
         game.batch.end();
