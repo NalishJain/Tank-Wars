@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 
 import static com.mygdx.tankgame.TankGame.SCREEN_HEIGHT;
+import static com.mygdx.tankgame.TankGame.SCREEN_WIDTH;
 import static com.mygdx.tankgame.templates.PlayGame.*;
 
 public class ClassGame implements Serializable {
@@ -126,12 +127,12 @@ public class ClassGame implements Serializable {
 
 
     /* ADD-ON METHODS */
-    public void showGround() {
+    public void showGround(TankGame runGame) {
 
         bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.position.set(0,-4);
         ChainShape groundShape = new ChainShape();
-        groundShape.createChain(new Vector2[]{new Vector2(-500, 0), new Vector2(500, 0)});
+        groundShape.createChain(new Vector2[]{new Vector2(-500, -3), new Vector2(500, -3)});
         fixtureDef.shape = groundShape;
         fixtureDef.friction = 1f;
         fixtureDef.restitution = 0;

@@ -17,12 +17,16 @@ import com.mygdx.tankgame.TankGame;
 import com.mygdx.tankgame.Weapon;
 
 import static com.mygdx.tankgame.TankGame.SCREEN_HEIGHT;
+import static com.mygdx.tankgame.TankGame.SCREEN_WIDTH;
 
 public class PlayGame implements Screen {
     public final static World world = new World(new Vector2(0, -9.81f), true);
     private ClassGame classGame;
+    Texture terrain = new Texture("terrain2.png");
+
     private int tankSpeed = 300;
     private Box2DDebugRenderer debugRenderer;
+    private float distanceTravelled = 0;
     public static final float pixelToMeters = 1/32f;
     private OrthographicCamera camera;
     public final static BodyDef bodyDef = new BodyDef();
@@ -42,8 +46,11 @@ public class PlayGame implements Screen {
     public void show() {
         debugRenderer = new Box2DDebugRenderer();
         camera = new OrthographicCamera(Gdx.graphics.getWidth()/20, Gdx.graphics.getHeight()/20); // maybe add Gdx.graphics.get...
-        classGame.showGround();
+        classGame.showGround(runGame);
         classGame.showTanks();
+        float inPos = classGame.getCurPlayer().getTankBody().getPosition().x;
+
+
         Gdx.input.setInputProcessor(new GameInputController(){
             public boolean keyDown(int keycode) {
                 switch (keycode){
@@ -53,14 +60,6 @@ public class PlayGame implements Screen {
                     case Input.Keys.D:
                         classGame.getCurPlayer().moveRight();
                         break;
-//                    case Input.Keys.LEFT:
-//                        classGame.getCurPlayer().moveLeft();
-//                        break;
-//                    case Input.Keys.RIGHT:
-//                        classGame.getCurPlayer().moveRight();
-//                        break;
-//                    case Input.Keys.SPACE:
-//                        classGame.getCurPlayer().launchWeapon(10f, classGame.getCurPlayer().getTankTurretBody().getAngle(), new Weapon(1));
                 }
                 return true;
             }
@@ -69,11 +68,9 @@ public class PlayGame implements Screen {
             public boolean keyUp(int keycode) {
                 switch (keycode){
                     case Input.Keys.A:
+//                        System.out.println(classGame.getCurPlayer().getTankBody().getPosition().x);
                     case Input.Keys.D:
-                        classGame.getCurPlayer().stopTank();
-                        break;
-                    case Input.Keys.LEFT:
-                    case Input.Keys.RIGHT:
+
                         classGame.getCurPlayer().stopTank();
                         break;
                 }
@@ -95,8 +92,10 @@ public class PlayGame implements Screen {
 
         runGame.batch.setProjectionMatrix(camera.combined);
         runGame.batch.begin();
+        runGame.batch.draw(terrain, -35, -23, (SCREEN_WIDTH+900)*pixelToMeters, 500*pixelToMeters);
         classGame.showGame(runGame);
         classGame.showPlayerHealthBars(runGame);
+        classGame.getCurPlayer().showFuel(runGame);
 
         if (classGame.getCurPlayerNum() == 1) {
             if (Gdx.input.isKeyPressed(Input.Keys.W)){
@@ -113,22 +112,29 @@ public class PlayGame implements Screen {
                 classGame.getCurPlayer().getPlayerTank().getTankTurret().DecreaseTurretAngle2(classGame.getCurPlayer().getTankTurretBody());
             }
         }
-//        if(Gdx.input.isKeyPressed(Input.Keys.UP)){
-//            classGame.getCurPlayer().getPlayerTank().getTankTurret().IncreaseTurretAngle2(classGame.getCurPlayer().getTankTurretBody());
-//        }
-//        if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-//            classGame.getCurPlayer().getPlayerTank().getTankTurret().DecreaseTurretAngle2(classGame.getCurPlayer().getTankTurretBody());
-//        }
+
+        if(Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.D)){
+            float iniPos = classGame.getCurPlayer().getTankBody().getPosition().x;
+            distanceTravelled+= distanceTravelled + 0.00000000001f;
+            if(distanceTravelled >= 900000000000f){
+                classGame.getCurPlayer().stopTank();
+            }
+            classGame.getCurPlayer().getPlayerTank().setFuel(1 - distanceTravelled/900000000000f);
+        }
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             classGame.getCurPlayer().launchWeapon(10f, classGame.getCurPlayer().getTankTurretBody().getAngle(), new Weapon(1));
             classGame.changeTurn();
+            distanceTravelled = 0;
+            classGame.getCurPlayer().getPlayerTank().setFuel(1);
+
+
         }
 
         try {
             classGame.getCurPlayer().renderWeapon(runGame);
         } catch (NullPointerException e) {
         }
-
 
         runGame.batch.end();
     }

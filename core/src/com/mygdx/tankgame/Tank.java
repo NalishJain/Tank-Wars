@@ -11,7 +11,7 @@ public class Tank extends GameObject {
     private float tankHp;
     private String tankName;//final
     private int tankAngle;
-    private int fuel = 100;
+    private float fuel = 1;
     Turret tankTurret;
     private boolean canMove = true;
     private Weapon[] weaponList;
@@ -41,11 +41,11 @@ public class Tank extends GameObject {
         this.tankAngle = tankAngle;
     }
 
-    public int getFuel() {
+    public float getFuel() {
         return fuel;
     }
 
-    public void setFuel(int fuel) {
+    public void setFuel(float fuel) {
         this.fuel = fuel;
     }
 

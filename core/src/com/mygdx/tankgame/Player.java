@@ -14,6 +14,7 @@ import static java.lang.Math.sin;
 public class Player implements Serializable{
     //Add-ons
     private Body tankBody;
+    Texture redCross = new Texture("redCross.png");
     private Body tankTurretBody;
     private boolean isPlayer1 = true; // to check whether right sided tank or left sided tank
     private Vector2 tankMovement = new Vector2();
@@ -42,6 +43,7 @@ public class Player implements Serializable{
     private boolean isDoubleDamage = false;
     private boolean isDoubleFuel = false;
     private boolean isSkippedChance = false;
+    Texture fuel = new Texture("fuel.png");
 
     public Player(int num, int chosenTank) {
         this.curWeapon = new Weapon(1);
@@ -233,6 +235,16 @@ public class Player implements Serializable{
         this.getTankMovement().x = 0;
         this.getTankBody().setLinearVelocity(0,0);
     }
+    public void showFuel(TankGame runGame){
+        runGame.batch.draw(fuel, -21,-13, 80*pixelToMeters,80*pixelToMeters);
+        runGame.batch.draw(fuel, 21.4f,-13, -80*pixelToMeters,80*pixelToMeters);
+        if(this.getPlayerTank().getFuel() < 0 && this.isPlayer1){
+            runGame.batch.draw(redCross, -21.5f,-13, 95*pixelToMeters, 95*pixelToMeters);
+        }
+        if(this.getPlayerTank().getFuel() < 0 && !this.isPlayer1){
+            runGame.batch.draw(redCross, 19.4f,-13, 95*pixelToMeters, 95*pixelToMeters);
+        }
+    }
     public int causeDamage(Position weaponPosition){
 
         return 0;
@@ -248,6 +260,10 @@ public class Player implements Serializable{
 
     }
 
+//    public void move(ClassGame classGame){
+//        float iniPos = this.getTankBody().getPosition().x;
+//        float distanceTravelled
+//    }
 
 
     /* ADD-ON METHODS */
