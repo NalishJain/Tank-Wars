@@ -88,6 +88,7 @@ public class Player implements Serializable{
             TANK_SPRITE_T_HEIGHT = 276;
             TANK_SPRITE_F_LENGTH = 810;
             TANK_SPRITE_F_HEIGHT = 478;
+            TURRET_OFFSET = new Position(1.8f, -0.3f);
             spriteTank_f = new Sprite(new Texture("tank3front.png"));
             spriteTank_t = new Sprite(new Texture("tank3turret.png"));
             spriteTank_b = new Sprite(new Texture("tank3back.png"));

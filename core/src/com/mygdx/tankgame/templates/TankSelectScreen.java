@@ -6,7 +6,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.mygdx.tankgame.ClassGame;
 import com.mygdx.tankgame.GameInputController;
+import com.mygdx.tankgame.Player;
 import com.mygdx.tankgame.TankGame;
 
 import static com.mygdx.tankgame.TankGame.SCREEN_HEIGHT;
@@ -15,6 +17,7 @@ import static com.mygdx.tankgame.TankGame.SCREEN_WIDTH;
 public class TankSelectScreen implements Screen {
 
     private static final int BUTTON_WIDTH = 350;
+    public Player player1, player2;
     private static final int BUTTON_HEIGHT = 100;
     private static final int LEFT_WIDTH = SCREEN_WIDTH/2;
     private static final int RIGHT_WIDTH = SCREEN_WIDTH/2;
@@ -89,6 +92,34 @@ public class TankSelectScreen implements Screen {
                         TextureArrayCounter = (TextureArrayCounter - 1)%3;
                         currentTank = TextureArray[TextureArrayCounter];
                         break;
+                    case Input.Keys.ENTER:
+                        if(playerNumber == 0){
+                            if(TextureArrayCounter == 0){
+                                player1 = new Player(playerNumber + 1, 2);
+                            }
+                            else if(TextureArrayCounter == 1){
+                                player1 = new Player(playerNumber + 1, 1);
+                            }
+                            else{
+                                player1 = new Player(playerNumber + 1, 3);
+                            }
+//                            System.out.println(TextureArrayCounter);
+                            playerNumber++;
+
+                        }
+                        else if(playerNumber == 1){
+                            if(TextureArrayCounter == 0){
+                                player2 = new Player(playerNumber + 1, 2);
+                            }
+                            else if(TextureArrayCounter == 1){
+                                player2 = new Player(playerNumber + 1, 1);
+                            }
+                            else{
+                                player2 = new Player(playerNumber + 1, 3);
+                            }//                    playerNumber++;
+                            game.setScreen(new PlayGame(game, new ClassGame(player1, player2)));
+                        }
+
                 }
                 return true;
             }
@@ -115,18 +146,28 @@ public class TankSelectScreen implements Screen {
         for(int i = 0; i < 1600; i += 35) {
             game.batch.draw(terrain_texture, i, 196, 967*0.05f, 262*0.05f);
         }
-        game.batch.draw(
-                chooseButtonInactive,
-                (SCREEN_WIDTH/2 - BUTTON_WIDTH/2),
-                50,
-                BUTTON_WIDTH,
-                BUTTON_HEIGHT);
+        game.batch.draw(chooseButtonInactive, (SCREEN_WIDTH/2 - BUTTON_WIDTH/2), 50, BUTTON_WIDTH, BUTTON_HEIGHT);
 //        game.batch.draw(kPlane, 900, 530, 1132*0.2f, 346*0.2f);
         game.batch.draw(aShip, 350, 500, -1890*0.17f, 897*0.17f);
         game.batch.draw(rbomb,165,460,0,0,744*0.13f,195*0.13f,1,1,-2f);
         game.batch.draw(rbomb,165,420,0,0,744*0.13f,195*0.13f,1,1,-8f);
         game.batch.draw(rbomb,165,380,0,0,744*0.13f,195*0.13f,1,1,-13f);
 
+        if(Gdx.input.getX() < (SCREEN_WIDTH/2 - BUTTON_WIDTH/2) + BUTTON_WIDTH && Gdx.input.getX() >(SCREEN_WIDTH/2 - BUTTON_WIDTH/2)  && SCREEN_HEIGHT - Gdx.input.getY() < 50 + BUTTON_HEIGHT && SCREEN_HEIGHT - Gdx.input.getY() > 50){
+            if(Gdx.input.isTouched()){
+                if(playerNumber == 0){
+                    player1 = new Player(playerNumber + 1, TextureArrayCounter + 1);
+                    System.out.println(TextureArrayCounter);
+                    playerNumber++;
+
+                }
+                else if(playerNumber == 1){
+                    player2 = new Player(playerNumber + 1, TextureArrayCounter + 1);
+//                    playerNumber++;
+                    game.setScreen(new PlayGame(game, new ClassGame(player1, player2)));
+                }
+            }
+        }
         game.batch.draw(arrow, 400 + 15, 280, -60, 60);
         game.batch.draw(arrow, SCREEN_WIDTH-395 - 20, 280, 60, 60);
 

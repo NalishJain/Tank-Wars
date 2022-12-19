@@ -48,12 +48,12 @@ public class PlayGame implements Screen {
                     case Input.Keys.D:
                         classGame.getCurPlayer().moveRight();
                         break;
-                    case Input.Keys.LEFT:
-                        classGame.getCurPlayer().moveLeft();
-                        break;
-                    case Input.Keys.RIGHT:
-                        classGame.getCurPlayer().moveRight();
-                        break;
+//                    case Input.Keys.LEFT:
+//                        classGame.getCurPlayer().moveLeft();
+//                        break;
+//                    case Input.Keys.RIGHT:
+//                        classGame.getCurPlayer().moveRight();
+//                        break;
 //                    case Input.Keys.SPACE:
 //                        classGame.getCurPlayer().launchWeapon(10f, classGame.getCurPlayer().getTankTurretBody().getAngle(), new Weapon(1));
                 }

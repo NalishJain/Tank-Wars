@@ -25,9 +25,12 @@ public class ClassGame implements Serializable {
     private int serialVersionUID;
     private int curPlayer = 1; //1,2
 
-    public ClassGame() {
-        player1 = new Player(1, 1);
-        player2 = new Player(2, 3);
+    public ClassGame(Player player1, Player player2) {
+        this.player1 = player1;
+        this.player2 = player2;
+
+//        player1 = new Player(1, 1);
+//        player2 = new Player(2, 3);
         //Added Tanks for both player to keep record of turret
         //Initialized tank, turret and movement vector
 
