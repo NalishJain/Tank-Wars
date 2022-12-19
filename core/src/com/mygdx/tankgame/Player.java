@@ -23,6 +23,9 @@ public class Player implements Serializable{
     private float TANK_SPRITE_F_LENGTH;
     private float TANK_SPRITE_F_HEIGHT;
 
+    //Most important co-ordinates
+    private float turretSpriteOriginX, getTurretSpriteOriginY;
+    private float offsetX, offsetY;
 
 
     //From Class-Diagram:
@@ -42,6 +45,8 @@ public class Player implements Serializable{
             this.isPlayer1 = false;
         }
         this.chosenTank = chosenTank;
+        this.tankMovement = new Vector2();
+        this.playerTank = new Tank();
         if (chosenTank == 1) {
             TANK_SPRITE_B_LENGTH = 804;
             TANK_SPRITE_B_HEIGHT = 520;
@@ -49,8 +54,36 @@ public class Player implements Serializable{
             TANK_SPRITE_T_HEIGHT = 316;
             TANK_SPRITE_F_LENGTH = 1008;
             TANK_SPRITE_F_HEIGHT = 516;
+            spriteTank_f = new Sprite(new Texture("tank1front.png"));
+            spriteTank_t = new Sprite(new Texture("tank1turret2.png"));
+            spriteTank_b = new Sprite(new Texture("tank1back.png"));
+
+
+
         }
-        // add other measurements
+        // add other measurements - Tank3Left
+        else if(chosenTank == 2){
+            TANK_SPRITE_B_LENGTH = 844;
+            TANK_SPRITE_B_HEIGHT = 622;
+            TANK_SPRITE_T_LENGTH = 858;
+            TANK_SPRITE_T_HEIGHT = 166;
+            TANK_SPRITE_F_LENGTH = 848;
+            TANK_SPRITE_F_HEIGHT = 622;
+            spriteTank_f = new Sprite(new Texture("Tank2Front.png"));
+            spriteTank_t = new Sprite(new Texture("Tank2Turret.png"));
+            spriteTank_b = new Sprite(new Texture("Tank2Back.png"));
+        }
+        else if(chosenTank == 3){
+            TANK_SPRITE_B_LENGTH = 222;
+            TANK_SPRITE_B_HEIGHT = 622;
+            TANK_SPRITE_T_LENGTH = 1016;
+            TANK_SPRITE_T_HEIGHT = 316;
+            TANK_SPRITE_F_LENGTH = 1008;
+            TANK_SPRITE_F_HEIGHT = 516;
+            spriteTank_f = new Sprite(new Texture("tank1front.png"));
+            spriteTank_t = new Sprite(new Texture("tank1turret2.png"));
+            spriteTank_b = new Sprite(new Texture("tank1back.png"));
+        }
     }
 
 
@@ -134,8 +167,16 @@ public class Player implements Serializable{
 
         return null;
     }
-    public void move(){
-        //use moveTank
+    public void moveRight(){
+        this.getTankMovement().x = 50000;
+    }
+    public void moveLeft(){
+        this.getTankMovement().x = -50000;
+    }
+
+    public void stopTank(){
+        this.getTankMovement().x = 0;
+        this.getTankBody().setLinearVelocity(0,0);
     }
     public int causeDamage(Position weaponPosition){
 
@@ -208,7 +249,6 @@ public class Player implements Serializable{
         fixtureDef.density = 5;
 
         Fixture tankTfixture = tankTurretBody.createFixture(fixtureDef);
-        spriteTank_t = new Sprite(new Texture("tank1turret2.png"));
         if (isPlayer1) {
             spriteTank_t.setSize(TANK_SPRITE_T_LENGTH * 0.15f * pixelToMeters, TANK_SPRITE_T_HEIGHT * 0.15f * pixelToMeters);
             spriteTank_t.setOrigin(spriteTank_t.getWidth() / 2, spriteTank_t.getHeight() / 2);
@@ -236,7 +276,6 @@ public class Player implements Serializable{
 
         Fixture tankBfixture = tankBody.createFixture(fixtureDef);
 
-        spriteTank_b = new Sprite(new Texture("tank1back.png"));
         if (isPlayer1) {
             spriteTank_b.setSize(TANK_SPRITE_B_LENGTH*0.15f*pixelToMeters, TANK_SPRITE_B_HEIGHT*0.15f*pixelToMeters);
             spriteTank_b.setOrigin(spriteTank_b.getWidth()/2, spriteTank_b.getHeight()/2);
@@ -263,7 +302,6 @@ public class Player implements Serializable{
 
 
         Fixture tankFfixture =  tankBody.createFixture(fixtureDef);
-        spriteTank_f = new Sprite(new Texture("tank1front.png"));
         if (isPlayer1) {
             spriteTank_f.setSize(TANK_SPRITE_F_LENGTH*0.15f*pixelToMeters, TANK_SPRITE_F_HEIGHT*0.15f*pixelToMeters);
             spriteTank_f.setOrigin(spriteTank_f.getWidth()/2, spriteTank_f.getHeight()/2);
@@ -285,5 +323,84 @@ public class Player implements Serializable{
             jointDef.localAnchorA.set(-0.5f, 1f);
         }
         world.createJoint(jointDef);
+    }
+
+
+    public float getTurretSpriteOriginX(){
+        if(isPlayer1){
+            if(chosenTank == 1){
+                return 0.77f;
+            }
+            else if(chosenTank == 2){
+                return 0.74f;
+            }
+            else if(chosenTank == 3){
+
+            }
+        }
+        else{
+            if(chosenTank == 1){
+                return -0.77f;
+            }
+            else if(chosenTank == 2){
+                return -0.74f;
+            }
+            else if(chosenTank == 3){
+
+            }
+        }
+        return 0;
+    }
+
+    public float getTurretSpriteOriginY(){
+        if(chosenTank == 1){
+            return 0.5f;
+        }
+        else if(chosenTank == 2){
+            return 0.095f;
+        }
+        else if(chosenTank == 3){
+
+        }
+        return 0;
+    }
+
+    public float getOffsetX(){
+        if(isPlayer1){
+            if(chosenTank == 1){
+                return  0.1f;
+            }
+            else if(chosenTank == 2){
+                return 0.9f;
+            }
+            else if(chosenTank == 3){
+
+            }
+        }
+        else{
+            if(chosenTank == 1){
+                return -0.1f;
+            }
+            else if(chosenTank == 2){
+                return  -0.9f;
+            }
+            else if(chosenTank == 3){
+
+            }
+        }
+        return 0;
+    }
+
+    public float getOffsetY(){
+        if(chosenTank == 1){
+            return 0.1f;
+        }
+        else if(chosenTank == 2){
+            return -0.25f;
+        }
+        else if(chosenTank == 3){
+
+        }
+        return 0;
     }
 }

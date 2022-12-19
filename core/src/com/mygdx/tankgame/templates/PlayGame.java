@@ -1,6 +1,7 @@
 package com.mygdx.tankgame.templates;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.tankgame.ClassGame;
+import com.mygdx.tankgame.GameInputController;
 import com.mygdx.tankgame.TankGame;
 
 public class PlayGame implements Screen {
@@ -21,6 +23,8 @@ public class PlayGame implements Screen {
     private OrthographicCamera camera;
     public final static BodyDef bodyDef = new BodyDef();
     public final static FixtureDef fixtureDef = new FixtureDef();
+
+
     TankGame runGame;
 
     public PlayGame(TankGame runGame, ClassGame classGame) {
@@ -32,9 +36,42 @@ public class PlayGame implements Screen {
     public void show() {
         debugRenderer = new Box2DDebugRenderer();
         camera = new OrthographicCamera(Gdx.graphics.getWidth()/20, Gdx.graphics.getHeight()/20); // maybe add Gdx.graphics.get...
-
         classGame.showGround();
         classGame.showTanks();
+        Gdx.input.setInputProcessor(new GameInputController(){
+            public boolean keyDown(int keycode) {
+                switch (keycode){
+                    case Input.Keys.A:
+                        classGame.getPlayer1().moveLeft();
+                        break;
+                    case Input.Keys.D:
+                        classGame.getPlayer1().moveRight();
+                        break;
+                    case Input.Keys.LEFT:
+                        classGame.getPlayer2().moveLeft();
+                        break;
+                    case Input.Keys.RIGHT:
+                        classGame.getPlayer2().moveRight();
+                        break;
+                }
+                return true;
+            }
+
+            @Override
+            public boolean keyUp(int keycode) {
+                switch (keycode){
+                    case Input.Keys.A:
+                    case Input.Keys.D:
+                        classGame.getPlayer1().stopTank();
+                        break;
+                    case Input.Keys.LEFT:
+                    case Input.Keys.RIGHT:
+                        classGame.getPlayer2().stopTank();
+                        break;
+                }
+                return true;
+            }
+        });
 
 
     }
@@ -44,49 +81,26 @@ public class PlayGame implements Screen {
         ScreenUtils.clear(0, 0, 0, 1f);
         debugRenderer.render(world, camera.combined);
         world.step(1/60f, 8, 3);
+//Applied Forces
+        classGame.getPlayer1().getTankBody().applyForceToCenter(classGame.getPlayer1().getTankMovement(), true);
+        classGame.getPlayer2().getTankBody().applyForceToCenter(classGame.getPlayer2().getTankMovement(),true);
 
         runGame.batch.setProjectionMatrix(camera.combined);
         runGame.batch.begin();
-//        world.getBodies(bodies);
-//        bodies.add(tank1TurretBody);
-//        bodies.add(tank1Body);
+        classGame.showGame(runGame);
 
-        Array<Fixture> fixtures = new Array<Fixture>();
-        fixtures.add(classGame.getPlayer1().getTankBody().getFixtureList().get(0));
-        fixtures.add(classGame.getPlayer1().getTankTurretBody().getFixtureList().get(0));
-        fixtures.add(classGame.getPlayer1().getTankBody().getFixtureList().get(1));
-
-        fixtures.add(classGame.getPlayer2().getTankBody().getFixtureList().get(0));
-        fixtures.add(classGame.getPlayer2().getTankTurretBody().getFixtureList().get(0));
-        fixtures.add(classGame.getPlayer2().getTankBody().getFixtureList().get(1));
-
-        int i1 = 0;
-        for(Fixture fixture : fixtures){
-            i1++;
-            if(fixture.getUserData() != null && fixture.getUserData() instanceof Sprite){
-
-                Sprite sprite = (Sprite) fixture.getUserData();
-                if(i1 != 2 && i1 != 5){
-                    sprite.setPosition(fixture.getBody().getPosition().x - sprite.getWidth()/2, fixture.getBody().getPosition().y -sprite.getHeight()/2);
-                    sprite.setRotation(fixture.getBody().getAngle()* MathUtils.radiansToDegrees);
-                    sprite.draw(runGame.batch);
-                }
-                if(i1 == 2){
-                    sprite.setPosition(fixture.getBody().getPosition().x - sprite.getWidth()/2 + 0.1f, fixture.getBody().getPosition().y -sprite.getHeight()/2 + 0.1f);
-                    sprite.draw(runGame.batch);
-                    sprite.setOrigin(0.77f,0.5f);
-                    sprite.setRotation(fixture.getBody().getAngle()* MathUtils.radiansToDegrees);
-                }
-                if(i1 == 5){
-                    sprite.setPosition(fixture.getBody().getPosition().x - sprite.getWidth()/2 -0.9f, fixture.getBody().getPosition().y -sprite.getHeight()/2 - 0.25f);
-                    sprite.draw(runGame.batch);
-                    sprite.setOrigin(-0.74f,0.095f);
-                    sprite.setRotation(fixture.getBody().getAngle()* MathUtils.radiansToDegrees);
-                }
-
-            }
+        if (Gdx.input.isKeyPressed(Input.Keys.W)){
+            classGame.getPlayer1().getPlayerTank().getTankTurret().IncreaseTurretAngle(classGame.getPlayer1().getTankTurretBody());
         }
-
+        else if (Gdx.input.isKeyPressed(Input.Keys.S)){
+            classGame.getPlayer1().getPlayerTank().getTankTurret().DecreaseTurretAngle(classGame.getPlayer1().getTankTurretBody());
+        }
+        else if(Gdx.input.isKeyPressed(Input.Keys.UP)){
+            classGame.getPlayer2().getPlayerTank().getTankTurret().IncreaseTurretAngle2(classGame.getPlayer2().getTankTurretBody());
+        }
+        else if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
+            classGame.getPlayer2().getPlayerTank().getTankTurret().DecreaseTurretAngle2(classGame.getPlayer2().getTankTurretBody());
+        }
 
         runGame.batch.end();
     }

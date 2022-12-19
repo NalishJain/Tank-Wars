@@ -1,6 +1,7 @@
 package com.mygdx.tankgame;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
@@ -27,7 +28,10 @@ public class ClassGame implements Serializable {
 
     public ClassGame() {
         player1 = new Player(1, 1);
-        player2 = new Player(2, 1);
+        player2 = new Player(2, 2);
+        //Added Tanks for both player to keep record of turret
+        //Initialized tank, turret and movement vector
+
     }
 
 
@@ -129,5 +133,43 @@ public class ClassGame implements Serializable {
     public void showTanks() {
         player1.showTank();
         player2.showTank();
+    }
+
+    public void showGame(TankGame runGame){
+
+        Array<Fixture> fixtures = new Array<Fixture>();
+
+        fixtures.add(this.getPlayer1().getTankBody().getFixtureList().get(0));
+        fixtures.add(this.getPlayer1().getTankTurretBody().getFixtureList().get(0));
+        fixtures.add(this.getPlayer1().getTankBody().getFixtureList().get(1));
+        fixtures.add(this.getPlayer2().getTankBody().getFixtureList().get(0));
+        fixtures.add(this.getPlayer2().getTankTurretBody().getFixtureList().get(0));
+        fixtures.add(this.getPlayer2().getTankBody().getFixtureList().get(1));
+        int i1 = 0;
+        for(Fixture fixture : fixtures){
+            i1++;
+            if(fixture.getUserData() != null && fixture.getUserData() instanceof Sprite){
+
+                Sprite sprite = (Sprite) fixture.getUserData();
+                if(i1 != 2 && i1 != 5){
+                    sprite.setPosition(fixture.getBody().getPosition().x - sprite.getWidth()/2, fixture.getBody().getPosition().y -sprite.getHeight()/2);
+                    sprite.setRotation(fixture.getBody().getAngle()* MathUtils.radiansToDegrees);
+                    sprite.draw(runGame.batch);
+                }
+                if(i1 == 2){
+                    sprite.setPosition(fixture.getBody().getPosition().x - sprite.getWidth()/2 + this.getPlayer1().getOffsetX(), fixture.getBody().getPosition().y -sprite.getHeight()/2 + this.getPlayer1().getOffsetY());
+                    sprite.draw(runGame.batch);
+                    sprite.setOrigin(this.getPlayer1().getTurretSpriteOriginX(),this.getPlayer1().getTurretSpriteOriginY());
+                    sprite.setRotation(fixture.getBody().getAngle()* MathUtils.radiansToDegrees);
+                }
+                if(i1 == 5){
+                    sprite.setPosition(fixture.getBody().getPosition().x - sprite.getWidth()/2 + this.getPlayer2().getOffsetX(), fixture.getBody().getPosition().y -sprite.getHeight()/2 + this.getPlayer2().getOffsetY());
+                    sprite.draw(runGame.batch);
+                    sprite.setOrigin(this.getPlayer2().getTurretSpriteOriginX(),this.getPlayer2().getTurretSpriteOriginY());
+                    sprite.setRotation(fixture.getBody().getAngle()* MathUtils.radiansToDegrees);
+                }
+
+            }
+        }
     }
 }
