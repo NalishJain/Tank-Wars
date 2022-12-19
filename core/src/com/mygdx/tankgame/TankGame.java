@@ -12,7 +12,7 @@ public class TankGame extends Game {
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
-		this.setScreen(new MainGameScreen(this));
+		this.setScreen(new PlayGame(this, new ClassGame()));
 	}
 
 	@Override

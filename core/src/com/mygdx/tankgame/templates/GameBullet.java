@@ -206,7 +206,8 @@ public class GameBullet implements Screen {
 
                         }
                     case Input.Keys.G:
-                        Projectile bullet = new Projectile(new Position(tank1TurretBody.getPosition().x+turret_length* (float)cos(tank1TurretBody.getAngle()), tank1TurretBody.getPosition().y+turret_length* (float)sin(tank1TurretBody.getAngle())));
+                        Projectile bullet = new Projectile(new Position(tank1TurretBody.getPosition().x+turret_length* (float)cos(tank1TurretBody.getAngle()),
+                                tank1TurretBody.getPosition().y+turret_length* (float)sin(tank1TurretBody.getAngle())));
                         bodyDef.type = BodyDef.BodyType.DynamicBody;
                         bodyDef.position.set(bullet.getPosition().getPosX(), bullet.getPosition().getPosY());
                         bodyDef.bullet = true;

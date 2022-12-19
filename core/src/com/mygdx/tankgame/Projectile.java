@@ -13,7 +13,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 public class Projectile extends GameObject {
     public Body pBody;
     public PolygonShape pShape;
-    public Vector2[] pVertices = {new Vector2(0f, 0f), new Vector2(0f, 0.1f), new Vector2(0.1f, 0.1f), new Vector2(0.1f, 0f)};
+    public Vector2[] pVertices = {new Vector2(0f, 0f), new Vector2(0f, 0.1f), new Vector2(0.5f, 0.1f), new Vector2(0.5f, 0.2f), new Vector2(0.7f, 0.2f), new Vector2(0.7f, -0.1f), new Vector2(0.5f, -0.1f), new Vector2(0.5f, 0f)};
 
 
     public Projectile(Position p) {

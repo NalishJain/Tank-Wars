@@ -48,14 +48,15 @@ public class ActualGame implements Screen {
     Sprite spriteTank2_b;
     Sprite spriteTank2_f;
     Sprite spriteTank2_t;
+    Sprite spriteMissile;
     public ActualGame(TankGame game){
         this.game = game;
     }
     TankGame game;
     public void show() {
-        world = new World(new Vector2(0, -9.18f), true);
+        world = new World(new Vector2(0, -9.81f), true);
         debugRenderer = new Box2DDebugRenderer();
-        camera = new OrthographicCamera();
+        camera = new OrthographicCamera(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
         //metre:pixel 10:1
         //body definition
 
@@ -81,7 +82,7 @@ public class ActualGame implements Screen {
         ChainShape groundShape = new ChainShape();
         groundShape.createChain(new Vector2[]{new Vector2(-500, 0), new Vector2(500, 0)});
         fixtureDef.shape = groundShape;
-        fixtureDef.friction = 0.5f;
+        fixtureDef.friction = 1f;
         fixtureDef.restitution = 0;
 
         Ground = world.createBody(ballDef);
@@ -239,7 +240,7 @@ public class ActualGame implements Screen {
         world.createJoint(jointDef2);
 
         //Bullet
-
+        bBody = world.createBody(ballDef);
 
         Gdx.input.setInputProcessor(new InputProcessor() {
             @Override
@@ -259,18 +260,18 @@ public class ActualGame implements Screen {
                         tank2Movement.x = tankSpeed*100;
                         break;
                     case Input.Keys.W:
-                        float TankTotal1 = tank1TurretBody.getAngle();
-                        if(TankTotal1 < 0.9f){
-                            TankTotal1 = TankTotal1 + 0.02f;
-                            tank1TurretBody.setTransform(-5f,0.8f,TankTotal1);
-                        }
+//                        float TankTotal1 = tank1TurretBody.getAngle();
+//                        if(TankTotal1 < 0.9f){
+//                            TankTotal1 = TankTotal1 + 0.02f;
+//                            tank1TurretBody.setTransform(-5f,0.8f,TankTotal1);
+//                        }
                         break;
                     case Input.Keys.S:
-                        float TankTotal3 = tank1TurretBody.getAngle();
-                        if(TankTotal3 > 0f){
-                            TankTotal3 = TankTotal3 - 0.02f;
-                            tank1TurretBody.setTransform(-5f,0.8f,TankTotal3);
-                        }
+//                        float TankTotal3 = tank1TurretBody.getAngle();
+//                        if(TankTotal3 > 0f){
+//                            TankTotal3 = TankTotal3 - 0.02f;
+//                            tank1TurretBody.setTransform(-5f,0.8f,TankTotal3);
+//                        }
                         break;
                     case Input.Keys.E:
                         tank2TurretBody.setTransform(-5f,0.8f,-1.58f);
@@ -287,6 +288,7 @@ public class ActualGame implements Screen {
                         break;
 
                     case Input.Keys.G:
+
                         Projectile bullet = new Projectile(new Position(tank1TurretBody.getPosition().x+turret_length* (float)cos(tank1TurretBody.getAngle()), tank1TurretBody.getPosition().y+turret_length* (float)sin(tank1TurretBody.getAngle())));
                         ballDef.type = BodyDef.BodyType.DynamicBody;
                         ballDef.position.set(bullet.getPosition().getPosX(), bullet.getPosition().getPosY());
@@ -294,13 +296,28 @@ public class ActualGame implements Screen {
 
 
                         fixtureDef.density = 2.5f;
-                        fixtureDef.friction = 1f;
+                        fixtureDef.friction = 10f;
                         fixtureDef.restitution = 0f;
                         fixtureDef.shape = bullet.pShape;
 
+                        spriteMissile = new Sprite( new Texture("Weapon1.png") );
+                        spriteMissile.setSize(331f*0.09f*pixelToMeters, 156f*0.09f*pixelToMeters);
+                        spriteMissile.setOrigin(spriteMissile.getWidth()/2, spriteMissile.getHeight()/2);
                         bBody = world.createBody(ballDef);
-                        bBody.createFixture(fixtureDef);
+                        bBody.setTransform(bullet.getPosition().getPosX(), bullet.getPosition().getPosY(), tank1TurretBody.getAngle());
+                        Fixture missileFixture = bBody.createFixture(fixtureDef);
+                        missileFixture.setUserData(spriteMissile);
                         bBody.setGravityScale(0f);
+                        break;
+                    case Input.Keys.SPACE:
+                        bBody.setGravityScale(1f);
+                        float angle = tank1TurretBody.getAngle();
+                        float power = 10f;
+                        float vx = (float) (power * cos(angle));
+                        float vy = (float) (power * sin(angle));
+
+
+                        bBody.setLinearVelocity(vx, vy);
                 }
                 return true;
 
@@ -383,17 +400,38 @@ public class ActualGame implements Screen {
         fixtures.add(tank2TurretBody.getFixtureList().get(0));
         fixtures.add(tank2Body.getFixtureList().get(1));
 
+        try {
+            fixtures.add(bBody.getFixtureList().get(0));
+        } catch (IndexOutOfBoundsException e) {
+        }
+
+
         int i1 = 0;
 
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
-            bBody.setGravityScale(1f);
-            float angle = tank1TurretBody.getAngle();
-            float power = 10f;
-            float vx = (float) (power * cos(angle));
-            float vy = (float) (power * sin(angle));
+//        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+//            bBody.setGravityScale(1f);
+//            float angle = tank1TurretBody.getAngle();
+//            float power = 10f;
+//            float vx = (float) (power * cos(angle));
+//            float vy = (float) (power * sin(angle));
+//
+//
+//            bBody.setLinearVelocity(vx, vy);
+//        }
 
-
-            bBody.setLinearVelocity(vx, vy);
+        if (Gdx.input.isKeyPressed(Input.Keys.W)){
+            float total = tank1TurretBody.getAngle();
+            if (total < 0.9f) {
+                total = total + 0.002f;
+                tank1TurretBody.setTransform(tank1TurretBody.getPosition().x, tank1TurretBody.getPosition().y, total);
+            }
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.S)){
+            float total = tank1TurretBody.getAngle();
+            if (total > 0f) {
+                total = total - 0.002f;
+                tank1TurretBody.setTransform(tank1TurretBody.getPosition().x, tank1TurretBody.getPosition().y, total);
+            }
         }
 
         for(Fixture fixture : fixtures){
