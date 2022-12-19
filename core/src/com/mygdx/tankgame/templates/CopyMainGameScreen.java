@@ -63,7 +63,6 @@ public class CopyMainGameScreen implements Screen{
         hpBar = new Texture("HPBar.png");
         Shield = new Texture("Shield.png");
         bg = new Texture("bg3.png");
-        terrain = new Texture("terrain.png");
 
         rtank_f = new TextureRegion(tank_f);
         rtank_b = new TextureRegion(tank_b);
@@ -136,7 +135,6 @@ public class CopyMainGameScreen implements Screen{
         game.batch.draw(tree2, 100, 200, 249*0.2f, 309*0.2f);
         game.batch.draw(tree1, 20, 200, 340*0.2f, 296*0.2f);
         game.batch.draw(tree1, 1200, 200, 340*0.2f, 296*0.2f);
-        game.batch.draw(terrain, -SCREEN_WIDTH/2 + 400, -SCREEN_HEIGHT/2 +65, SCREEN_WIDTH+400, 500);
 
         game.batch.draw(rtank_b, tank1Body.getPosition().x + SCREEN_WIDTH/2, tank1Body.getPosition().y +SCREEN_HEIGHT/2, 0, 0, 804*0.15f, 520*0.15f, 1, 1, 0);
         game.batch.draw(rtank_t, tank1Body.getPosition().x + SCREEN_WIDTH/2, tank1Body.getPosition().y +SCREEN_HEIGHT/2, 0, 0, 1016*0.15f, 316*0.15f, 1, 1, 16f);
