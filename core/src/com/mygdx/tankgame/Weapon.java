@@ -13,21 +13,29 @@ public class Weapon extends GameObject{
     private Position weaponPosition;
 
 
+
     //add-ons:
 //    public static Array<Weapon> allWeapons; // might not need this
+    private boolean remove;
     private Sprite spriteWeapon;
     private Body weaponBody;
+    private Position collisionPosition;
 
-    public Weapon(int i) {
-        if (i == 1) {
+    public Weapon(int pnum, int chosenTank) {
+        this.remove = false;
+        if (chosenTank == 1) {
             // normal missile
             damageRange = 5;
-            maxDamagePower = 80;
+            maxDamagePower = 200;
 
             spriteWeapon = new Sprite( new Texture("Weapon1.png") );
-            spriteWeapon.setSize(331f*0.09f*pixelToMeters, 156f*0.09f*pixelToMeters);
-            spriteWeapon.setOrigin(spriteWeapon.getWidth()/2, spriteWeapon.getHeight()/2);
+            if (pnum == 1) {
+                spriteWeapon.setSize(331f*0.09f*pixelToMeters, 156f*0.09f*pixelToMeters);
+            } else {
+                spriteWeapon.setSize(-331f*0.09f*pixelToMeters, -156f*0.09f*pixelToMeters);
 
+            }
+            spriteWeapon.setOrigin(spriteWeapon.getWidth()/2, spriteWeapon.getHeight()/2);
         }
     }
 
@@ -41,6 +49,22 @@ public class Weapon extends GameObject{
 
     public Sprite getSpriteWeapon() {
         return spriteWeapon;
+    }
+
+    public boolean isRemove() {
+        return remove;
+    }
+
+    public void setRemove(boolean remove) {
+        this.remove = remove;
+    }
+
+    public Position getCollisionPosition() {
+        return collisionPosition;
+    }
+
+    public void setCollisionPosition(Position collisionPosition) {
+        this.collisionPosition = collisionPosition;
     }
 
     public void setSpriteWeapon(Sprite spriteWeapon) {

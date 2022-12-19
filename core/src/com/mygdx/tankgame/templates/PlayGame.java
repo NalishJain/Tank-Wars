@@ -11,10 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.mygdx.tankgame.ClassGame;
-import com.mygdx.tankgame.GameInputController;
-import com.mygdx.tankgame.TankGame;
-import com.mygdx.tankgame.Weapon;
+import com.mygdx.tankgame.*;
 
 import static com.mygdx.tankgame.TankGame.SCREEN_HEIGHT;
 import static com.mygdx.tankgame.TankGame.SCREEN_WIDTH;
@@ -40,6 +37,8 @@ public class PlayGame implements Screen {
     public PlayGame(TankGame runGame, ClassGame classGame) {
         this.classGame = classGame;
         this.runGame = runGame;
+
+        this.world.setContactListener(new BulletContactListener());
 
     }
 
@@ -87,7 +86,7 @@ public class PlayGame implements Screen {
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0, 1f);
         debugRenderer.render(world, camera.combined);
-        world.step(1/60f, 8, 3);
+
 //Applied Forces
         classGame.getCurPlayer().getTankBody().applyForceToCenter(classGame.getCurPlayer().getTankMovement(), true);
 //        classGame.getPlayer2().getTankBody().applyForceToCenter(classGame.getPlayer2().getTankMovement(),true);
@@ -135,11 +134,17 @@ public class PlayGame implements Screen {
             classGame.getCurPlayer().getPlayerTank().setFuel(1 - distanceTravelled/900000000000f);
         }
 
+            
+
+
+        /* BULLET HAS BEEN LAUNCHED */
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            classGame.getCurPlayer().launchWeapon(10f, classGame.getCurPlayer().getTankTurretBody().getAngle(), new Weapon(1));
-            classGame.changeTurn();
+            if (classGame.isWeaponLaunched() == false) {
+                classGame.getCurPlayer().launchWeapon(10f, classGame.getCurPlayer().getTankTurretBody().getAngle(), new Weapon(classGame.getCurPlayerNum(), 1));
+            }
             distanceTravelled = 0;
             classGame.getCurPlayer().getPlayerTank().setFuel(1);
+            classGame.setWeaponLaunched(true);
         }
 
 
@@ -149,6 +154,17 @@ public class PlayGame implements Screen {
         }
 
         runGame.batch.end();
+
+        /* IF BULLET HAS EXPLODED */
+        if (classGame.getCurPlayer().getCurWeapon().isRemove()) {
+            world.destroyBody(classGame.getCurPlayer().getCurWeapon().getWeaponBody());
+            classGame.getCurPlayer().getCurWeapon().setRemove(false);
+            classGame.setWeaponLaunched(false);
+            classGame.getPlayer1().causeDamage(classGame.getCurPlayer().getCurWeapon(), classGame.getCurPlayer().getCurWeapon().getCollisionPosition());
+            classGame.getPlayer2().causeDamage(classGame.getCurPlayer().getCurWeapon(), classGame.getCurPlayer().getCurWeapon().getCollisionPosition());
+            classGame.changeTurn();
+        }
+        world.step(1/60f, 8, 3);
     }
 
     @Override
