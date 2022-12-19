@@ -23,6 +23,7 @@ public class PlayGame implements Screen {
     public final static World world = new World(new Vector2(0, -9.81f), true);
     private ClassGame classGame;
     Texture terrain = new Texture("terrain2.png");
+    Texture pauseButton = new Texture("PauseGameButton.png");
 
     private int tankSpeed = 300;
     private Box2DDebugRenderer debugRenderer;
@@ -45,7 +46,8 @@ public class PlayGame implements Screen {
     @Override
     public void show() {
         debugRenderer = new Box2DDebugRenderer();
-        camera = new OrthographicCamera(Gdx.graphics.getWidth()/20, Gdx.graphics.getHeight()/20); // maybe add Gdx.graphics.get...
+        camera = new OrthographicCamera(Gdx.graphics.getWidth()/20f, Gdx.graphics.getHeight()/20f); // maybe add Gdx.graphics.get...
+
         classGame.showGround(runGame);
         classGame.showTanks();
         float inPos = classGame.getCurPlayer().getTankBody().getPosition().x;
@@ -97,6 +99,17 @@ public class PlayGame implements Screen {
         classGame.showPlayerHealthBars(runGame);
         classGame.getCurPlayer().showFuel(runGame);
 
+        runGame.batch.draw(pauseButton, -32, 13.8f,654*pixelToMeters*0.2f, 488*pixelToMeters*0.2f);
+//        if(Gdx.input.isTouched()){
+//            System.out.println(Gdx.input.getX());
+//            System.out.println(Gdx.input.getY());
+//        }
+        if(Gdx.input.getX() < 66  && Gdx.input.getX() > 0  &&  Gdx.input.getY() <90 && Gdx.input.getY() > 20){
+            if(Gdx.input.isTouched()){
+                runGame.setScreen(new PauseGameScreen(runGame));
+            }
+        }
+
         if (classGame.getCurPlayerNum() == 1) {
             if (Gdx.input.isKeyPressed(Input.Keys.W)){
                 classGame.getCurPlayer().getPlayerTank().getTankTurret().IncreaseTurretAngle(classGame.getCurPlayer().getTankTurretBody());
@@ -127,9 +140,8 @@ public class PlayGame implements Screen {
             classGame.changeTurn();
             distanceTravelled = 0;
             classGame.getCurPlayer().getPlayerTank().setFuel(1);
-
-
         }
+
 
         try {
             classGame.getCurPlayer().renderWeapon(runGame);
