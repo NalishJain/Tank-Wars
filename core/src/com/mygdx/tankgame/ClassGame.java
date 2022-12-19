@@ -27,7 +27,7 @@ public class ClassGame implements Serializable {
 
     public ClassGame() {
         player1 = new Player(1, 1);
-        player2 = new Player(2, 2);
+        player2 = new Player(2, 3);
         //Added Tanks for both player to keep record of turret
         //Initialized tank, turret and movement vector
 
