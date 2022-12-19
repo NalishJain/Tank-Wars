@@ -152,22 +152,6 @@ public class TankSelectScreen implements Screen {
         game.batch.draw(rbomb,165,460,0,0,744*0.13f,195*0.13f,1,1,-2f);
         game.batch.draw(rbomb,165,420,0,0,744*0.13f,195*0.13f,1,1,-8f);
         game.batch.draw(rbomb,165,380,0,0,744*0.13f,195*0.13f,1,1,-13f);
-
-        if(Gdx.input.getX() < (SCREEN_WIDTH/2 - BUTTON_WIDTH/2) + BUTTON_WIDTH && Gdx.input.getX() >(SCREEN_WIDTH/2 - BUTTON_WIDTH/2)  && SCREEN_HEIGHT - Gdx.input.getY() < 50 + BUTTON_HEIGHT && SCREEN_HEIGHT - Gdx.input.getY() > 50){
-            if(Gdx.input.isTouched()){
-                if(playerNumber == 0){
-                    player1 = new Player(playerNumber + 1, TextureArrayCounter + 1);
-                    System.out.println(TextureArrayCounter);
-                    playerNumber++;
-
-                }
-                else if(playerNumber == 1){
-                    player2 = new Player(playerNumber + 1, TextureArrayCounter + 1);
-//                    playerNumber++;
-                    game.setScreen(new PlayGame(game, new ClassGame(player1, player2)));
-                }
-            }
-        }
         game.batch.draw(arrow, 400 + 15, 280, -60, 60);
         game.batch.draw(arrow, SCREEN_WIDTH-395 - 20, 280, 60, 60);
 

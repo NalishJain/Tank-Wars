@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -15,6 +16,8 @@ import com.mygdx.tankgame.GameInputController;
 import com.mygdx.tankgame.TankGame;
 import com.mygdx.tankgame.Weapon;
 
+import static com.mygdx.tankgame.TankGame.SCREEN_HEIGHT;
+
 public class PlayGame implements Screen {
     public final static World world = new World(new Vector2(0, -9.81f), true);
     private ClassGame classGame;
@@ -25,12 +28,14 @@ public class PlayGame implements Screen {
     public final static BodyDef bodyDef = new BodyDef();
     public final static FixtureDef fixtureDef = new FixtureDef();
 
+    Texture Shield = new Texture("shield.png");
 
     TankGame runGame;
 
     public PlayGame(TankGame runGame, ClassGame classGame) {
         this.classGame = classGame;
         this.runGame = runGame;
+
     }
 
     @Override
@@ -90,10 +95,8 @@ public class PlayGame implements Screen {
 
         runGame.batch.setProjectionMatrix(camera.combined);
         runGame.batch.begin();
-
-
-
         classGame.showGame(runGame);
+        classGame.showPlayerHealthBars(runGame);
 
         if (classGame.getCurPlayerNum() == 1) {
             if (Gdx.input.isKeyPressed(Input.Keys.W)){

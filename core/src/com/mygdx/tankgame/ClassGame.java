@@ -1,11 +1,13 @@
 package com.mygdx.tankgame;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 
+import static com.mygdx.tankgame.TankGame.SCREEN_HEIGHT;
 import static com.mygdx.tankgame.templates.PlayGame.*;
 
 public class ClassGame implements Serializable {
@@ -14,7 +16,9 @@ public class ClassGame implements Serializable {
     private Array<Body> bodies = new Array<Body>();
     private Body Ground;
     private Sprite spriteGround;
-
+    Texture hpBar = new Texture("newHP.png");
+    Texture redHpBar = new Texture("redHP.png");
+    Texture Shield = new Texture("Shield.png");
 
     //From Class-Diagram
     private Player player1;
@@ -143,6 +147,20 @@ public class ClassGame implements Serializable {
         player2.showTank();
     }
 
+    public void showPlayerHealthBars(TankGame runGame){
+
+        float player1Health = this.player1.getPlayerTank().getTankHp();
+        float player2Health = this.player2.getPlayerTank().getTankHp();
+
+        runGame.batch.draw(hpBar, -13,  14, 285*pixelToMeters, 80*pixelToMeters);
+        runGame.batch.draw(redHpBar, -12.75f + 260*pixelToMeters,  14.25f, -260*pixelToMeters*player1Health, 65*pixelToMeters);
+        runGame.batch.draw(Shield,-6.3f,13f,153*0.9f*pixelToMeters,157*0.9f*pixelToMeters);
+
+        runGame.batch.draw(hpBar, 4,  14, 285*pixelToMeters, 80*pixelToMeters);
+        runGame.batch.draw(redHpBar, 4.53f ,  14.25f, 260*pixelToMeters*player2Health, 65*pixelToMeters);
+        runGame.batch.draw(Shield,2.3f,13f,153*0.9f*pixelToMeters,157*0.9f*pixelToMeters);
+    }
+
     public void showGame(TankGame runGame){
 
         Array<Fixture> fixtures = new Array<Fixture>();
@@ -154,6 +172,8 @@ public class ClassGame implements Serializable {
         fixtures.add(this.getPlayer2().getTankTurretBody().getFixtureList().get(0));
         fixtures.add(this.getPlayer2().getTankBody().getFixtureList().get(1));
         int i1 = 0;
+
+
         for(Fixture fixture : fixtures){
             i1++;
             if(fixture.getUserData() != null && fixture.getUserData() instanceof Sprite){
