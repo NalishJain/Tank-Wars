@@ -36,8 +36,8 @@ public class SettingsMenuScreen implements Screen {
 
     public SettingsMenuScreen(TankGame game){
         this.game = game;
-        chooseButtonActive = new Texture("choose4x.png");
-        chooseButtonInactive = new Texture("choose4xin.png");
+//        chooseButtonActive = new Texture("choose4x.png");
+//        chooseButtonInactive = new Texture("choose4xin.png");
         bg = new Texture("bg3.png");
         terrain = new Texture("terrain2.png");
 //        kPlane = new Texture("Plane.png");

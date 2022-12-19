@@ -1,11 +1,7 @@
 package com.mygdx.tankgame;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.tankgame.templates.*;
 
 public class TankGame extends Game {
@@ -16,7 +12,7 @@ public class TankGame extends Game {
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
-		this.setScreen(new FirstMenuScreen(this));
+		this.setScreen(new PlayGame(this, new ClassGame()));
 	}
 
 	@Override
@@ -27,6 +23,7 @@ public class TankGame extends Game {
 	
 	@Override
 	public void dispose() {
+		batch.dispose();
 		super.dispose();
 	}
 }
