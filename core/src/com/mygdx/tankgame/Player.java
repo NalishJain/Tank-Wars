@@ -74,15 +74,15 @@ public class Player implements Serializable{
             spriteTank_b = new Sprite(new Texture("Tank2Back.png"));
         }
         else if(chosenTank == 3){
-            TANK_SPRITE_B_LENGTH = 222;
-            TANK_SPRITE_B_HEIGHT = 622;
-            TANK_SPRITE_T_LENGTH = 1016;
-            TANK_SPRITE_T_HEIGHT = 316;
-            TANK_SPRITE_F_LENGTH = 1008;
-            TANK_SPRITE_F_HEIGHT = 516;
-            spriteTank_f = new Sprite(new Texture("tank1front.png"));
-            spriteTank_t = new Sprite(new Texture("tank1turret2.png"));
-            spriteTank_b = new Sprite(new Texture("tank1back.png"));
+            TANK_SPRITE_B_LENGTH = 884;
+            TANK_SPRITE_B_HEIGHT = 416;
+            TANK_SPRITE_T_LENGTH = 958;
+            TANK_SPRITE_T_HEIGHT = 276;
+            TANK_SPRITE_F_LENGTH = 810;
+            TANK_SPRITE_F_HEIGHT = 478;
+            spriteTank_f = new Sprite(new Texture("tank3front.png"));
+            spriteTank_t = new Sprite(new Texture("tank3turret.png"));
+            spriteTank_b = new Sprite(new Texture("tank3back.png"));
         }
     }
 
@@ -374,7 +374,7 @@ public class Player implements Serializable{
                 return 0.9f;
             }
             else if(chosenTank == 3){
-
+                return 0.7f;
             }
         }
         else{
@@ -385,7 +385,7 @@ public class Player implements Serializable{
                 return  -0.9f;
             }
             else if(chosenTank == 3){
-
+                return -0.7f;
             }
         }
         return 0;
