@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.tankgame.ClassGame;
 import com.mygdx.tankgame.GameInputController;
 import com.mygdx.tankgame.TankGame;
+import com.mygdx.tankgame.Weapon;
 
 public class PlayGame implements Screen {
     public final static World world = new World(new Vector2(0, -9.81f), true);
@@ -42,17 +43,19 @@ public class PlayGame implements Screen {
             public boolean keyDown(int keycode) {
                 switch (keycode){
                     case Input.Keys.A:
-                        classGame.getPlayer1().moveLeft();
+                        classGame.getCurPlayer().moveLeft();
                         break;
                     case Input.Keys.D:
-                        classGame.getPlayer1().moveRight();
+                        classGame.getCurPlayer().moveRight();
                         break;
                     case Input.Keys.LEFT:
-                        classGame.getPlayer2().moveLeft();
+                        classGame.getCurPlayer().moveLeft();
                         break;
                     case Input.Keys.RIGHT:
-                        classGame.getPlayer2().moveRight();
+                        classGame.getCurPlayer().moveRight();
                         break;
+//                    case Input.Keys.SPACE:
+//                        classGame.getCurPlayer().launchWeapon(10f, classGame.getCurPlayer().getTankTurretBody().getAngle(), new Weapon(1));
                 }
                 return true;
             }
@@ -62,11 +65,11 @@ public class PlayGame implements Screen {
                 switch (keycode){
                     case Input.Keys.A:
                     case Input.Keys.D:
-                        classGame.getPlayer1().stopTank();
+                        classGame.getCurPlayer().stopTank();
                         break;
                     case Input.Keys.LEFT:
                     case Input.Keys.RIGHT:
-                        classGame.getPlayer2().stopTank();
+                        classGame.getCurPlayer().stopTank();
                         break;
                 }
                 return true;
@@ -82,25 +85,47 @@ public class PlayGame implements Screen {
         debugRenderer.render(world, camera.combined);
         world.step(1/60f, 8, 3);
 //Applied Forces
-        classGame.getPlayer1().getTankBody().applyForceToCenter(classGame.getPlayer1().getTankMovement(), true);
-        classGame.getPlayer2().getTankBody().applyForceToCenter(classGame.getPlayer2().getTankMovement(),true);
+        classGame.getCurPlayer().getTankBody().applyForceToCenter(classGame.getCurPlayer().getTankMovement(), true);
+//        classGame.getPlayer2().getTankBody().applyForceToCenter(classGame.getPlayer2().getTankMovement(),true);
 
         runGame.batch.setProjectionMatrix(camera.combined);
         runGame.batch.begin();
+
+
+
         classGame.showGame(runGame);
 
-        if (Gdx.input.isKeyPressed(Input.Keys.W)){
-            classGame.getPlayer1().getPlayerTank().getTankTurret().IncreaseTurretAngle(classGame.getPlayer1().getTankTurretBody());
+        if (classGame.getCurPlayerNum() == 1) {
+            if (Gdx.input.isKeyPressed(Input.Keys.W)){
+                classGame.getCurPlayer().getPlayerTank().getTankTurret().IncreaseTurretAngle(classGame.getCurPlayer().getTankTurretBody());
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.S)){
+                classGame.getCurPlayer().getPlayerTank().getTankTurret().DecreaseTurretAngle(classGame.getCurPlayer().getTankTurretBody());
+            }
+        } else {
+            if (Gdx.input.isKeyPressed(Input.Keys.W)){
+                classGame.getCurPlayer().getPlayerTank().getTankTurret().IncreaseTurretAngle2(classGame.getCurPlayer().getTankTurretBody());
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.S)){
+                classGame.getCurPlayer().getPlayerTank().getTankTurret().DecreaseTurretAngle2(classGame.getCurPlayer().getTankTurretBody());
+            }
         }
-        else if (Gdx.input.isKeyPressed(Input.Keys.S)){
-            classGame.getPlayer1().getPlayerTank().getTankTurret().DecreaseTurretAngle(classGame.getPlayer1().getTankTurretBody());
+//        if(Gdx.input.isKeyPressed(Input.Keys.UP)){
+//            classGame.getCurPlayer().getPlayerTank().getTankTurret().IncreaseTurretAngle2(classGame.getCurPlayer().getTankTurretBody());
+//        }
+//        if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
+//            classGame.getCurPlayer().getPlayerTank().getTankTurret().DecreaseTurretAngle2(classGame.getCurPlayer().getTankTurretBody());
+//        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            classGame.getCurPlayer().launchWeapon(10f, classGame.getCurPlayer().getTankTurretBody().getAngle(), new Weapon(1));
+            classGame.changeTurn();
         }
-        else if(Gdx.input.isKeyPressed(Input.Keys.UP)){
-            classGame.getPlayer2().getPlayerTank().getTankTurret().IncreaseTurretAngle2(classGame.getPlayer2().getTankTurretBody());
+
+        try {
+            classGame.getCurPlayer().renderWeapon(runGame);
+        } catch (NullPointerException e) {
         }
-        else if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-            classGame.getPlayer2().getPlayerTank().getTankTurret().DecreaseTurretAngle2(classGame.getPlayer2().getTankTurretBody());
-        }
+
 
         runGame.batch.end();
     }

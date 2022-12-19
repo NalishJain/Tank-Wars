@@ -2,11 +2,14 @@ package com.mygdx.tankgame;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 
 import static com.mygdx.tankgame.templates.PlayGame.*;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
 
 public class Player implements Serializable{
     //Add-ons
@@ -22,6 +25,8 @@ public class Player implements Serializable{
     private float TANK_SPRITE_T_HEIGHT;
     private float TANK_SPRITE_F_LENGTH;
     private float TANK_SPRITE_F_HEIGHT;
+    private Position TURRET_OFFSET;
+    private Weapon curWeapon;
 
     //Most important co-ordinates
     private float turretSpriteOriginX, getTurretSpriteOriginY;
@@ -39,6 +44,7 @@ public class Player implements Serializable{
     private boolean isSkippedChance = false;
 
     public Player(int num, int chosenTank) {
+        this.curWeapon = new Weapon(1);
         if (num == 1) {
             this.isPlayer1 = true;
         } else if (num == 2) {
@@ -54,6 +60,7 @@ public class Player implements Serializable{
             TANK_SPRITE_T_HEIGHT = 316;
             TANK_SPRITE_F_LENGTH = 1008;
             TANK_SPRITE_F_HEIGHT = 516;
+            TURRET_OFFSET = new Position(1.8f, 0f);
             spriteTank_f = new Sprite(new Texture("tank1front.png"));
             spriteTank_t = new Sprite(new Texture("tank1turret2.png"));
             spriteTank_b = new Sprite(new Texture("tank1back.png"));
@@ -61,7 +68,7 @@ public class Player implements Serializable{
 
 
         }
-        // add other measurements - Tank3Left
+        // TODO add other measurements - Tank3Left
         else if(chosenTank == 2){
             TANK_SPRITE_B_LENGTH = 844;
             TANK_SPRITE_B_HEIGHT = 622;
@@ -69,6 +76,7 @@ public class Player implements Serializable{
             TANK_SPRITE_T_HEIGHT = 166;
             TANK_SPRITE_F_LENGTH = 848;
             TANK_SPRITE_F_HEIGHT = 622;
+            TURRET_OFFSET = new Position(0.5f, -0.3f);
             spriteTank_f = new Sprite(new Texture("Tank2Front.png"));
             spriteTank_t = new Sprite(new Texture("Tank2Turret.png"));
             spriteTank_b = new Sprite(new Texture("Tank2Back.png"));
@@ -80,6 +88,7 @@ public class Player implements Serializable{
             TANK_SPRITE_T_HEIGHT = 316;
             TANK_SPRITE_F_LENGTH = 1008;
             TANK_SPRITE_F_HEIGHT = 516;
+
             spriteTank_f = new Sprite(new Texture("tank1front.png"));
             spriteTank_t = new Sprite(new Texture("tank1turret2.png"));
             spriteTank_b = new Sprite(new Texture("tank1back.png"));
@@ -159,9 +168,55 @@ public class Player implements Serializable{
 
         return null;
     }
-    public Position launchWeapon(int power, int angle, Weapon weapon){
+    public Position launchWeapon(float power, float angle, Weapon weapon){
+        curWeapon = weapon;
+//        System.out.println("<<<<<<<<<<<<<THIS WORKS.");
+        Projectile bullet;
+        if (isPlayer1) {
+            bullet = new Projectile(new Position(tankTurretBody.getPosition().x - TURRET_OFFSET.getPosX() + TANK_SPRITE_T_LENGTH / 350 * (float) cos(tankTurretBody.getAngle()),
+                    tankTurretBody.getPosition().y + TURRET_OFFSET.getPosY() + TANK_SPRITE_T_LENGTH / 350 * (float) sin(tankTurretBody.getAngle())));
+        } else {
+            bullet = new Projectile(new Position(tankTurretBody.getPosition().x + TURRET_OFFSET.getPosX() + TANK_SPRITE_T_LENGTH / 350 * (float) cos(3.14159f + tankTurretBody.getAngle()),
+                    tankTurretBody.getPosition().y + TURRET_OFFSET.getPosY() + TANK_SPRITE_T_LENGTH / 350 * (float) sin(3.14159f + tankTurretBody.getAngle())));
+            System.out.println(TURRET_OFFSET);
+        }
 
+//        System.out.println(bullet.getPosition().getPosX() + " " + bullet.getPosition().getPosY());
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.position.set(bullet.getPosition().getPosX(), bullet.getPosition().getPosY());
+        bodyDef.bullet = true;
+
+        fixtureDef.density = 2.5f;
+        fixtureDef.friction = 10f;
+        fixtureDef.restitution = 0f;
+        fixtureDef.shape = bullet.pShape;
+
+        curWeapon.setWeaponBody(world.createBody(bodyDef));
+        curWeapon.getWeaponBody().setTransform(bullet.getPosition().getPosX(), bullet.getPosition().getPosY(), tankTurretBody.getAngle());
+//        System.out.println(tankTurretBody.getAngle());
+
+        Fixture weaponFixture = curWeapon.getWeaponBody().createFixture(fixtureDef);
+        weaponFixture.setUserData(weapon.getSpriteWeapon());
+
+        float vx, vy;
+        if (isPlayer1) {
+            vx = (float) (power * cos(angle));
+            vy = (float) (power * sin(angle));
+        } else {
+            vx = (float) (power * cos(3.14159f + angle));
+            vy = (float) (power * sin(3.14159f + angle));
+        }
+
+
+        weapon.getWeaponBody().setLinearVelocity(vx, vy);
         return null;
+    }
+    public void renderWeapon(TankGame runGame) {
+        curWeapon.getSpriteWeapon().setPosition(curWeapon.getWeaponBody().getPosition().x - curWeapon.getSpriteWeapon().getWidth()/2,
+        curWeapon.getWeaponBody().getPosition().y - curWeapon.getSpriteWeapon().getHeight()/2);
+
+        curWeapon.getSpriteWeapon().setRotation(curWeapon.getWeaponBody().getAngle() * MathUtils.radiansToDegrees);
+        curWeapon.getSpriteWeapon().draw(runGame.batch);
     }
     public Position launchSplitterWeapon(int power, int angle, Weapon weapon){
 
@@ -231,7 +286,7 @@ public class Player implements Serializable{
 
     public void showTank() {
         //Turret
-        System.out.println("<<<<<<<<<<<This works.");
+
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         if (isPlayer1) {
             bodyDef.position.set(-20, 12);
@@ -246,7 +301,7 @@ public class Player implements Serializable{
         fixtureDef.shape = TankTurretShape;
         fixtureDef.friction = 0f;
         fixtureDef.restitution = .4f;
-        fixtureDef.density = 5;
+        fixtureDef.density = 3000;
 
         Fixture tankTfixture = tankTurretBody.createFixture(fixtureDef);
         if (isPlayer1) {

@@ -14,8 +14,7 @@ public class ClassGame implements Serializable {
     private Array<Body> bodies = new Array<Body>();
     private Body Ground;
     private Sprite spriteGround;
-    private Body missileBody;
-    private Sprite spriteMissile;
+
 
     //From Class-Diagram
     private Player player1;
@@ -47,6 +46,13 @@ public class ClassGame implements Serializable {
         return player2;
     }
 
+    public Player getCurPlayer() {
+        return curPlayer == 1 ?  player1 : player2;
+    }
+    public int getCurPlayerNum() {
+        return curPlayer;
+    }
+
     public void setPlayer2(Player player2) {
         this.player2 = player2;
     }
@@ -75,9 +81,6 @@ public class ClassGame implements Serializable {
         this.serialVersionUID = serialVersionUID;
     }
 
-    public int getCurPlayer() {
-        return curPlayer;
-    }
 
     public void setCurPlayer(int curPlayer) {
         this.curPlayer = curPlayer;
@@ -99,7 +102,9 @@ public class ClassGame implements Serializable {
     }
 
     public void changeTurn(){
-
+        if (curPlayer == 1) {
+            curPlayer = 2;
+        } else curPlayer = 1;
     }
 
     @Override

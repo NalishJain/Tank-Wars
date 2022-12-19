@@ -291,6 +291,7 @@ public class ActualGame implements Screen {
 
                         Projectile bullet = new Projectile(new Position(tank1TurretBody.getPosition().x+turret_length* (float)cos(tank1TurretBody.getAngle()), tank1TurretBody.getPosition().y+turret_length* (float)sin(tank1TurretBody.getAngle())));
                         ballDef.type = BodyDef.BodyType.DynamicBody;
+                        System.out.println(bullet.getPosition().getPosX() + " " + bullet.getPosition().getPosY());
                         ballDef.position.set(bullet.getPosition().getPosX(), bullet.getPosition().getPosY());
                         ballDef.bullet = true;
 

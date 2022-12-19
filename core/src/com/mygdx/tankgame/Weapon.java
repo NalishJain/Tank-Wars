@@ -1,9 +1,51 @@
 package com.mygdx.tankgame;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.utils.Array;
+
+import static com.mygdx.tankgame.templates.PlayGame.pixelToMeters;
+
 public class Weapon extends GameObject{
     private int damageRange;
     private int maxDamagePower;
     private Position weaponPosition;
+
+
+    //add-ons:
+//    public static Array<Weapon> allWeapons; // might not need this
+    private Sprite spriteWeapon;
+    private Body weaponBody;
+
+    public Weapon(int i) {
+        if (i == 1) {
+            // normal missile
+            damageRange = 5;
+            maxDamagePower = 80;
+
+            spriteWeapon = new Sprite( new Texture("Weapon1.png") );
+            spriteWeapon.setSize(331f*0.09f*pixelToMeters, 156f*0.09f*pixelToMeters);
+            spriteWeapon.setOrigin(spriteWeapon.getWidth()/2, spriteWeapon.getHeight()/2);
+
+        }
+    }
+
+    public Body getWeaponBody() {
+        return weaponBody;
+    }
+
+    public void setWeaponBody(Body weaponBody) {
+        this.weaponBody = weaponBody;
+    }
+
+    public Sprite getSpriteWeapon() {
+        return spriteWeapon;
+    }
+
+    public void setSpriteWeapon(Sprite spriteWeapon) {
+        this.spriteWeapon = spriteWeapon;
+    }
 
     public int getDamageRange() {
         return damageRange;
