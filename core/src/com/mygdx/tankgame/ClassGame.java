@@ -14,6 +14,7 @@ public class ClassGame implements Serializable {
     private Array<Body> bodies = new Array<Body>();
     private Body Ground;
     private Sprite spriteGround;
+    private boolean weaponLaunched;
 
 
     //From Class-Diagram
@@ -26,6 +27,7 @@ public class ClassGame implements Serializable {
     private int curPlayer = 1; //1,2
 
     public ClassGame() {
+        this.weaponLaunched = false;
         player1 = new Player(1, 1);
         player2 = new Player(2, 3);
         //Added Tanks for both player to keep record of turret
@@ -51,6 +53,14 @@ public class ClassGame implements Serializable {
     }
     public int getCurPlayerNum() {
         return curPlayer;
+    }
+
+    public boolean isWeaponLaunched() {
+        return weaponLaunched;
+    }
+
+    public void setWeaponLaunched(boolean weaponLaunched) {
+        this.weaponLaunched = weaponLaunched;
     }
 
     public void setPlayer2(Player player2) {
@@ -123,8 +133,8 @@ public class ClassGame implements Serializable {
 
         bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.position.set(0,-4);
-        ChainShape groundShape = new ChainShape();
-        groundShape.createChain(new Vector2[]{new Vector2(-500, 0), new Vector2(500, 0)});
+        EdgeShape groundShape = new EdgeShape();
+        groundShape.set(new Vector2(-500, 0), new Vector2(500, 0));
         fixtureDef.shape = groundShape;
         fixtureDef.friction = 1f;
         fixtureDef.restitution = 0;
