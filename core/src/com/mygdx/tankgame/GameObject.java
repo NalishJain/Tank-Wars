@@ -4,7 +4,7 @@ package com.mygdx.tankgame;
 import java.io.Serializable;
 
 public class GameObject implements Serializable {
-    private Position position;
+    private Position position = new Position();
     private long serialUID;
     public GameObject(){
     }

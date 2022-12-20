@@ -4,7 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.mygdx.tankgame.ClassGame;
 import com.mygdx.tankgame.TankGame;
+
+import java.io.*;
 
 import static com.mygdx.tankgame.TankGame.SCREEN_HEIGHT;
 import static com.mygdx.tankgame.TankGame.SCREEN_WIDTH;
@@ -32,6 +35,23 @@ public class LoadGameScreen implements Screen {
     Texture playButton;
     Texture game1im;
     Texture game2im;
+    ClassGame loadedGame;
+    public void deserialize(int gameNumber) throws IOException, ClassNotFoundException {
+        ObjectInputStream toBeLoadedGame = null;
+        ObjectOutputStream booleanArray = null;
+        try{
+            toBeLoadedGame = new ObjectInputStream(new FileInputStream(PauseGameScreen.savedGames[gameNumber]));
+            PauseGameScreen.gameSavedOrNot[gameNumber] = false;
+            loadedGame  = (ClassGame)toBeLoadedGame.readObject();
+            loadedGame.isGameBeingPlayed = 0;
+            booleanArray = new ObjectOutputStream(new FileOutputStream("result.txt"));
+            booleanArray.writeObject(PauseGameScreen.gameSavedOrNot);
+        }
+        finally {
+            booleanArray.close();
+            toBeLoadedGame.close();
+        }
+    }
 
     public LoadGameScreen(TankGame game){
         this.game = game;
@@ -43,12 +63,33 @@ public class LoadGameScreen implements Screen {
         terrain_texture = new Texture("Terrain_texture.png");
         diagBox = new Texture("diagBox.png");
         backButton = new Texture("GoBack.png");
-        game1 = new Texture("Game1inactive.png");
-        game2 = new Texture("Game2inactive.png");
-        game3 = new Texture("Game3disabled.png");
+
+        game2 = new Texture("game2disabled.png");
+        game3 = new Texture("game3disabled.png");
+
         playButton = new Texture("PlayButton.png");
         game1im = new Texture("game1image.png");
         game2im = new Texture("game2image.png");
+        if(PauseGameScreen.gameSavedOrNot[0]){
+            game1 = new Texture("Game1active.png");
+        }
+        else{
+            game1 = new Texture("game1disabled.png");
+        }
+
+        if(PauseGameScreen.gameSavedOrNot[1]){
+            game2 = new Texture("Game2active.png");
+        }
+        else{
+            game2 = new Texture("game2disabled.png");
+        }
+        if(PauseGameScreen.gameSavedOrNot[2]){
+            game3 = new Texture("Game3active.png");
+        }
+        else{
+            game3 = new Texture("game3disabled.png");
+        }
+
     }
     @Override
     public void show() {
@@ -73,12 +114,62 @@ public class LoadGameScreen implements Screen {
                 game.setScreen(new FirstMenuScreen(game));
             }
         }
-        game.batch.draw(game1, 195, 228, 966*0.3f, 1284*0.3f);
-        game.batch.draw(game2, (SCREEN_WIDTH/2 - 966*0.3f/2), 228, 966*0.3f, 1284*0.3f);
-        game.batch.draw(game3, SCREEN_WIDTH-195-966*0.3f, 228, 966*0.3f, 1284*0.3f);
-        game.batch.draw(playButton, (SCREEN_WIDTH/2 - 361/2), 100, 361, 108);
-        game.batch.draw(game1im, 207, 381, 526*0.505f, 296*0.5f);
-        game.batch.draw(game2im, 507, 381, 526*0.5055f, 296*0.5f);
+//        if(Gdx.input.isTouched()){
+//            System.out.println(Gdx.input.getX());
+//            System.out.println(Gdx.input.getY());
+//        }
+        if(Gdx.input.getX() > 201 && Gdx.input.getX() < 460 && Gdx.input.getY() > 155 && Gdx.input.getY() < 513){
+            if(Gdx.input.justTouched()){
+            if(PauseGameScreen.gameSavedOrNot[0]){
+                try {
+                    deserialize(0);
+                } catch (IOException | ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+                game.setScreen(new PlayGame(game,loadedGame));
+            }}
+        }
+
+        if(Gdx.input.getX() > 509 && Gdx.input.getX() < 769 && Gdx.input.getY() > 155 && Gdx.input.getY() < 513){
+            if(Gdx.input.justTouched()){
+            if(PauseGameScreen.gameSavedOrNot[1]){
+                try {
+                    deserialize(1);
+                } catch (IOException | ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+                game.setScreen(new PlayGame(game,loadedGame));
+
+            }}
+        }
+
+        if(Gdx.input.getX() > 806 && Gdx.input.getX() < 1070 && Gdx.input.getY() > 155 && Gdx.input.getY() < 513){
+            if(Gdx.input.justTouched()) {
+                if (PauseGameScreen.gameSavedOrNot[2]) {
+                    try {
+                        deserialize(2);
+                    } catch (IOException | ClassNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
+                    game.setScreen(new PlayGame(game, loadedGame));
+                }
+            }
+        }
+
+
+        game.batch.draw(game1, 195, 188, 966*0.3f, 1284*0.3f);
+        game.batch.draw(game2, (SCREEN_WIDTH/2 - 966*0.3f/2), 188, 966*0.3f, 1284*0.3f);
+        game.batch.draw(game3, SCREEN_WIDTH-195-966*0.3f, 188, 966*0.3f, 1284*0.3f);
+//        game.batch.draw(playButton, (SCREEN_WIDTH/2 - 361/2), 100, 361, 108);
+        if(PauseGameScreen.gameSavedOrNot[0]){
+            game.batch.draw(game1im, 207, 341, 526*0.505f, 296*0.5f);
+        }
+        if(PauseGameScreen.gameSavedOrNot[1]){
+            game.batch.draw(game2im, 507, 341, 526*0.505f, 296*0.5f);
+        }
+        if(PauseGameScreen.gameSavedOrNot[2]){
+            game.batch.draw(game1im, 807, 341, 526*0.505f, 296*0.5f);
+        }
         game.batch.end();
 
     }

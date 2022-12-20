@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.tankgame.TankGame;
 
+import java.io.*;
+
 import static com.mygdx.tankgame.TankGame.SCREEN_HEIGHT;
 import static com.mygdx.tankgame.TankGame.SCREEN_WIDTH;
 
@@ -61,6 +63,26 @@ public class FirstMenuScreen implements Screen {
 
     @Override
     public void show() {
+        ObjectInputStream booleanArray = null;
+        try{
+            booleanArray = new ObjectInputStream(new FileInputStream("result.txt"));
+            try {
+                PauseGameScreen.gameSavedOrNot = (boolean[])booleanArray.readObject();
+//                System.out.println(PauseGameScreen.gameSavedOrNot[0]);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (FileNotFoundException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                booleanArray.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
 
     }
 
@@ -85,6 +107,25 @@ public class FirstMenuScreen implements Screen {
         if(Gdx.input.getX() < BUTTON_RIGHT_LOCATION + BUTTON_WIDTH && Gdx.input.getX() >BUTTON_RIGHT_LOCATION  && SCREEN_HEIGHT - Gdx.input.getY() < 100 + BUTTON_HEIGHT && SCREEN_HEIGHT - Gdx.input.getY() > 100){
             if(Gdx.input.isTouched()){
                 this.dispose();
+                ObjectOutputStream booleanArray = null;
+                try{
+                    booleanArray = new ObjectOutputStream(new FileOutputStream("result.txt"));
+                    try {
+                        booleanArray.writeObject(PauseGameScreen.gameSavedOrNot);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                } catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } finally {
+                    try {
+                        booleanArray.close();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
                 Gdx.app.exit();
 //                game.setScreen(new MainGameScreen(game));
             }

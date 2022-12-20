@@ -8,10 +8,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.tankgame.templates.PauseGameScreen;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.*;
 
 import static com.mygdx.tankgame.templates.PlayGame.*;
 
@@ -19,7 +16,7 @@ public class ClassGame implements Serializable {
     //Add-ons
 
 //    private Array<Body> bodies = new Array<Body>();
-    int isGameBeingPlayed = 0;
+    public int isGameBeingPlayed = 0;
     transient private Body Ground;
     transient private Sprite spriteGround;
     
@@ -27,7 +24,7 @@ public class ClassGame implements Serializable {
     transient Texture redHpBar = new Texture("redHP.png");
     transient Texture Shield = new Texture("Shield.png");
 
-    Texture powerSlider = new Texture("powerSlider.png");
+    transient Texture powerSlider = new Texture("powerSlider.png");
 
     private boolean weaponLaunched;
 
@@ -144,6 +141,7 @@ public class ClassGame implements Serializable {
 
     public void serialise() throws IOException {
         ObjectOutputStream toBeSavedGame = null;
+        ObjectOutputStream booleanArray = null;
         try{
            this.player1.getPlayerTank().setPosition(new Position(this.player1.getTankBody().getPosition().x,this.player1.getTankBody().getPosition().y));
            this.player2.getPlayerTank().setPosition(new Position(this.player2.getTankBody().getPosition().x, this.player2.getTankBody().getPosition().y));
@@ -168,6 +166,9 @@ public class ClassGame implements Serializable {
                PauseGameScreen.gameSavedOrNot[2] = true;
            }
 
+
+            booleanArray = new ObjectOutputStream(new FileOutputStream("result.txt"));
+            booleanArray.writeObject(PauseGameScreen.gameSavedOrNot);
             toBeSavedGame.writeObject(this);
 
         }
@@ -176,6 +177,7 @@ public class ClassGame implements Serializable {
 //        }
         finally {
             toBeSavedGame.close();
+            booleanArray.close();
         }
     }
 
@@ -208,6 +210,10 @@ public class ClassGame implements Serializable {
             player2.showTank();
             isGameBeingPlayed++;
         }
+        hpBar = new Texture("newHP.png");
+        redHpBar = new Texture("redHP.png");
+        Shield = new Texture("Shield.png");
+        powerSlider = new Texture("powerSlider.png");
 
     }
 

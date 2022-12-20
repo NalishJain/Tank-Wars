@@ -21,8 +21,8 @@ import static com.mygdx.tankgame.TankGame.SCREEN_WIDTH;
 public class PlayGame implements Screen {
     public final static World world = new World(new Vector2(0, -9.81f), true);
     private ClassGame classGame;
-    Texture terrain = new Texture("terrain2.png");
-    Texture pauseButton = new Texture("PauseGameButton.png");
+    transient Texture terrain = new Texture("terrain2.png");
+    transient Texture pauseButton = new Texture("PauseGameButton.png");
     ArrayList<Explosion> explosions;
 
     private int tankSpeed = 300;
@@ -55,6 +55,9 @@ public class PlayGame implements Screen {
 
         classGame.showGround(runGame);
         classGame.showTanks();
+//        if(classGame.getPlayer1().getPlayerTank().getPosition().getPosX() != 0 && classGame.getPlayer1().getPlayerTank().getPosition().getPosY() != 0){
+//        classGame.getPlayer1().getTankTurretBody().setTransform(classGame.getPlayer1().getPlayerTank().getTankTurret().getPosition().getPosX(), classGame.getPlayer1().getPlayerTank().getTankTurret().getPosition().getPosY(), classGame.getPlayer1().getPlayerTank().getTankTurret().getTurretAngle());}
+
         float inPos = classGame.getCurPlayer().getTankBody().getPosition().x;
 
 
@@ -105,7 +108,7 @@ public class PlayGame implements Screen {
 
         runGame.batch.setProjectionMatrix(camera.combined);
         runGame.batch.begin();
-        runGame.batch.draw(terrain, -35, -20, (SCREEN_WIDTH+900)*pixelToMeters, 500*pixelToMeters);
+        runGame.batch.draw(terrain, -35, -23, (SCREEN_WIDTH+900)*pixelToMeters, 500*pixelToMeters);
         classGame.showGame(runGame);
         classGame.showPlayerHealthBars(runGame);
         classGame.showPowerSlider(runGame);
