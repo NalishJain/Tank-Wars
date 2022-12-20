@@ -2,6 +2,9 @@ package com.mygdx.tankgame;
 
 import com.badlogic.gdx.physics.box2d.Body;
 
+import java.io.IOException;
+import java.io.Serializable;
+
 public class Tank extends GameObject {
 
     Tank(){
@@ -77,11 +80,22 @@ public class Tank extends GameObject {
 
         return false;
     }
-    public class Turret {
-        int turretAngle = 30;
+    public class Turret implements Serializable {
+        public float turretAngle = 30;
+        public Position position;
+        public Position getPosition(){
+            return this.position;
+        }
+        public void setPosition(Position p){
+            this.position = p;
+        }
+        public void setTurretAngle(float angle){
+            this.turretAngle = angle;
+        }
 
-        public int getTurretAngle() {
-            return 0;
+
+        public float getTurretAngle() {
+            return this.getTurretAngle();
         }
 
         public void IncreaseTurretAngle(Body tankTurretBody) {
@@ -112,6 +126,8 @@ public class Tank extends GameObject {
                 tankTurretBody.setTransform(tankTurretBody.getPosition().x, tankTurretBody.getPosition().y, total);
             }
         }
+
+
     }
 }
 
