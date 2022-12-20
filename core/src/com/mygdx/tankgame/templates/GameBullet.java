@@ -276,19 +276,14 @@ public class GameBullet implements Screen {
         });
 
 
-        // TODO organise according to Class Diagram + incorporate joints for turret+body
 
         if (Gdx.input.isKeyPressed(Input.Keys.A)){
-            // TODO move tank left if fuel > 0
         }
         if (Gdx.input.isKeyPressed(Input.Keys.D)){
-            // TODO move tank right if fuel < 0
         }
         if (Gdx.input.isKeyPressed(Input.Keys.W)){
-            // TODO move turret up
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S)){
-            // TODO move turret down
         }
         if (Gdx.input.isKeyPressed(Input.Keys.UP)){
             // TODO increase power

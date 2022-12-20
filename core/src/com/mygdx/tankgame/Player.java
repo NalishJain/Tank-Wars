@@ -8,8 +8,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 
 import static com.mygdx.tankgame.templates.PlayGame.*;
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
+import static java.lang.Math.*;
 
 public class Player implements Serializable{
     //Add-ons
@@ -46,7 +45,7 @@ public class Player implements Serializable{
     Texture fuel = new Texture("fuel.png");
 
     public Player(int num, int chosenTank) {
-        this.curWeapon = new Weapon(1);
+        this.curWeapon = new Weapon(num, 1);
         if (num == 1) {
             this.isPlayer1 = true;
         } else if (num == 2) {
@@ -70,7 +69,6 @@ public class Player implements Serializable{
 
 
         }
-        // TODO add other measurements - Tank3Left
         else if(chosenTank == 2){
             TANK_SPRITE_B_LENGTH = 844;
             TANK_SPRITE_B_HEIGHT = 622;
@@ -120,6 +118,14 @@ public class Player implements Serializable{
 
     public void setCurWeapons(Weapon[] curWeapons) {
         this.curWeapons = curWeapons;
+    }
+
+    public Weapon getCurWeapon() {
+        return curWeapon;
+    }
+
+    public void setCurWeapon(Weapon curWeapon) {
+        this.curWeapon = curWeapon;
     }
 
     public int getPower() {
@@ -175,11 +181,11 @@ public class Player implements Serializable{
 //        System.out.println("<<<<<<<<<<<<<THIS WORKS.");
         Projectile bullet;
         if (isPlayer1) {
-            bullet = new Projectile(new Position(tankTurretBody.getPosition().x - TURRET_OFFSET.getPosX() + TANK_SPRITE_T_LENGTH / 350 * (float) cos(tankTurretBody.getAngle()),
-                    tankTurretBody.getPosition().y + TURRET_OFFSET.getPosY() + TANK_SPRITE_T_LENGTH / 350 * (float) sin(tankTurretBody.getAngle())));
+            bullet = new Projectile(new Position(tankTurretBody.getPosition().x - TURRET_OFFSET.getPosX() + TANK_SPRITE_T_LENGTH / 300 * (float) cos(tankTurretBody.getAngle()),
+                    tankTurretBody.getPosition().y + TURRET_OFFSET.getPosY() + TANK_SPRITE_T_LENGTH / 300 * (float) sin(tankTurretBody.getAngle())));
         } else {
-            bullet = new Projectile(new Position(tankTurretBody.getPosition().x + TURRET_OFFSET.getPosX() + TANK_SPRITE_T_LENGTH / 350 * (float) cos(3.14159f + tankTurretBody.getAngle()),
-                    tankTurretBody.getPosition().y + TURRET_OFFSET.getPosY() + TANK_SPRITE_T_LENGTH / 350 * (float) sin(3.14159f + tankTurretBody.getAngle())));
+            bullet = new Projectile(new Position(tankTurretBody.getPosition().x + TURRET_OFFSET.getPosX() + TANK_SPRITE_T_LENGTH / 300 * (float) cos(3.14159f + tankTurretBody.getAngle()),
+                    tankTurretBody.getPosition().y + TURRET_OFFSET.getPosY() + TANK_SPRITE_T_LENGTH / 300 * (float) sin(3.14159f + tankTurretBody.getAngle())));
             System.out.println(TURRET_OFFSET);
         }
 
@@ -198,7 +204,7 @@ public class Player implements Serializable{
 //        System.out.println(tankTurretBody.getAngle());
 
         Fixture weaponFixture = curWeapon.getWeaponBody().createFixture(fixtureDef);
-        weaponFixture.setUserData(weapon.getSpriteWeapon());
+        weaponFixture.setUserData(weapon);
 
         float vx, vy;
         if (isPlayer1) {
@@ -235,6 +241,7 @@ public class Player implements Serializable{
         this.getTankMovement().x = 0;
         this.getTankBody().setLinearVelocity(0,0);
     }
+
     public void showFuel(TankGame runGame){
         runGame.batch.draw(fuel, -21,-13, 80*pixelToMeters,80*pixelToMeters);
         runGame.batch.draw(fuel, 21.4f,-13, -80*pixelToMeters,80*pixelToMeters);
@@ -245,8 +252,32 @@ public class Player implements Serializable{
             runGame.batch.draw(redCross, 19.4f,-13, 95*pixelToMeters, 95*pixelToMeters);
         }
     }
-    public int causeDamage(Position weaponPosition){
 
+    public int causeDamage(Weapon weapon, Position weaponPosition){
+        // calculate distance
+        if (isPlayer1) {
+            double distance = sqrt(pow(this.tankBody.getPosition().x - weaponPosition.getPosX(), 2) + pow(this.tankBody.getPosition().y - weaponPosition.getPosY(), 2));
+            System.out.println("Player 1: "+ distance);
+            float damageScale = weapon.getDamageRange()-(float)distance;
+            if (damageScale > 0) {
+                float damageCaused = weapon.getMaxDamagePower()*(damageScale+1)/weapon.getDamageRange();
+                // health = health - damagecaused;
+                System.out.println("Damage to Player1 : " + damageCaused);
+            }
+        } else {
+            double distance = sqrt(pow(this.tankBody.getPosition().x - weaponPosition.getPosX(), 2) + pow(this.tankBody.getPosition().y - weaponPosition.getPosY(), 2));
+            System.out.println("Player 2: "+ distance);
+            float damageScale = weapon.getDamageRange()-(float)distance;
+            if (damageScale > 0) {
+                float damageCaused = weapon.getMaxDamagePower() * (damageScale + 1) / weapon.getDamageRange();
+                // health = health - damagecaused;
+                System.out.println("Damage to Player2 : " + damageCaused);
+            }
+        }
+        // calculate damage caused using maxDamage and damageRange
+
+
+        // decrease the health of this player's tank
         return 0;
     }
 
