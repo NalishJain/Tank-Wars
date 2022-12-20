@@ -8,6 +8,8 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.tankgame.ClassGame;
 import com.mygdx.tankgame.TankGame;
 
+import java.io.IOException;
+
 import static com.mygdx.tankgame.TankGame.SCREEN_HEIGHT;
 import static com.mygdx.tankgame.TankGame.SCREEN_WIDTH;
 
@@ -15,6 +17,11 @@ public class PauseGameScreen implements Screen {
 
     private static final int BUTTON_WIDTH = 350;
     private static final int BUTTON_HEIGHT = 100;
+//    public static ClassGame[] savedGameArray = new ClassGame[3];
+    public static String[]  savedGames = {"savedGame1.txt", "savedGame2.txt", "savedGame3.txt"};
+    public static boolean[] gameSavedOrNot = {false, false, false};
+    public static int noOfSavedGames = 0;
+
     OrthographicCamera camera;
 
     private static final int LEFT_WIDTH = SCREEN_WIDTH/2;
@@ -94,6 +101,13 @@ public class PauseGameScreen implements Screen {
         if(Gdx.input.getX() < (SCREEN_WIDTH/2 - 368/2) +368  && Gdx.input.getX() > (SCREEN_WIDTH/2 - 368/2) && SCREEN_HEIGHT - Gdx.input.getY() < (SCREEN_HEIGHT/2 - 100/2) + 150 - 27 + 100 && SCREEN_HEIGHT - Gdx.input.getY() > (SCREEN_HEIGHT/2 - 100/2) + 150 - 27){
             if(Gdx.input.isTouched()){
                 this.dispose();
+                try {
+                    classGame.serialise();
+                    noOfSavedGames++;
+
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
                 game.setScreen(new LoadGameScreen(game));
             }
         }

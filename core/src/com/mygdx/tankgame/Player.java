@@ -7,17 +7,19 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 
+import java.io.Serializable;
+
 import static com.mygdx.tankgame.templates.PlayGame.*;
 import static java.lang.Math.*;
 
-public class Player implements Serializable{
+public class Player implements Serializable {
     //Add-ons
-    private Body tankBody;
-    Texture redCross = new Texture("redCross.png");
-    private Body tankTurretBody;
+    transient private Body tankBody;
+    transient Texture redCross = new Texture("redCross.png");
+    transient private Body tankTurretBody;
     private boolean isPlayer1 = true; // to check whether right sided tank or left sided tank
-    private Vector2 tankMovement = new Vector2();
-    Sprite spriteTank_b, spriteTank_f, spriteTank_t;
+    transient private Vector2 tankMovement = new Vector2();
+    transient Sprite spriteTank_b, spriteTank_f, spriteTank_t;
     private int chosenTank;
     private float TANK_SPRITE_B_LENGTH;
     private float TANK_SPRITE_B_HEIGHT;
@@ -42,7 +44,7 @@ public class Player implements Serializable{
     private boolean isDoubleDamage = false;
     private boolean isDoubleFuel = false;
     private boolean isSkippedChance = false;
-    Texture fuel = new Texture("fuel.png");
+    transient Texture fuel = new Texture("fuel.png");
 
     public Player(int num, int chosenTank) {
         this.curWeapon = new Weapon(num, 1);
@@ -281,15 +283,15 @@ public class Player implements Serializable{
         return 0;
     }
 
-    @Override
-    public void serialise() {
-
-    }
-
-    @Override
-    public void deserialise() {
-
-    }
+//    @Override
+//    public void serialise() {
+//
+//    }
+//
+//    @Override
+//    public void deserialise() {
+//
+//    }
 
 //    public void move(ClassGame classGame){
 //        float iniPos = this.getTankBody().getPosition().x;

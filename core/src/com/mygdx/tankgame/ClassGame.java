@@ -6,22 +6,26 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.tankgame.templates.PauseGameScreen;
 
-import static com.mygdx.tankgame.TankGame.SCREEN_HEIGHT;
-import static com.mygdx.tankgame.TankGame.SCREEN_WIDTH;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
 import static com.mygdx.tankgame.templates.PlayGame.*;
 
 public class ClassGame implements Serializable {
     //Add-ons
 
-    private Array<Body> bodies = new Array<Body>();
+//    private Array<Body> bodies = new Array<Body>();
     int isGameBeingPlayed = 0;
-    private Body Ground;
-    private Sprite spriteGround;
+    transient private Body Ground;
+    transient private Sprite spriteGround;
     
-    Texture hpBar = new Texture("newHP.png");
-    Texture redHpBar = new Texture("redHP.png");
-    Texture Shield = new Texture("Shield.png");
+    transient Texture hpBar = new Texture("newHP.png");
+    transient Texture redHpBar = new Texture("redHP.png");
+    transient Texture Shield = new Texture("Shield.png");
 
     private boolean weaponLaunched;
 
@@ -30,8 +34,8 @@ public class ClassGame implements Serializable {
     private Player player1;
     private Player player2;
     private GameObject[] gameObjects;
-    private SupplyDrop[] supplyDrops;
-    private ClassGame[] savedGames;
+//    private SupplyDrop[] supplyDrops;
+//    private ClassGame[] savedGames;
     private int serialVersionUID;
     private int curPlayer = 1; //1,2
 
@@ -90,13 +94,13 @@ public class ClassGame implements Serializable {
         this.gameObjects = gameObjects;
     }
 
-    public SupplyDrop[] getSupplyDrops() {
-        return supplyDrops;
-    }
-
-    public void setSupplyDrops(SupplyDrop[] supplyDrops) {
-        this.supplyDrops = supplyDrops;
-    }
+//    public SupplyDrop[] getSupplyDrops() {
+//        return supplyDrops;
+//    }
+//
+//    public void setSupplyDrops(SupplyDrop[] supplyDrops) {
+//        this.supplyDrops = supplyDrops;
+//    }
 
     public int getSerialVersionUID() {
         return serialVersionUID;
@@ -114,13 +118,13 @@ public class ClassGame implements Serializable {
     public void pauseGame(){}
 
 
-    public ClassGame[] getSavedGames() {
-        return savedGames;
-    }
-
-    public void setSavedGames(ClassGame[] savedGames) {
-        this.savedGames = savedGames;
-    }
+//    public ClassGame[] getSavedGames() {
+//        return savedGames;
+//    }
+//
+//    public void setSavedGames(ClassGame[] savedGames) {
+//        this.savedGames = savedGames;
+//    }
     public boolean trySupplyDrop(){
         //will use random function to drop (1/5) uses function of supplyDrop class
         return false;
@@ -132,14 +136,41 @@ public class ClassGame implements Serializable {
         } else curPlayer = 1;
     }
 
-    @Override
-    public void serialise() {
+    public void serialise() throws IOException {
+        ObjectOutputStream toBeSavedGame = null;
+        try{
+           this.player1.getPlayerTank().setPosition(new Position(this.player1.getTankBody().getPosition().x,this.player1.getTankBody().getPosition().y));
+           this.player2.getPlayerTank().setPosition(new Position(this.player2.getTankBody().getPosition().x, this.player2.getTankBody().getPosition().y));
 
-    }
+           this.player1.getPlayerTank().getTankTurret().setTurretAngle(this.player1.getTankTurretBody().getAngle());
+           this.player1.getPlayerTank().getTankTurret().setPosition(new Position(this.player1.getTankTurretBody().getPosition().x,this.player1.getTankTurretBody().getPosition().y));
 
-    @Override
-    public void deserialise() {
+           this.player2.getPlayerTank().getTankTurret().setTurretAngle(this.player2.getTankTurretBody().getAngle());
+           this.player2.getPlayerTank().getTankTurret().setPosition(new Position(this.player2.getTankTurretBody().getPosition().x,this.player2.getTankTurretBody().getPosition().y));
 
+           if(!PauseGameScreen.gameSavedOrNot[0]){
+               toBeSavedGame = new ObjectOutputStream(new FileOutputStream(PauseGameScreen.savedGames[0]));
+               PauseGameScreen.gameSavedOrNot[0] = true;
+           }
+           else if(!PauseGameScreen.gameSavedOrNot[1]){
+               toBeSavedGame = new ObjectOutputStream(new FileOutputStream(PauseGameScreen.savedGames[1]));
+               PauseGameScreen.gameSavedOrNot[1] = true;
+
+           }
+           else if(PauseGameScreen.gameSavedOrNot[2]){
+               toBeSavedGame = new ObjectOutputStream(new FileOutputStream(PauseGameScreen.savedGames[2]));
+               PauseGameScreen.gameSavedOrNot[2] = true;
+           }
+
+            toBeSavedGame.writeObject(this);
+
+        }
+//        catch(Exception e){
+//            e.printStackTrace();
+//        }
+        finally {
+            toBeSavedGame.close();
+        }
     }
 
 
