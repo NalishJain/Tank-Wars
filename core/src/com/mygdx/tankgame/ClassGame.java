@@ -15,6 +15,7 @@ public class ClassGame implements Serializable {
     //Add-ons
 
     private Array<Body> bodies = new Array<Body>();
+    int isGameBeingPlayed = 0;
     private Body Ground;
     private Sprite spriteGround;
     Texture hpBar = new Texture("newHP.png");
@@ -144,8 +145,12 @@ public class ClassGame implements Serializable {
     }
 
     public void showTanks() {
-        player1.showTank();
-        player2.showTank();
+        if(isGameBeingPlayed == 0){
+            player1.showTank();
+            player2.showTank();
+            isGameBeingPlayed++;
+        }
+
     }
 
     public void showPlayerHealthBars(TankGame runGame){

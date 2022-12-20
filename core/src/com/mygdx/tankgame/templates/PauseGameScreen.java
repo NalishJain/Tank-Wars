@@ -2,8 +2,10 @@ package com.mygdx.tankgame.templates;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.mygdx.tankgame.ClassGame;
 import com.mygdx.tankgame.TankGame;
 
 import static com.mygdx.tankgame.TankGame.SCREEN_HEIGHT;
@@ -13,6 +15,7 @@ public class PauseGameScreen implements Screen {
 
     private static final int BUTTON_WIDTH = 350;
     private static final int BUTTON_HEIGHT = 100;
+    OrthographicCamera camera;
 
     private static final int LEFT_WIDTH = SCREEN_WIDTH/2;
     private static final int RIGHT_WIDTH = SCREEN_WIDTH/2;
@@ -31,9 +34,11 @@ public class PauseGameScreen implements Screen {
     Texture quitButton;
     Texture soundButton;
     Texture musicButton;
+    ClassGame classGame;
 
 
-    public PauseGameScreen(TankGame game){
+    public PauseGameScreen(TankGame game, ClassGame classGame){
+        this.classGame = classGame;
         this.game = game;
 //        chooseButtonActive = new Texture("choose4x.png");
 //        chooseButtonInactive = new Texture("choose4xin.png");
@@ -52,12 +57,15 @@ public class PauseGameScreen implements Screen {
     }
     @Override
     public void show() {
-
+         camera = new OrthographicCamera(Gdx.graphics.getWidth() , Gdx.graphics.getHeight() );// maybe add Gdx.graphics.get...
+        camera.position.set(640,360,0);
+        camera.update();
     }
 
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0.44f,0.31f,0.96f, 0.5f);
+        game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
         game.batch.draw(bg, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         game.batch.draw(terrain, 0,-295, SCREEN_WIDTH, 500);
@@ -70,7 +78,7 @@ public class PauseGameScreen implements Screen {
         if(Gdx.input.getX() < 0+654*0.2f  && Gdx.input.getX() > 0 && SCREEN_HEIGHT - Gdx.input.getY() < 500 + 488*0.2f  && SCREEN_HEIGHT - Gdx.input.getY() > 500){
             if(Gdx.input.isTouched()){
                 this.dispose();
-                game.setScreen(new MainGameScreen(game));
+                game.setScreen(new PlayGame(game, classGame));
             }
         }
         game.batch.draw(resume,(SCREEN_WIDTH/2 - 368/2), (SCREEN_HEIGHT/2 - 100/2) + 260 -27, 368,100);
@@ -78,7 +86,7 @@ public class PauseGameScreen implements Screen {
         if(Gdx.input.getX() < (SCREEN_WIDTH/2 - 368/2) +368  && Gdx.input.getX() >(SCREEN_WIDTH/2 - 368/2) && SCREEN_HEIGHT - Gdx.input.getY() < (SCREEN_HEIGHT/2 - 100/2) + 260 -27 + 100  && SCREEN_HEIGHT - Gdx.input.getY() > (SCREEN_HEIGHT/2 - 100/2) + 260 -27){
             if(Gdx.input.isTouched()){
                 this.dispose();
-                game.setScreen(new MainGameScreen(game));
+                game.setScreen(new PlayGame(game, classGame));;
             }
         }
         game.batch.draw(saveButton,(SCREEN_WIDTH/2 - 368/2), (SCREEN_HEIGHT/2 - 100/2) + 150 - 27, 368,100);
