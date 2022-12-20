@@ -27,6 +27,8 @@ public class ClassGame implements Serializable {
     transient Texture redHpBar = new Texture("redHP.png");
     transient Texture Shield = new Texture("Shield.png");
 
+    Texture powerSlider = new Texture("powerSlider.png");
+
     private boolean weaponLaunched;
 
 
@@ -52,6 +54,10 @@ public class ClassGame implements Serializable {
         //Added Tanks for both player to keep record of turret
         //Initialized tank, turret and movement vector
 
+    }
+
+    public void gameOver() {
+        System.out.println("lolz get rekt.");
     }
 
 
@@ -184,7 +190,7 @@ public class ClassGame implements Serializable {
         // groundShape.createChain(new Vector2[]{new Vector2(-500, -3), new Vector2(500, -3)});
 
         EdgeShape groundShape = new EdgeShape();
-        groundShape.set(new Vector2(-500, 0), new Vector2(500, 0));
+        groundShape.set(new Vector2(-500, -3), new Vector2(500, -3));
         
         fixtureDef.shape = groundShape;
         fixtureDef.friction = 1f;
@@ -217,6 +223,13 @@ public class ClassGame implements Serializable {
         runGame.batch.draw(hpBar, 4,  14, 285*pixelToMeters, 80*pixelToMeters);
         runGame.batch.draw(redHpBar, 4.53f ,  14.25f, 260*pixelToMeters*player2Health, 65*pixelToMeters);
         runGame.batch.draw(Shield,2.3f,13f,153*0.9f*pixelToMeters,157*0.9f*pixelToMeters);
+    }
+
+    public void showPowerSlider(TankGame runGame){
+        float power = this.getCurPlayer().getPower();
+
+        runGame.batch.draw(powerSlider, (-964*pixelToMeters/4f), -16, 964*pixelToMeters*0.5f, 368*pixelToMeters*0.5f);
+        runGame.batch.draw(hpBar,  -470*pixelToMeters/2f-(power * 0.2f)+(1f-power)*0.24f+0.1f, -13.15f, 470f*pixelToMeters*power, 80f*pixelToMeters+0.15f);
     }
 
     public void showGame(TankGame runGame){

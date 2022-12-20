@@ -13,6 +13,8 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.tankgame.*;
 
+import java.util.ArrayList;
+
 import static com.mygdx.tankgame.TankGame.SCREEN_HEIGHT;
 import static com.mygdx.tankgame.TankGame.SCREEN_WIDTH;
 
@@ -21,6 +23,7 @@ public class PlayGame implements Screen {
     private ClassGame classGame;
     Texture terrain = new Texture("terrain2.png");
     Texture pauseButton = new Texture("PauseGameButton.png");
+    ArrayList<Explosion> explosions;
 
     private int tankSpeed = 300;
     private Box2DDebugRenderer debugRenderer;
@@ -39,6 +42,7 @@ public class PlayGame implements Screen {
         this.runGame = runGame;
 
         this.world.setContactListener(new BulletContactListener());
+        explosions = new ArrayList<Explosion>();
 
     }
 
@@ -58,10 +62,14 @@ public class PlayGame implements Screen {
             public boolean keyDown(int keycode) {
                 switch (keycode){
                     case Input.Keys.A:
-                        classGame.getCurPlayer().moveLeft();
+                        if (!classGame.isWeaponLaunched()) {
+                            classGame.getCurPlayer().moveLeft();
+                        }
                         break;
                     case Input.Keys.D:
-                        classGame.getCurPlayer().moveRight();
+                        if (!classGame.isWeaponLaunched()) {
+                            classGame.getCurPlayer().moveRight();
+                        }
                         break;
                 }
                 return true;
@@ -100,6 +108,7 @@ public class PlayGame implements Screen {
         runGame.batch.draw(terrain, -35, -20, (SCREEN_WIDTH+900)*pixelToMeters, 500*pixelToMeters);
         classGame.showGame(runGame);
         classGame.showPlayerHealthBars(runGame);
+        classGame.showPowerSlider(runGame);
         classGame.getCurPlayer().showFuel(runGame);
 
         runGame.batch.draw(pauseButton, -32, 13.8f,654*pixelToMeters*0.2f, 488*pixelToMeters*0.2f);
@@ -128,8 +137,14 @@ public class PlayGame implements Screen {
                 classGame.getCurPlayer().getPlayerTank().getTankTurret().DecreaseTurretAngle2(classGame.getCurPlayer().getTankTurretBody());
             }
         }
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            classGame.getCurPlayer().setPower(classGame.getCurPlayer().getPower() + 0.003f);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            classGame.getCurPlayer().setPower(classGame.getCurPlayer().getPower() - 0.003f);
+        }
 
-        if(Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.D)){
+        if( !classGame.isWeaponLaunched() && (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.D))){
             float iniPos = classGame.getCurPlayer().getTankBody().getPosition().x;
             distanceTravelled+= distanceTravelled + 0.00000000001f;
             if(distanceTravelled >= 900000000000f){
@@ -138,13 +153,23 @@ public class PlayGame implements Screen {
             classGame.getCurPlayer().getPlayerTank().setFuel(1 - distanceTravelled/900000000000f);
         }
 
+
+        // explosions
+        ArrayList<Explosion> remExplosions = new ArrayList<Explosion>();
+        for (Explosion e : explosions){
+            e.update(delta);
+            if (e.remove) {
+                remExplosions.add(e);
+            }
+        }
+        explosions.removeAll(remExplosions);
             
 
 
         /* BULLET HAS BEEN LAUNCHED */
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             if (classGame.isWeaponLaunched() == false) {
-                classGame.getCurPlayer().launchWeapon(10f, classGame.getCurPlayer().getTankTurretBody().getAngle(), new Weapon(classGame.getCurPlayerNum(), 1));
+                classGame.getCurPlayer().launchWeapon(classGame.getCurPlayer().getTankTurretBody().getAngle(), new Weapon(classGame.getCurPlayerNum(), 1));
             }
             distanceTravelled = 0;
             classGame.getCurPlayer().getPlayerTank().setFuel(1);
@@ -157,16 +182,26 @@ public class PlayGame implements Screen {
         } catch (NullPointerException e) {
         }
 
+        for (Explosion e : explosions) {
+            e.render(runGame.batch);
+        }
+
         runGame.batch.end();
 
         /* IF BULLET HAS EXPLODED */
         if (classGame.getCurPlayer().getCurWeapon().isRemove()) {
             world.destroyBody(classGame.getCurPlayer().getCurWeapon().getWeaponBody());
+            explosions.add(new Explosion(classGame.getCurPlayer().getCurWeapon().getCollisionPosition().getPosX(), classGame.getCurPlayer().getCurWeapon().getCollisionPosition().getPosY()));
             classGame.getCurPlayer().getCurWeapon().setRemove(false);
             classGame.setWeaponLaunched(false);
-            classGame.getPlayer1().causeDamage(classGame.getCurPlayer().getCurWeapon(), classGame.getCurPlayer().getCurWeapon().getCollisionPosition());
-            classGame.getPlayer2().causeDamage(classGame.getCurPlayer().getCurWeapon(), classGame.getCurPlayer().getCurWeapon().getCollisionPosition());
-            classGame.changeTurn();
+            int isAlive1 = classGame.getPlayer1().causeDamage(classGame.getCurPlayer().getCurWeapon(), classGame.getCurPlayer().getCurWeapon().getCollisionPosition());
+            int isAlive2 = classGame.getPlayer2().causeDamage(classGame.getCurPlayer().getCurWeapon(), classGame.getCurPlayer().getCurWeapon().getCollisionPosition());
+            if (isAlive1 == 1 && isAlive2 == 1) {
+                classGame.changeTurn();
+            } else {
+                classGame.setWeaponLaunched(true);
+                classGame.gameOver();
+            }
         }
         world.step(1/60f, 8, 3);
     }

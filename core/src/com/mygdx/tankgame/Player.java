@@ -39,7 +39,7 @@ public class Player implements Serializable {
     private String name;
     private Tank playerTank;
     private Weapon[] curWeapons;
-    private int power = 50;
+    private float power;
     private int angle = 30;
     private boolean isDoubleDamage = false;
     private boolean isDoubleFuel = false;
@@ -47,6 +47,7 @@ public class Player implements Serializable {
     transient Texture fuel = new Texture("fuel.png");
 
     public Player(int num, int chosenTank) {
+        this.power = 1f;
         this.curWeapon = new Weapon(num, 1);
         if (num == 1) {
             this.isPlayer1 = true;
@@ -130,12 +131,23 @@ public class Player implements Serializable {
         this.curWeapon = curWeapon;
     }
 
-    public int getPower() {
+    public float getPower() {
         return power;
     }
 
-    public void setPower(int power) {
-        this.power = power;
+    public void setPower(float power) {
+        System.out.println("Updating power;");
+        if (power > 1f) {
+            this.power = 1f;
+            System.out.println(1);
+        } else if (power < 0f) {
+            this.power = 0f;
+            System.out.println(2);
+        } else {
+            this.power = power;
+            System.out.println(3);
+        }
+        System.out.println(power);
     }
 
     public int getAngle() {
@@ -178,7 +190,7 @@ public class Player implements Serializable {
 
         return null;
     }
-    public Position launchWeapon(float power, float angle, Weapon weapon){
+    public Position launchWeapon(float angle, Weapon weapon){
         curWeapon = weapon;
 //        System.out.println("<<<<<<<<<<<<<THIS WORKS.");
         Projectile bullet;
@@ -210,11 +222,11 @@ public class Player implements Serializable {
 
         float vx, vy;
         if (isPlayer1) {
-            vx = (float) (power * cos(angle));
-            vy = (float) (power * sin(angle));
+            vx = (float) (25f * power * cos(angle));
+            vy = (float) (25f * power * sin(angle));
         } else {
-            vx = (float) (power * cos(3.14159f + angle));
-            vy = (float) (power * sin(3.14159f + angle));
+            vx = (float) (25f * power * cos(3.14159f + angle));
+            vy = (float) (25f * power * sin(3.14159f + angle));
         }
 
 
@@ -263,24 +275,37 @@ public class Player implements Serializable {
             float damageScale = weapon.getDamageRange()-(float)distance;
             if (damageScale > 0) {
                 float damageCaused = weapon.getMaxDamagePower()*(damageScale+1)/weapon.getDamageRange();
-                // health = health - damagecaused;
+                float curHealth = this.getPlayerTank().getTankHp();
+                this.getPlayerTank().setTankHp(curHealth - damageCaused/800f);
                 System.out.println("Damage to Player1 : " + damageCaused);
+                if (this.getPlayerTank().getTankHp() < 0) {
+                    return 2;
+                } else {
+                    return 1;
+                }
             }
+
         } else {
             double distance = sqrt(pow(this.tankBody.getPosition().x - weaponPosition.getPosX(), 2) + pow(this.tankBody.getPosition().y - weaponPosition.getPosY(), 2));
             System.out.println("Player 2: "+ distance);
             float damageScale = weapon.getDamageRange()-(float)distance;
             if (damageScale > 0) {
                 float damageCaused = weapon.getMaxDamagePower() * (damageScale + 1) / weapon.getDamageRange();
-                // health = health - damagecaused;
+                float curHealth = this.getPlayerTank().getTankHp();
+                this.getPlayerTank().setTankHp(curHealth - damageCaused/800f);
                 System.out.println("Damage to Player2 : " + damageCaused);
+                if (this.getPlayerTank().getTankHp() < 0) {
+                    return 2;
+                } else {
+                    return 1;
+                }
             }
         }
         // calculate damage caused using maxDamage and damageRange
 
 
         // decrease the health of this player's tank
-        return 0;
+        return 1;
     }
 
 //    @Override
