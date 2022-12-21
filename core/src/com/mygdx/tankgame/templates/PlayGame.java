@@ -23,6 +23,12 @@ public class PlayGame implements Screen {
     private ClassGame classGame;
     transient Texture terrain = new Texture("terrain2.png");
     transient Texture pauseButton = new Texture("PauseGameButton.png");
+    transient Texture ePole = new Texture("electricpole.png");
+    transient Texture ePole2 = new Texture("electricpole2.png");
+//        rtGrass = new TextureRegion(terrain_texture);
+    transient Texture tree1 = new Texture("tree1.png");
+    transient Texture tree2 = new Texture("Tree2.png");
+    transient Texture tree3 = new Texture("Tree3.png");
     ArrayList<Explosion> explosions;
 
     private int tankSpeed = 300;
@@ -108,6 +114,14 @@ public class PlayGame implements Screen {
 
         runGame.batch.setProjectionMatrix(camera.combined);
         runGame.batch.begin();
+        runGame.batch.draw(ePole,-27, -8.5f,398*0.2f*pixelToMeters, 798*0.2f*pixelToMeters );
+        runGame.batch.draw(tree1, -24, -7.5f,340*0.4f*pixelToMeters, 296*0.4f*pixelToMeters);
+        runGame.batch.draw(ePole2,23, -8.5f,398*0.2f*pixelToMeters, 798*0.2f*pixelToMeters );
+        runGame.batch.draw(tree2, 26, -7.5f, 249*0.4f*pixelToMeters, 309*0.4f*pixelToMeters);
+        runGame.batch.draw(tree1, 5, -7.5f,340*0.4f*pixelToMeters, 296*0.4f*pixelToMeters);
+        runGame.batch.draw(tree3, 7, -7.5f, 180*0.4f*pixelToMeters, 247*0.2f*pixelToMeters);
+
+        runGame.batch.draw(tree2, -9, -7.5f, 249*0.4f*pixelToMeters, 309*0.4f*pixelToMeters);
         runGame.batch.draw(terrain, -35, -23, (SCREEN_WIDTH+900)*pixelToMeters, 500*pixelToMeters);
         classGame.showGame(runGame);
         classGame.showPlayerHealthBars(runGame);
