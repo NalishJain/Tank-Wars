@@ -282,7 +282,11 @@ public class Player implements Serializable {
                 float damageCaused = weapon.getMaxDamagePower()*(damageScale+1)/weapon.getDamageRange();
                 float curHealth = this.getPlayerTank().getTankHp();
                 this.getPlayerTank().setTankHp(curHealth - damageCaused/800f);
-                this.tankBody.setLinearVelocity(-2.5f*damageScale, 0.5f*damageScale);
+                if (this.tankBody.getPosition().x > weaponPosition.getPosX()) {
+                    this.tankBody.setLinearVelocity(2.5f * damageScale, 0.5f * damageScale);
+                } else {
+                    this.tankBody.setLinearVelocity(-2.5f * damageScale, 0.5f * damageScale);
+                }
                 System.out.println("Damage to Player1 : " + damageCaused);
                 if (this.getPlayerTank().getTankHp() < 0) {
                     return 2;
@@ -303,7 +307,7 @@ public class Player implements Serializable {
                 if (this.tankBody.getPosition().x < weaponPosition.getPosX()) {
                     this.tankBody.setLinearVelocity(-2.5f * damageScale, 0.5f * damageScale);
                 } else {
-
+                    this.tankBody.setLinearVelocity(2.5f * damageScale, 0.5f * damageScale);
                 }
                 System.out.println("Damage to Player2 : " + damageCaused);
                 if (this.getPlayerTank().getTankHp() < 0) {
