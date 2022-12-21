@@ -136,18 +136,18 @@ public class Player implements Serializable {
     }
 
     public void setPower(float power) {
-        System.out.println("Updating power;");
+//        System.out.println("Updating power;");
         if (power > 1f) {
             this.power = 1f;
-            System.out.println(1);
+//            System.out.println(1);
         } else if (power < 0f) {
             this.power = 0f;
-            System.out.println(2);
+//            System.out.println(2);
         } else {
             this.power = power;
-            System.out.println(3);
+//            System.out.println(3);
         }
-        System.out.println(power);
+//        System.out.println(power);
     }
 
     public int getAngle() {
@@ -200,7 +200,7 @@ public class Player implements Serializable {
         } else {
             bullet = new Projectile(new Position(tankTurretBody.getPosition().x + TURRET_OFFSET.getPosX() + TANK_SPRITE_T_LENGTH / 300 * (float) cos(3.14159f + tankTurretBody.getAngle()),
                     tankTurretBody.getPosition().y + TURRET_OFFSET.getPosY() + TANK_SPRITE_T_LENGTH / 300 * (float) sin(3.14159f + tankTurretBody.getAngle())));
-            System.out.println(TURRET_OFFSET);
+//            System.out.println(TURRET_OFFSET);
         }
 
 //        System.out.println(bullet.getPosition().getPosX() + " " + bullet.getPosition().getPosY());

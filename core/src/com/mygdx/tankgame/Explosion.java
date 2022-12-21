@@ -62,7 +62,7 @@ public class Explosion {
     }
     public void render(Batch batch) {
         Sprite sprite = new Sprite(animation.getKeyFrame(time));
-        System.out.println(sprite.getScaleX() + " " + sprite.getScaleY());
+//        System.out.println(sprite.getScaleX() + " " + sprite.getScaleY());
         sprite.scale(-0.5f);
         batch.draw(sprite, x, y, SIZE/15f, SIZE/15f);
     }
