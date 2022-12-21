@@ -54,7 +54,7 @@ public class ClassGame implements Serializable {
     }
 
     public void gameOver() {
-        System.out.println("lolz get rekt.");
+
     }
 
 
