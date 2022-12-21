@@ -196,7 +196,13 @@ public class PlayGame implements Screen {
                 classGame.changeTurn();
             } else {
                 classGame.setWeaponLaunched(true);
-                classGame.gameOver();
+                // TODO GameOver
+                if (isAlive2 == 1) {
+                    runGame.setScreen(new GameOverScreen(runGame, classGame, 2));
+                } else {
+                    runGame.setScreen(new GameOverScreen(runGame, classGame, 1));
+                }
+
             }
         }
         world.step(1/60f, 8, 3);
