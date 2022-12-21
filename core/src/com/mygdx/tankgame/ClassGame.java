@@ -161,7 +161,7 @@ public class ClassGame implements Serializable {
                PauseGameScreen.gameSavedOrNot[1] = true;
 
            }
-           else if(PauseGameScreen.gameSavedOrNot[2]){
+           else if(!PauseGameScreen.gameSavedOrNot[2]){
                toBeSavedGame = new ObjectOutputStream(new FileOutputStream(PauseGameScreen.savedGames[2]));
                PauseGameScreen.gameSavedOrNot[2] = true;
            }
@@ -169,15 +169,21 @@ public class ClassGame implements Serializable {
 
             booleanArray = new ObjectOutputStream(new FileOutputStream("result.txt"));
             booleanArray.writeObject(PauseGameScreen.gameSavedOrNot);
-            toBeSavedGame.writeObject(this);
+            if(toBeSavedGame != null){
+                toBeSavedGame.writeObject(this);
+            }
 
         }
 //        catch(Exception e){
 //            e.printStackTrace();
 //        }
         finally {
-            toBeSavedGame.close();
-            booleanArray.close();
+            if(toBeSavedGame != null){
+                toBeSavedGame.close();
+            }
+            if(booleanArray != null){
+                booleanArray.close();
+            }
         }
     }
 

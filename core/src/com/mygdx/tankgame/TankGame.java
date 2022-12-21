@@ -8,14 +8,26 @@ public class TankGame extends Game {
 	public static final int SCREEN_WIDTH = 1280;
 	public static final int SCREEN_HEIGHT = 720;
 	public SpriteBatch batch;
-	
+
+//	Implemented Singleton designPattern
+
+	public static TankGame tankGame = null;
+	public static TankGame getInstance(){
+		if (tankGame == null) {
+			tankGame = new TankGame();
+		}
+		return tankGame;
+	}
+	private TankGame(){
+
+	}
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
 
-		this.setScreen(new PlayGame(this, new ClassGame(new Player(1, 1), new Player(2, 3))));
+//		this.setScreen(new PlayGame(this, new ClassGame(new Player(1, 1), new Player(2, 3))));
 //		this.setScreen(new GameOverScreen(this, 2));
-//		this.setScreen(new FirstMenuScreen((this)));
+		this.setScreen(new FirstMenuScreen((TankGame.getInstance())));
 
 	}
 

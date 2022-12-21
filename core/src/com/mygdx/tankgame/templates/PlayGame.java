@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.tankgame.*;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import static com.mygdx.tankgame.TankGame.SCREEN_HEIGHT;
 import static com.mygdx.tankgame.TankGame.SCREEN_WIDTH;
@@ -114,6 +115,7 @@ public class PlayGame implements Screen {
 
         runGame.batch.setProjectionMatrix(camera.combined);
         runGame.batch.begin();
+        runGame.batch.draw(new Texture("bg3.png"), -35, -16, SCREEN_WIDTH*pixelToMeters*1.75f, SCREEN_HEIGHT*pixelToMeters*1.75f);
         runGame.batch.draw(ePole,-27, -8.5f,398*0.2f*pixelToMeters, 798*0.2f*pixelToMeters );
         runGame.batch.draw(tree1, -24, -7.5f,340*0.4f*pixelToMeters, 296*0.4f*pixelToMeters);
         runGame.batch.draw(ePole2,23, -8.5f,398*0.2f*pixelToMeters, 798*0.2f*pixelToMeters );
@@ -173,6 +175,18 @@ public class PlayGame implements Screen {
 
         // explosions
         ArrayList<Explosion> remExplosions = new ArrayList<Explosion>();
+
+
+//        Implemented iterable design pattern
+//        Iterator iter = remExplosions.iterator();
+//        while(iter.hasNext()){
+//            Explosion e = (Explosion) iter.next();
+//            e.update(delta);
+//            if (e.remove) {
+//                remExplosions.add(e);
+//            }
+//        }
+
         for (Explosion e : explosions){
             e.update(delta);
             if (e.remove) {
