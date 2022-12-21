@@ -40,10 +40,11 @@ public class FirstMenuScreen implements Screen {
     Texture terrain_texture;
     Texture parachute;
     TextureRegion plane;
+    static boolean musicOn = true;
     Texture crate;
     Texture settings;
     Sound sound;
-    Music music;
+    static Music music;
 
     public FirstMenuScreen(TankGame game){
         this.game = game;
@@ -90,10 +91,13 @@ public class FirstMenuScreen implements Screen {
         }
         sound = Gdx.audio.newSound(Gdx.files.internal("click.wav"));
         music = Gdx.audio.newMusic(Gdx.files.internal("Crew.mp3"));
-
+        if(musicOn){
         music.setVolume(0.5f);
-        music.setLooping(true);
-        music.play();
+         music.setLooping(true);
+
+            music.play();
+
+        }
 
     }
 

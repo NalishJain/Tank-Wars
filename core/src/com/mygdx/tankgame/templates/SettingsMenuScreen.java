@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.tankgame.TankGame;
 
@@ -82,10 +83,25 @@ public class SettingsMenuScreen implements Screen {
                 game.setScreen(new FirstMenuScreen(game));
             }
         }
+        if(Gdx.input.justTouched()){
+            if(Gdx.input.getX() > 470 && Gdx.input.getX() < 810 && Gdx.input.getY() > 310 && Gdx.input.getY() < 390){
+                FirstMenuScreen.musicOn = !FirstMenuScreen.musicOn;
+                  FirstMenuScreen.music.pause();
+//                System.out.println(FirstMenuScreen.musicOn);
+            }
+//            System.out.println(Gdx.input.getX());
+//            System.out.println(Gdx.input.getY());
+        }
         game.batch.draw(Settings,(SCREEN_WIDTH/2 - 450/2), (SCREEN_HEIGHT/2 - 120/2) + 260 -27 + 17, 450,120);
 //        game.batch.draw(saveButton,(SCREEN_WIDTH/2 - 368/2), (SCREEN_HEIGHT/2 - 100/2) + 150 - 27, 368,100);
         game.batch.draw(soundButton,(SCREEN_WIDTH/2 - 368/2), (SCREEN_HEIGHT/2 - 100/2) +  13 + 110 - 8, 368,100);
-        game.batch.draw(musicButton,(SCREEN_WIDTH/2 - 368/2) -2, (SCREEN_HEIGHT/2 - 100/2) -70 - 27 +110 -8, 368,100);
+        if(FirstMenuScreen.musicOn){
+            game.batch.draw(musicButton,(SCREEN_WIDTH/2 - 368/2) -2, (SCREEN_HEIGHT/2 - 100/2) -70 - 27 +110 -8, 368,100);
+        }
+        else{
+            game.batch.draw(new Texture("musicOff.png"),(SCREEN_WIDTH/2 - 368/2) -2, (SCREEN_HEIGHT/2 - 100/2) -70 - 27 +110 -8, 368,100);
+
+        }
         game.batch.draw(FeedBackButton,(SCREEN_WIDTH/2 - 368/2) + 2, (SCREEN_HEIGHT/2 - 100/2) -180 -27 +110 -8, 368,100);
         game.batch.draw(Treasure, 0,0,400,300);
 

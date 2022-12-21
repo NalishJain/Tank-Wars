@@ -46,10 +46,6 @@ public class Player implements Serializable {
     private boolean isSkippedChance = false;
     transient Texture fuel = new Texture("fuel.png");
 
-    public static double  Distance(double a, double b, double c, double d){
-        return sqrt(pow(a- c, 2) + pow(b - d, 2));
-
-    }
     public Player(int num, int chosenTank) {
         this.power = 1f;
         this.curWeapon = new Weapon(num, 1);
@@ -274,8 +270,7 @@ public class Player implements Serializable {
     public int causeDamage(Weapon weapon, Position weaponPosition){
         // calculate distance
         if (isPlayer1) {
-            double distance = Distance(this.tankBody.getPosition().x,this.tankBody.getPosition().y,weaponPosition.getPosX(),weaponPosition.getPosY());
-//                    sqrt(pow(this.tankBody.getPosition().x - weaponPosition.getPosX(), 2) + pow(this.tankBody.getPosition().y - weaponPosition.getPosY(), 2));
+            double distance = sqrt(pow(this.tankBody.getPosition().x - weaponPosition.getPosX(), 2) + pow(this.tankBody.getPosition().y - weaponPosition.getPosY(), 2));
             System.out.println("Player 1: "+ distance);
             float damageScale = weapon.getDamageRange()-(float)distance;
             if (damageScale > 0) {
@@ -296,8 +291,7 @@ public class Player implements Serializable {
             }
 
         } else {
-            double distance = Distance(this.tankBody.getPosition().x,this.tankBody.getPosition().y,weaponPosition.getPosX(),weaponPosition.getPosY());
-//            double distance = sqrt(pow(this.tankBody.getPosition().x - weaponPosition.getPosX(), 2) + pow(this.tankBody.getPosition().y - weaponPosition.getPosY(), 2));
+            double distance = sqrt(pow(this.tankBody.getPosition().x - weaponPosition.getPosX(), 2) + pow(this.tankBody.getPosition().y - weaponPosition.getPosY(), 2));
             System.out.println("Player 2: "+ distance);
             float damageScale = weapon.getDamageRange()-(float)distance;
             if (damageScale > 0) {
