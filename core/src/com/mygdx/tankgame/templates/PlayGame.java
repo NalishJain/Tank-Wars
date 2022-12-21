@@ -181,16 +181,9 @@ public class PlayGame implements Screen {
 
 
 //        Implemented iterable design pattern
-//        Iterator iter = remExplosions.iterator();
-//        while(iter.hasNext()){
-//            Explosion e = (Explosion) iter.next();
-//            e.update(delta);
-//            if (e.remove) {
-//                remExplosions.add(e);
-//            }
-//        }
-
-        for (Explosion e : explosions){
+        Iterator iter = explosions.iterator();
+        while(iter.hasNext()){
+            Explosion e = (Explosion) iter.next();
             e.update(delta);
             if (e.remove) {
                 remExplosions.add(e);

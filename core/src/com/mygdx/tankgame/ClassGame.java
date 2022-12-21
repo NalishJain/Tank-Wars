@@ -137,6 +137,9 @@ public class ClassGame implements Serializable {
         if (curPlayer == 1) {
             curPlayer = 2;
         } else curPlayer = 1;
+        this.getPlayer1().getTankTurretBody().setAngularVelocity(0);
+        this.getPlayer2().getTankTurretBody().setAngularVelocity(0);
+
     }
 
     public void serialise() throws IOException {
