@@ -81,8 +81,8 @@ public class Tank extends GameObject {
         return false;
     }
     public class Turret implements Serializable {
-        public float turretAngle = 30;
-        public Position position;
+        public float turretAngle = 0f;
+        public Position position = new Position();
         public Position getPosition(){
             return this.position;
         }

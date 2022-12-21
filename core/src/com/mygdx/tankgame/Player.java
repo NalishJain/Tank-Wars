@@ -363,9 +363,21 @@ public class Player implements Serializable {
 
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         if (isPlayer1) {
-            bodyDef.position.set(-20, 12);
-        } else {
-            bodyDef.position.set(20, 12);
+            if(this.getPlayerTank().getPosition().getPosX() != 0 && this.getPlayerTank().getPosition().getPosY() != 0){
+                bodyDef.position.set(this.getPlayerTank().getPosition().getPosX(), this.getPlayerTank().getPosition().getPosY());
+
+            }
+            else{
+                bodyDef.position.set(-20, 12);
+            }
+        }
+        else {
+            if(this.getPlayerTank().getPosition().getPosX() != 0 && this.getPlayerTank().getPosition().getPosY() != 0){
+                bodyDef.position.set(this.getPlayerTank().getPosition().getPosX(), this.getPlayerTank().getPosition().getPosY());
+            }
+            else{
+                bodyDef.position.set(20, 12);
+            }
         }
         tankTurretBody = world.createBody(bodyDef);
 
@@ -376,7 +388,50 @@ public class Player implements Serializable {
         fixtureDef.friction = 0f;
         fixtureDef.restitution = .4f;
         fixtureDef.density = 3000;
+        if(spriteTank_t == null){
+            tankMovement = new Vector2();
+            fuel = new Texture("fuel.png");
+            redCross = new Texture("redCross.png");
+            if (chosenTank == 1) {
+                TANK_SPRITE_B_LENGTH = 804;
+                TANK_SPRITE_B_HEIGHT = 520;
+                TANK_SPRITE_T_LENGTH = 1016;
+                TANK_SPRITE_T_HEIGHT = 316;
+                TANK_SPRITE_F_LENGTH = 1008;
+                TANK_SPRITE_F_HEIGHT = 516;
+                TURRET_OFFSET = new Position(1.8f, 0f);
+                spriteTank_f = new Sprite(new Texture("tank1front.png"));
+                spriteTank_t = new Sprite(new Texture("tank1turret2.png"));
+                spriteTank_b = new Sprite(new Texture("tank1back.png"));
 
+
+
+            }
+            else if(chosenTank == 2){
+                TANK_SPRITE_B_LENGTH = 844;
+                TANK_SPRITE_B_HEIGHT = 622;
+                TANK_SPRITE_T_LENGTH = 858;
+                TANK_SPRITE_T_HEIGHT = 166;
+                TANK_SPRITE_F_LENGTH = 848;
+                TANK_SPRITE_F_HEIGHT = 622;
+                TURRET_OFFSET = new Position(0.5f, -0.3f);
+                spriteTank_f = new Sprite(new Texture("Tank2Front.png"));
+                spriteTank_t = new Sprite(new Texture("Tank2Turret.png"));
+                spriteTank_b = new Sprite(new Texture("Tank2Back.png"));
+            }
+            else if(chosenTank == 3){
+                TANK_SPRITE_B_LENGTH = 884;
+                TANK_SPRITE_B_HEIGHT = 416;
+                TANK_SPRITE_T_LENGTH = 958;
+                TANK_SPRITE_T_HEIGHT = 276;
+                TANK_SPRITE_F_LENGTH = 810;
+                TANK_SPRITE_F_HEIGHT = 478;
+                TURRET_OFFSET = new Position(1.8f, -0.3f);
+                spriteTank_f = new Sprite(new Texture("tank3front.png"));
+                spriteTank_t = new Sprite(new Texture("tank3turret.png"));
+                spriteTank_b = new Sprite(new Texture("tank3back.png"));
+            }
+        }
         Fixture tankTfixture = tankTurretBody.createFixture(fixtureDef);
         if (isPlayer1) {
             spriteTank_t.setSize(TANK_SPRITE_T_LENGTH * 0.15f * pixelToMeters, TANK_SPRITE_T_HEIGHT * 0.15f * pixelToMeters);
@@ -446,12 +501,16 @@ public class Player implements Serializable {
         jointDef.bodyB = tankTurretBody;
         jointDef.maxMotorTorque = 0f;
         jointDef.motorSpeed = 500f;
+
+
         if (isPlayer1) {
             jointDef.localAnchorA.set(0.5f, 1f);
         } else {
             jointDef.localAnchorA.set(-0.5f, 1f);
         }
         world.createJoint(jointDef);
+
+
     }
 
 

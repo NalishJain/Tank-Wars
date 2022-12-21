@@ -7,11 +7,13 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.tankgame.templates.PlayGame;
 
-public class Explosion {
+import java.io.Serializable;
+
+public class Explosion implements Serializable {
     public static final float FRAME_TIME = 0.2f;
     public static final float OFFSET = 3f;
     public static final int SIZE = 88;
-    private static Animation<TextureRegion> animation = null;
+    transient private static Animation<TextureRegion> animation = null;
 
     private float x;
     private float y;

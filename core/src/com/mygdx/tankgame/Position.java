@@ -3,8 +3,9 @@ package com.mygdx.tankgame;
 import java.io.Serializable;
 
 public class Position implements Serializable {
-    private float posX;
-    private float posY;
+    private float posX = 0;
+    private float posY = 0;
+    public Position(){}
 
     public Position(float x, float y) {
         posX = x;

@@ -17,6 +17,6 @@ public class DesktopLauncher {
 		config.setResizable(false);
 		config.useVsync(true);
 
-		new Lwjgl3Application(new TankGame(), config);
+		new Lwjgl3Application(TankGame.getInstance(), config);
 	}
 }

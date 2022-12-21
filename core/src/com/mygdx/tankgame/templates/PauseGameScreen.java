@@ -12,6 +12,7 @@ import java.io.IOException;
 
 import static com.mygdx.tankgame.TankGame.SCREEN_HEIGHT;
 import static com.mygdx.tankgame.TankGame.SCREEN_WIDTH;
+import static com.mygdx.tankgame.templates.PlayGame.world;
 
 public class PauseGameScreen implements Screen {
 
@@ -99,7 +100,7 @@ public class PauseGameScreen implements Screen {
         game.batch.draw(saveButton,(SCREEN_WIDTH/2 - 368/2), (SCREEN_HEIGHT/2 - 100/2) + 150 - 27, 368,100);
 
         if(Gdx.input.getX() < (SCREEN_WIDTH/2 - 368/2) +368  && Gdx.input.getX() > (SCREEN_WIDTH/2 - 368/2) && SCREEN_HEIGHT - Gdx.input.getY() < (SCREEN_HEIGHT/2 - 100/2) + 150 - 27 + 100 && SCREEN_HEIGHT - Gdx.input.getY() > (SCREEN_HEIGHT/2 - 100/2) + 150 - 27){
-            if(Gdx.input.isTouched()){
+            if(Gdx.input.justTouched()){
                 this.dispose();
                 try {
                     classGame.serialise();
@@ -108,6 +109,10 @@ public class PauseGameScreen implements Screen {
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
+                world.destroyBody(classGame.getPlayer1().getTankBody());
+                world.destroyBody(classGame.getPlayer2().getTankBody());
+                world.destroyBody(classGame.getPlayer1().getTankTurretBody());
+                world.destroyBody(classGame.getPlayer2().getTankTurretBody());
                 game.setScreen(new LoadGameScreen(game));
             }
         }
@@ -115,9 +120,14 @@ public class PauseGameScreen implements Screen {
         game.batch.draw(soundButton,(SCREEN_WIDTH/2 - 368/2), (SCREEN_HEIGHT/2 - 100/2) +  13, 368,100);
         game.batch.draw(musicButton,(SCREEN_WIDTH/2 - 368/2) -2, (SCREEN_HEIGHT/2 - 100/2) -70 - 27, 368,100);
         game.batch.draw(quitButton,(SCREEN_WIDTH/2 - 368/2), (SCREEN_HEIGHT/2 - 100/2) -180 -27, 368,100);
+
         if(Gdx.input.getX() < (SCREEN_WIDTH/2 - 368/2) +368  && Gdx.input.getX() > (SCREEN_WIDTH/2 - 368/2) && SCREEN_HEIGHT - Gdx.input.getY() < (SCREEN_HEIGHT/2 - 100/2) -180 -27 + 100 && SCREEN_HEIGHT - Gdx.input.getY() > (SCREEN_HEIGHT/2 - 100/2) -180 -27){
             if(Gdx.input.isTouched()){
                 this.dispose();
+                world.destroyBody(classGame.getPlayer1().getTankBody());
+                world.destroyBody(classGame.getPlayer2().getTankBody());
+                world.destroyBody(classGame.getPlayer1().getTankTurretBody());
+                world.destroyBody(classGame.getPlayer2().getTankTurretBody());
                 game.setScreen(new FirstMenuScreen(game));
             }
         }

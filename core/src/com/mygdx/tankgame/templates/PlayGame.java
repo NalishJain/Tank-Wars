@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.tankgame.*;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import static com.mygdx.tankgame.TankGame.SCREEN_HEIGHT;
 import static com.mygdx.tankgame.TankGame.SCREEN_WIDTH;
@@ -21,8 +22,14 @@ import static com.mygdx.tankgame.TankGame.SCREEN_WIDTH;
 public class PlayGame implements Screen {
     public final static World world = new World(new Vector2(0, -9.81f), true);
     private ClassGame classGame;
-    Texture terrain = new Texture("terrain2.png");
-    Texture pauseButton = new Texture("PauseGameButton.png");
+    transient Texture terrain = new Texture("terrain2.png");
+    transient Texture pauseButton = new Texture("PauseGameButton.png");
+    transient Texture ePole = new Texture("electricpole.png");
+    transient Texture ePole2 = new Texture("electricpole2.png");
+//        rtGrass = new TextureRegion(terrain_texture);
+    transient Texture tree1 = new Texture("tree1.png");
+    transient Texture tree2 = new Texture("Tree2.png");
+    transient Texture tree3 = new Texture("Tree3.png");
     ArrayList<Explosion> explosions;
 
     private int tankSpeed = 300;
@@ -55,6 +62,9 @@ public class PlayGame implements Screen {
 
         classGame.showGround(runGame);
         classGame.showTanks();
+//        if(classGame.getPlayer1().getPlayerTank().getPosition().getPosX() != 0 && classGame.getPlayer1().getPlayerTank().getPosition().getPosY() != 0){
+//        classGame.getPlayer1().getTankTurretBody().setTransform(classGame.getPlayer1().getPlayerTank().getTankTurret().getPosition().getPosX(), classGame.getPlayer1().getPlayerTank().getTankTurret().getPosition().getPosY(), classGame.getPlayer1().getPlayerTank().getTankTurret().getTurretAngle());}
+
         float inPos = classGame.getCurPlayer().getTankBody().getPosition().x;
 
 
@@ -105,7 +115,16 @@ public class PlayGame implements Screen {
 
         runGame.batch.setProjectionMatrix(camera.combined);
         runGame.batch.begin();
-        runGame.batch.draw(terrain, -35, -20, (SCREEN_WIDTH+900)*pixelToMeters, 500*pixelToMeters);
+        runGame.batch.draw(new Texture("bg3.png"), -35, -16, SCREEN_WIDTH*pixelToMeters*1.75f, SCREEN_HEIGHT*pixelToMeters*1.75f);
+        runGame.batch.draw(ePole,-27, -8.5f,398*0.2f*pixelToMeters, 798*0.2f*pixelToMeters );
+        runGame.batch.draw(tree1, -24, -7.5f,340*0.4f*pixelToMeters, 296*0.4f*pixelToMeters);
+        runGame.batch.draw(ePole2,23, -8.5f,398*0.2f*pixelToMeters, 798*0.2f*pixelToMeters );
+        runGame.batch.draw(tree2, 26, -7.5f, 249*0.4f*pixelToMeters, 309*0.4f*pixelToMeters);
+        runGame.batch.draw(tree1, 5, -7.5f,340*0.4f*pixelToMeters, 296*0.4f*pixelToMeters);
+        runGame.batch.draw(tree3, 7, -7.5f, 180*0.4f*pixelToMeters, 247*0.2f*pixelToMeters);
+
+        runGame.batch.draw(tree2, -9, -7.5f, 249*0.4f*pixelToMeters, 309*0.4f*pixelToMeters);
+        runGame.batch.draw(terrain, -35, -23, (SCREEN_WIDTH+900)*pixelToMeters, 500*pixelToMeters);
         classGame.showGame(runGame);
         classGame.showPlayerHealthBars(runGame);
         classGame.showPowerSlider(runGame);
@@ -156,6 +175,18 @@ public class PlayGame implements Screen {
 
         // explosions
         ArrayList<Explosion> remExplosions = new ArrayList<Explosion>();
+
+
+//        Implemented iterable design pattern
+//        Iterator iter = remExplosions.iterator();
+//        while(iter.hasNext()){
+//            Explosion e = (Explosion) iter.next();
+//            e.update(delta);
+//            if (e.remove) {
+//                remExplosions.add(e);
+//            }
+//        }
+
         for (Explosion e : explosions){
             e.update(delta);
             if (e.remove) {
