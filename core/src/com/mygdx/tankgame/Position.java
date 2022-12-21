@@ -1,6 +1,8 @@
 package com.mygdx.tankgame;
 
-public class Position implements Serializable{
+import java.io.Serializable;
+
+public class Position implements Serializable {
     private float posX;
     private float posY;
 
@@ -24,13 +26,5 @@ public class Position implements Serializable{
         this.posY = posY;
     }
 
-    @Override
-    public void serialise() {
 
-    }
-
-    @Override
-    public void deserialise() {
-
-    }
 }

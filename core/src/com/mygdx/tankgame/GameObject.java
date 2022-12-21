@@ -1,7 +1,9 @@
 package com.mygdx.tankgame;
 
 
-public class GameObject implements Serializable{
+import java.io.Serializable;
+
+public class GameObject implements Serializable {
     private Position position;
     private long serialUID;
     public GameObject(){
@@ -26,13 +28,4 @@ public class GameObject implements Serializable{
         this.serialUID = serialUID;
     }
 
-    @Override
-    public void serialise() {
-
-    }
-
-    @Override
-    public void deserialise() {
-
-    }
 }

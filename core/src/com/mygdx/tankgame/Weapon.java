@@ -17,8 +17,8 @@ public class Weapon extends GameObject{
     //add-ons:
 //    public static Array<Weapon> allWeapons; // might not need this
     private boolean remove;
-    private Sprite spriteWeapon;
-    private Body weaponBody;
+    transient private Sprite spriteWeapon;
+    transient private Body weaponBody;
     private Position collisionPosition;
 
     public Weapon(int pnum, int chosenTank) {

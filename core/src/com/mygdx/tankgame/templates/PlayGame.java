@@ -49,7 +49,9 @@ public class PlayGame implements Screen {
     @Override
     public void show() {
         debugRenderer = new Box2DDebugRenderer();
+
         camera = new OrthographicCamera(Gdx.graphics.getWidth()/20f, Gdx.graphics.getHeight()/20f); // maybe add Gdx.graphics.get...
+        camera.update();
 
         classGame.showGround(runGame);
         classGame.showTanks();
@@ -85,7 +87,9 @@ public class PlayGame implements Screen {
                 }
                 return true;
             }
+
         });
+
 
 
     }
@@ -101,7 +105,7 @@ public class PlayGame implements Screen {
 
         runGame.batch.setProjectionMatrix(camera.combined);
         runGame.batch.begin();
-        runGame.batch.draw(terrain, -35, -23, (SCREEN_WIDTH+900)*pixelToMeters, 500*pixelToMeters);
+        runGame.batch.draw(terrain, -35, -20, (SCREEN_WIDTH+900)*pixelToMeters, 500*pixelToMeters);
         classGame.showGame(runGame);
         classGame.showPlayerHealthBars(runGame);
         classGame.showPowerSlider(runGame);
@@ -114,7 +118,7 @@ public class PlayGame implements Screen {
 //        }
         if(Gdx.input.getX() < 66  && Gdx.input.getX() > 0  &&  Gdx.input.getY() <90 && Gdx.input.getY() > 20){
             if(Gdx.input.isTouched()){
-                runGame.setScreen(new PauseGameScreen(runGame));
+                runGame.setScreen(new PauseGameScreen(runGame, classGame));
             }
         }
 
