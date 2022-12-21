@@ -2,6 +2,8 @@ package com.mygdx.tankgame.templates;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.tankgame.TankGame;
@@ -29,6 +31,8 @@ public class GameOverScreen implements Screen {
     Texture P2Won;
     int pwon;
     ClassGame classGame;
+    Sound sound;
+
 
     public GameOverScreen(TankGame game, ClassGame classGame, int pwon){
         this.game = game;
@@ -54,6 +58,9 @@ public class GameOverScreen implements Screen {
         camera = new OrthographicCamera(Gdx.graphics.getWidth() , Gdx.graphics.getHeight() );// maybe add Gdx.graphics.get...
         camera.position.set(640,360,0);
         camera.update();
+        sound = Gdx.audio.newSound(Gdx.files.internal("click.wav"));
+
+
     }
 
     @Override
@@ -81,6 +88,9 @@ public class GameOverScreen implements Screen {
 
         if(Gdx.input.getX() < 672 + 736/2f  && Gdx.input.getX() > 672 && SCREEN_HEIGHT - Gdx.input.getY() < 216/2f + 50  && SCREEN_HEIGHT - Gdx.input.getY() > 50){
             if(Gdx.input.isTouched()){
+                long id = sound.play(1f);
+                sound.setPitch(id,2);
+                sound.setLooping(id,false);
                 this.dispose();
                 world.destroyBody(classGame.getPlayer1().getTankBody());
                 world.destroyBody(classGame.getPlayer2().getTankBody());
@@ -93,6 +103,9 @@ public class GameOverScreen implements Screen {
 
         if(Gdx.input.getX() < 232 + 736/2f && Gdx.input.getX() > 232 && SCREEN_HEIGHT - Gdx.input.getY() < 216/2f + 50  && SCREEN_HEIGHT - Gdx.input.getY() > 50){
             if(Gdx.input.isTouched()){
+                long id = sound.play(1f);
+                sound.setPitch(id,2);
+                sound.setLooping(id,false);
                 this.dispose();
                 world.destroyBody(classGame.getPlayer1().getTankBody());
                 world.destroyBody(classGame.getPlayer2().getTankBody());

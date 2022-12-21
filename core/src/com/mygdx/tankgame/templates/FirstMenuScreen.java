@@ -2,6 +2,8 @@ package com.mygdx.tankgame.templates;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -22,6 +24,7 @@ public class FirstMenuScreen implements Screen {
     private static final int BUTTON_RIGHT_LOCATION =  LEFT_WIDTH + (RIGHT_WIDTH/2 - BUTTON_WIDTH/2);
 
     TankGame game;
+
     Texture exitButtonActive;
     Texture exitButtonInactive;
     Texture loadButtonActive;
@@ -39,6 +42,8 @@ public class FirstMenuScreen implements Screen {
     TextureRegion plane;
     Texture crate;
     Texture settings;
+    Sound sound;
+    Music music;
 
     public FirstMenuScreen(TankGame game){
         this.game = game;
@@ -83,6 +88,12 @@ public class FirstMenuScreen implements Screen {
                 throw new RuntimeException(e);
             }
         }
+        sound = Gdx.audio.newSound(Gdx.files.internal("click.wav"));
+        music = Gdx.audio.newMusic(Gdx.files.internal("Crew.mp3"));
+
+        music.setVolume(0.5f);
+        music.setLooping(true);
+        music.play();
 
     }
 
@@ -105,7 +116,10 @@ public class FirstMenuScreen implements Screen {
         game.batch.draw(exitButtonInactive, BUTTON_RIGHT_LOCATION, 100, BUTTON_WIDTH, BUTTON_HEIGHT);
 
         if(Gdx.input.getX() < BUTTON_RIGHT_LOCATION + BUTTON_WIDTH && Gdx.input.getX() >BUTTON_RIGHT_LOCATION  && SCREEN_HEIGHT - Gdx.input.getY() < 100 + BUTTON_HEIGHT && SCREEN_HEIGHT - Gdx.input.getY() > 100){
-            if(Gdx.input.isTouched()){
+            if(Gdx.input.justTouched()){
+                long id = sound.play(1f);
+                sound.setPitch(id,2);
+                sound.setLooping(id,false);
                 this.dispose();
                 ObjectOutputStream booleanArray = null;
                 try{
@@ -132,7 +146,10 @@ public class FirstMenuScreen implements Screen {
         }
         game.batch.draw(loadButtonInactive, BUTTON_RIGHT_LOCATION, 200, BUTTON_WIDTH, BUTTON_HEIGHT);
         if(Gdx.input.getX() < BUTTON_RIGHT_LOCATION + BUTTON_WIDTH && Gdx.input.getX() >BUTTON_RIGHT_LOCATION  && SCREEN_HEIGHT - Gdx.input.getY() < 200 + BUTTON_HEIGHT && SCREEN_HEIGHT - Gdx.input.getY() > 200){
-            if(Gdx.input.isTouched()){
+            if(Gdx.input.justTouched()){
+                long id = sound.play(1f);
+                sound.setPitch(id,2);
+                sound.setLooping(id,false);
                 this.dispose();
                 game.setScreen(new LoadGameScreen(game));
             }
@@ -140,7 +157,10 @@ public class FirstMenuScreen implements Screen {
         game.batch.draw(newButtonInactive, BUTTON_RIGHT_LOCATION, 300, BUTTON_WIDTH, BUTTON_HEIGHT);
 
         if(Gdx.input.getX() < BUTTON_RIGHT_LOCATION + BUTTON_WIDTH && Gdx.input.getX() >BUTTON_RIGHT_LOCATION  && Gdx.input.getY() < 300 + BUTTON_HEIGHT && Gdx.input.getY() > 300){
-            if(Gdx.input.isTouched()){
+            if(Gdx.input.justTouched()){
+                long id = sound.play(1f);
+                sound.setPitch(id,2);
+                sound.setLooping(id,false);
                 this.dispose();
                 game.setScreen(new TankSelectScreen(game));
             }
@@ -153,6 +173,9 @@ public class FirstMenuScreen implements Screen {
         game.batch.draw(settings, 0, 50, 654*0.15f, 488*0.15f);
         if(Gdx.input.getX() < 98 && Gdx.input.getX() > 0 && SCREEN_HEIGHT - Gdx.input.getY() < 50 + 73 && SCREEN_HEIGHT - Gdx.input.getY() > 50){
             if(Gdx.input.isTouched()){
+                long id = sound.play(1f);
+                sound.setPitch(id,2);
+                sound.setLooping(id,false);
                 this.dispose();
                 game.setScreen(new SettingsMenuScreen(game));
             }

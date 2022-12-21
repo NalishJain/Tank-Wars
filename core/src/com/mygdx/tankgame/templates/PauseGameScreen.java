@@ -2,6 +2,7 @@ package com.mygdx.tankgame.templates;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -33,6 +34,7 @@ public class PauseGameScreen implements Screen {
     Texture chooseButtonInactive;
     Texture chooseButtonActive;
     Texture bg;
+    Sound sound;
     Texture terrain;
     Texture terrain_texture;
     Texture diagBox;
@@ -68,6 +70,8 @@ public class PauseGameScreen implements Screen {
          camera = new OrthographicCamera(Gdx.graphics.getWidth() , Gdx.graphics.getHeight() );// maybe add Gdx.graphics.get...
         camera.position.set(640,360,0);
         camera.update();
+        sound = Gdx.audio.newSound(Gdx.files.internal("click.wav"));
+
     }
 
     @Override
@@ -85,6 +89,9 @@ public class PauseGameScreen implements Screen {
 
         if(Gdx.input.getX() < 0+654*0.2f  && Gdx.input.getX() > 0 && SCREEN_HEIGHT - Gdx.input.getY() < 500 + 488*0.2f  && SCREEN_HEIGHT - Gdx.input.getY() > 500){
             if(Gdx.input.isTouched()){
+                long id = sound.play(1f);
+                sound.setPitch(id,2);
+                sound.setLooping(id,false);
                 this.dispose();
                 game.setScreen(new PlayGame(game, classGame));
             }
@@ -93,6 +100,9 @@ public class PauseGameScreen implements Screen {
 
         if(Gdx.input.getX() < (SCREEN_WIDTH/2 - 368/2) +368  && Gdx.input.getX() >(SCREEN_WIDTH/2 - 368/2) && SCREEN_HEIGHT - Gdx.input.getY() < (SCREEN_HEIGHT/2 - 100/2) + 260 -27 + 100  && SCREEN_HEIGHT - Gdx.input.getY() > (SCREEN_HEIGHT/2 - 100/2) + 260 -27){
             if(Gdx.input.isTouched()){
+                long id = sound.play(1f);
+                sound.setPitch(id,2);
+                sound.setLooping(id,false);
                 this.dispose();
                 game.setScreen(new PlayGame(game, classGame));;
             }
@@ -101,6 +111,9 @@ public class PauseGameScreen implements Screen {
 
         if(Gdx.input.getX() < (SCREEN_WIDTH/2 - 368/2) +368  && Gdx.input.getX() > (SCREEN_WIDTH/2 - 368/2) && SCREEN_HEIGHT - Gdx.input.getY() < (SCREEN_HEIGHT/2 - 100/2) + 150 - 27 + 100 && SCREEN_HEIGHT - Gdx.input.getY() > (SCREEN_HEIGHT/2 - 100/2) + 150 - 27){
             if(Gdx.input.justTouched()){
+                long id = sound.play(1f);
+                sound.setPitch(id,2);
+                sound.setLooping(id,false);
                 this.dispose();
                 try {
                     classGame.serialise();
@@ -123,6 +136,9 @@ public class PauseGameScreen implements Screen {
 
         if(Gdx.input.getX() < (SCREEN_WIDTH/2 - 368/2) +368  && Gdx.input.getX() > (SCREEN_WIDTH/2 - 368/2) && SCREEN_HEIGHT - Gdx.input.getY() < (SCREEN_HEIGHT/2 - 100/2) -180 -27 + 100 && SCREEN_HEIGHT - Gdx.input.getY() > (SCREEN_HEIGHT/2 - 100/2) -180 -27){
             if(Gdx.input.isTouched()){
+                long id = sound.play(1f);
+                sound.setPitch(id,2);
+                sound.setLooping(id,false);
                 this.dispose();
                 world.destroyBody(classGame.getPlayer1().getTankBody());
                 world.destroyBody(classGame.getPlayer2().getTankBody());

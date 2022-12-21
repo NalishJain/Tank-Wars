@@ -2,6 +2,7 @@ package com.mygdx.tankgame.templates;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.tankgame.ClassGame;
@@ -22,6 +23,7 @@ public class LoadGameScreen implements Screen {
     private static final int BUTTON_RIGHT_LOCATION =  LEFT_WIDTH + (RIGHT_WIDTH/2 - BUTTON_WIDTH/2);
 
     TankGame game;
+    Sound sound;
     Texture chooseButtonInactive;
     Texture chooseButtonActive;
     Texture bg;
@@ -93,6 +95,8 @@ public class LoadGameScreen implements Screen {
     }
     @Override
     public void show() {
+        sound = Gdx.audio.newSound(Gdx.files.internal("click.wav"));
+
 
     }
 
@@ -110,6 +114,9 @@ public class LoadGameScreen implements Screen {
 
         if(Gdx.input.getX() < 654*0.15f && Gdx.input.getX() > 0 && SCREEN_HEIGHT - Gdx.input.getY() < 500 + 488*0.15f && SCREEN_HEIGHT - Gdx.input.getY() > 500){
             if(Gdx.input.isTouched()){
+                long id = sound.play(1f);
+                sound.setPitch(id,2);
+                sound.setLooping(id,false);
                 this.dispose();
                 game.setScreen(new FirstMenuScreen(game));
             }
@@ -120,6 +127,9 @@ public class LoadGameScreen implements Screen {
 //        }
         if(Gdx.input.getX() > 201 && Gdx.input.getX() < 460 && Gdx.input.getY() > 155 && Gdx.input.getY() < 513){
             if(Gdx.input.justTouched()){
+                long id = sound.play(1f);
+                sound.setPitch(id,2);
+                sound.setLooping(id,false);
             if(PauseGameScreen.gameSavedOrNot[0]){
                 try {
                     deserialize(0);
@@ -132,6 +142,9 @@ public class LoadGameScreen implements Screen {
 
         if(Gdx.input.getX() > 509 && Gdx.input.getX() < 769 && Gdx.input.getY() > 155 && Gdx.input.getY() < 513){
             if(Gdx.input.justTouched()){
+                long id = sound.play(1f);
+                sound.setPitch(id,2);
+                sound.setLooping(id,false);
             if(PauseGameScreen.gameSavedOrNot[1]){
                 try {
                     deserialize(1);
@@ -145,7 +158,11 @@ public class LoadGameScreen implements Screen {
 
         if(Gdx.input.getX() > 806 && Gdx.input.getX() < 1070 && Gdx.input.getY() > 155 && Gdx.input.getY() < 513){
             if(Gdx.input.justTouched()) {
+                long id = sound.play(1f);
+                sound.setPitch(id,2);
+                sound.setLooping(id,false);
                 if (PauseGameScreen.gameSavedOrNot[2]) {
+
                     try {
                         deserialize(2);
                     } catch (IOException | ClassNotFoundException e) {
