@@ -3,6 +3,7 @@ package com.mygdx.tankgame.templates;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -39,6 +40,7 @@ public class PlayGame implements Screen {
     private OrthographicCamera camera;
     public final static BodyDef bodyDef = new BodyDef();
     public final static FixtureDef fixtureDef = new FixtureDef();
+    Sound sound;
 
     Texture Shield = new Texture("shield.png");
 
@@ -62,6 +64,7 @@ public class PlayGame implements Screen {
 
         classGame.showGround(runGame);
         classGame.showTanks();
+        sound = Gdx.audio.newSound(Gdx.files.internal("explosionSound.wav"));
 //        if(classGame.getPlayer1().getPlayerTank().getPosition().getPosX() != 0 && classGame.getPlayer1().getPlayerTank().getPosition().getPosY() != 0){
 //        classGame.getPlayer1().getTankTurretBody().setTransform(classGame.getPlayer1().getPlayerTank().getTankTurret().getPosition().getPosX(), classGame.getPlayer1().getPlayerTank().getTankTurret().getPosition().getPosY(), classGame.getPlayer1().getPlayerTank().getTankTurret().getTurretAngle());}
 
@@ -221,6 +224,9 @@ public class PlayGame implements Screen {
 
         /* IF BULLET HAS EXPLODED */
         if (classGame.getCurPlayer().getCurWeapon().isRemove()) {
+            long id = sound.play(1f);
+            sound.setPitch(id,2);
+            sound.setLooping(id,false);
             world.destroyBody(classGame.getCurPlayer().getCurWeapon().getWeaponBody());
             explosions.add(new Explosion(classGame.getCurPlayer().getCurWeapon().getCollisionPosition().getPosX(), classGame.getCurPlayer().getCurWeapon().getCollisionPosition().getPosY()));
             classGame.getCurPlayer().getCurWeapon().setRemove(false);

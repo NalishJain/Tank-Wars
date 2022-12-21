@@ -2,6 +2,7 @@ package com.mygdx.tankgame.templates;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.tankgame.TankGame;
@@ -22,6 +23,7 @@ public class SettingsMenuScreen implements Screen {
         Texture chooseButtonInactive;
         Texture chooseButtonActive;
         Texture bg;
+        Sound sound;
         Texture terrain;
         Texture terrain_texture;
         Texture diagBox;
@@ -54,8 +56,10 @@ public class SettingsMenuScreen implements Screen {
     }
         @Override
         public void show() {
+            sound = Gdx.audio.newSound(Gdx.files.internal("click.wav"));
 
-    }
+
+        }
 
         @Override
         public void render(float delta) {
@@ -71,6 +75,9 @@ public class SettingsMenuScreen implements Screen {
 
         if(Gdx.input.getX() < 654*0.2f && Gdx.input.getX() > 0 && SCREEN_HEIGHT - Gdx.input.getY() < 500 + 488*0.2f && SCREEN_HEIGHT - Gdx.input.getY() > 500){
             if(Gdx.input.isTouched()){
+                long id = sound.play(1f);
+                sound.setPitch(id,2);
+                sound.setLooping(id,false);
                 this.dispose();
                 game.setScreen(new FirstMenuScreen(game));
             }

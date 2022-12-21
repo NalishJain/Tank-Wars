@@ -3,6 +3,7 @@ package com.mygdx.tankgame.templates;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -41,6 +42,7 @@ public class TankSelectScreen implements Screen {
     Texture currentTank;
     Texture bg;
     Texture terrain;
+    Sound sound;
     Texture tank2;
 //    Texture kPlane;
     Texture aShip;
@@ -78,14 +80,22 @@ public class TankSelectScreen implements Screen {
     }
     @Override
     public void show() {
+        sound = Gdx.audio.newSound(Gdx.files.internal("click.wav"));
+
         Gdx.input.setInputProcessor(new GameInputController(){
             public boolean keyDown(int keycode) {
                 switch (keycode){
                     case Input.Keys.RIGHT:
+                        long id = sound.play(1f);
+                        sound.setPitch(id,2);
+                        sound.setLooping(id,false);
                         TextureArrayCounter = (TextureArrayCounter + 1)%3;
                         currentTank = TextureArray[TextureArrayCounter];
                         break;
                     case Input.Keys.LEFT:
+                        id = sound.play(1f);
+                        sound.setPitch(id,2);
+                        sound.setLooping(id,false);
                         if(TextureArrayCounter == 0){
                             TextureArrayCounter = 3;
                         }
@@ -93,6 +103,9 @@ public class TankSelectScreen implements Screen {
                         currentTank = TextureArray[TextureArrayCounter];
                         break;
                     case Input.Keys.ENTER:
+                        id = sound.play(1f);
+                        sound.setPitch(id,2);
+                        sound.setLooping(id,false);
                         if(playerNumber == 0){
                             if(TextureArrayCounter == 0){
                                 player1 = new Player(playerNumber + 1, 2);
